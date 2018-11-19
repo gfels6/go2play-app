@@ -6,10 +6,11 @@
             <Label class="title" :text="title" />
             <Label class="subTitle" :text="subTitle" />
             <TextField v-model="textFieldValue" hint="Name eingeben..." />
-            <Button class="active" text="Namen überprüfen" @tap="checkName" />
+            <TextField v-model="accountFound" />
+            <Button class="active" text="Namen überprüfen" @tap="checkName(textFieldValue)" />
             <Button class="active" text="Weiter" @tap="changeRoute('settings')" />
         </StackLayout>
-        <!--
+        <!-- 
         <GridLayout columns="*" rows="*">
             <Label class="message" :text="msg" col="0" row="0"/>
         </GridLayout> !-->
@@ -18,13 +19,19 @@
 
 <script>
 
+  import BackendService from '@/services/BackendService'
+
+  const backendService = new BackendService()
+
   export default {
     name: 'start-view',
     data() {
       return {
         title: 'Willkommen!',
         subTitle: 'Wie heisst du denn?',
-        btnGo: "Ich will loslegen!"
+        btnGo: "Ich will loslegen!",
+        textFieldValue: "",
+        accountFound: "test",
       }
     },
     methods: {
@@ -33,8 +40,8 @@
             console.log("goToSettingsPressed");
 
         },
-        checkName () {
-            console.log("checkNamePressed");
+        checkName (name) {
+            console.log(backendService.searchName(name));
         },
         changeRoute(to) {
             // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
