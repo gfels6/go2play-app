@@ -5,10 +5,9 @@
             <Image class="logo" src="~/assets/images/go_logo.png" />
             <Label class="title" :text="title" />
             <Label class="subTitle" :text="subTitle" />
-            <TextField v-model="textFieldValue" hint="Name eingeben..." />
-            <TextField v-model="accountFound" />
-            <Button class="active" text="Namen überprüfen" @tap="checkName(textFieldValue)" />
-            <Button class="active" text="Weiter" @tap="changeRoute('settings')" />
+            <TextField v-model="tfName" hint="Name eingeben..." />
+            <Button class="active" text="Namen überprüfen" @tap="checkName(tfName)" />
+            <Button :class="[{ inactive: showSubmitButton }, 'active']" text="Weiter" @tap="changeRoute('settings')" />
         </StackLayout>
         <!-- 
         <GridLayout columns="*" rows="*">
@@ -30,8 +29,9 @@
         title: 'Willkommen!',
         subTitle: 'Wie heisst du denn?',
         btnGo: "Ich will loslegen!",
-        textFieldValue: "",
-        accountFound: "test",
+        tfName: "",
+        nameUsed: "",
+        showSubmitButton: false,
       }
     },
     methods: {
@@ -41,7 +41,17 @@
 
         },
         checkName (name) {
-            console.log(backendService.searchName(name));
+            backendService.searchName(name)
+            .then(data => {
+                console.log(data.userCount);
+                if(data.userCount == 0) {
+                    nameUsed = false;
+                    showSubmitButton = false;
+                } else {
+                    nameUsed = true;
+                    showSubmitButton = true;
+                }
+            })
         },
         changeRoute(to) {
             // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
@@ -85,6 +95,7 @@
     }
 
     .active {
+        visibility: visible;
         margin-top: 20;
         margin-left: 26;
         margin-right: 26;

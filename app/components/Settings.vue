@@ -7,13 +7,11 @@
       <StackLayout orientation="horizontal" class="nix">
       
         <StackLayout :class="[{ active: isMaleActive }, 'btn-img']" ref='layoutMale' orientation="vertical" padding="10" @tap="onTappedGender('male')" >
-            <Image src="~/assets/images/male.png" />
-            <Label text="Männlich" verticalAlignment="center"></Label>
+            <Image class="img" src="~/assets/images/male.png" />
         </StackLayout>
 
         <StackLayout :class="[{ active: isFemaleActive }, 'btn-img']" ref='layoutFemale' orientation="vertical" padding="10" @tap="onTappedGender('female')" >
-            <Image src="~/assets/images/female.png" />
-            <Label text="Männlich" verticalAlignment="center"></Label>
+            <Image class="img" src="~/assets/images/female.png" />
         </StackLayout>
       </StackLayout>
 
@@ -23,7 +21,7 @@
 
 <script>
     export default {
-        data: function() {
+        data() {
             return {
                 isMaleActive: false,
                 isFemaleActive: false
@@ -40,7 +38,7 @@
                     this.isMaleActive = false;
                     this.isFemaleActive = true;
                 }
-                console.log(this.isMaleActive);
+                //console.log(this.isMaleActive);
             }
         },
     }

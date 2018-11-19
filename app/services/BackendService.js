@@ -5,7 +5,6 @@ let baseUrl = "http://wsdeb2.i4mi.bfh.ch:8080/api";
 export default class BackendService {
 
       searchName(name) {
-        //console.log(name);
         return http.request({
           url: baseUrl + "/users/alreadyUsed?name=" + name,
           method: "GET",
@@ -13,12 +12,8 @@ export default class BackendService {
         })
         .then(this.getJson)
         .then(data => {
-          console.info('API DATA: ' + data.userCount)
-          this.accountFound = data.userCount;
-
-          //no return yet TODO
+         this.accountFound = data.userCount;
           return data;
-          
         })
       }
 
