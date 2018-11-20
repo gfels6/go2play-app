@@ -17,5 +17,5 @@ tns debug <platform> --bundle
 # Build, watch for changes and run the application
 tns run <platform> --bundle
 
-
-test 
+## important for iOS
+Server must be listed on `<key>NSExceptionDomains</key>` in app/App_Resources/iOS/Info.plist 
