@@ -1,6 +1,6 @@
 <template>
   <Page class="page">
-    <ActionBar title="Einstellungen">
+    <ActionBar title="Freundeverwaltung">
     </ActionBar>
     <StackLayout orientation="vertical" class="page-content">
 
@@ -15,12 +15,9 @@
 
             };
         },
-        name: 'settings-view',
+        name: 'friends-view',
         methods: {
-            changeRoute(to) {
-                // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
-                //this.$navigateTo(this.$routes[to]);
-            },
+
         },
     }
 </script>
@@ -30,4 +27,5 @@
         background-color: #53ba82;
         color: #ffffff;
     }
+
 </style>

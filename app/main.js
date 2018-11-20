@@ -1,5 +1,6 @@
 import Vue from 'nativescript-vue'
-import App from './components/App'
+import Start from './components/Start'
+import Setup from './components/Setup'
 import VueDevtools from 'nativescript-vue-devtools'
 import routes from './router';
 
@@ -13,5 +14,5 @@ Vue.prototype.$routes = routes;
 
 
 new Vue({
-  render: h => h('frame', [h(App)])
+  render: h => h('frame', [h(Start)])
 }).$start()

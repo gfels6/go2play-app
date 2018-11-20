@@ -7,16 +7,19 @@
             <Label class="subTitle" :text="subTitle" />
             <TextField v-model="tfName" hint="Name eingeben..." />
             <Button class="active" text="Namen überprüfen" @tap="checkName(tfName)" />
-            <Button :class="[{ inactive: showSubmitButton }, 'active']" text="Weiter" @tap="changeRoute('settings')" />
+            <Button :class="[{ inactive: inactiveButton }, 'active']" text="Weiter" @tap="changeRoute('setup')" />
         </StackLayout>
-        <!-- 
-        <GridLayout columns="*" rows="*">
-            <Label class="message" :text="msg" col="0" row="0"/>
-        </GridLayout> !-->
     </Page>
 </template>
 
 <script>
+
+/* TODO:
+     - Modal für "Name bereits vergeben"
+     - Buttons in einen welchseln (Weiter nur bei unique Namen)
+     - Weitergabe des Namen an den Setup Screen
+     - Zurückbutton einschalten (ist aus fürs debuggen)
+*/
 
   import BackendService from '@/services/BackendService'
 
@@ -31,25 +34,20 @@
         btnGo: "Ich will loslegen!",
         tfName: "",
         nameUsed: "",
-        showSubmitButton: false,
+        inactiveButton: true,
       }
     },
     methods: {
-        goToSettings () {
-            this.$navigateTo(this.$routes[settings]);
-            console.log("goToSettingsPressed");
-
-        },
         checkName (name) {
             backendService.searchName(name)
             .then(data => {
                 console.log(data.userCount);
                 if(data.userCount == 0) {
-                    nameUsed = false;
-                    showSubmitButton = false;
+                    this.nameUsed = false;
+                    this.inactiveButton = false;
                 } else {
-                    nameUsed = true;
-                    showSubmitButton = true;
+                    this.nameUsed = true;
+                    this.inactiveButton = true;
                 }
             })
         },
@@ -103,8 +101,5 @@
 
     .inactive {
         visibility: collapsed;
-        margin-top: 20;
-        margin-left: 26;
-        margin-right: 26;
     }
 </style>
