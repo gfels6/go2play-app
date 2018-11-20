@@ -7,7 +7,7 @@
       <Label class="title" :text="gender" />
 
       <StackLayout orientation="horizontal" class="genderContainer">
-      
+
         <StackLayout :class="[{ active: isMaleActive }, 'btn-img']" ref='layoutMale' orientation="vertical" padding="10" @tap="onTappedGender('male')" >
             <Image class="img" src="~/assets/images/male.png" />
         </StackLayout>
@@ -24,11 +24,12 @@
 
       <!-- IMPORTANT: Images (left/right) needs to be fixed!!!! !-->
       <StackLayout orientation="horizontal" class="mobilityContainer">
-          <Image class="imgMobi left" src="~/assets/images/snail.png" />
-          <Image class="imgMobi right" src="~/assets/images/rabbit.png" />
+        <Image class="imgMobi left" src="~/assets/images/snail.png"  />
+        <Slider class="mobiSlider" v-model="mobilityLevel" />
+        <Image class="imgMobi right" src="~/assets/images/rabbit.png"/>
       </StackLayout>
 
-      <Slider v-model="sliderValue" />
+
 
       <Button class='btn' text="Weiter" @tap="changeRoute('stepCounter')" />
 
@@ -85,7 +86,7 @@
                     console.log("Geschlecht nicht ausgewählt!");
                     return;
                 }
-                
+
                 backendService.addUser(this.uniqueName, this.selectedGender, bday, this.sliderValue)
                 .then(data => {
                     console.log("success:" + data);
@@ -95,7 +96,7 @@
                     console.log(error);
                 })
 
-                // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
+                // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
                 //this.$navigateTo(this.$routes[to]);
             },
         },
@@ -126,16 +127,26 @@
         horizontal-align: center;
     }
 
+    .mobilityContainer{
+      horizontal-align: center;
+    }
+    
     .imgMobi {
-        width: 35;
-        height: 35;
+      width: 35;
+      height: 35;
     }
 
-    .left {
-        margin-left: 10;
+    .mobiSlider{
+      width: 60%;
+    }
+
+   .left {
+      margin-left: 10;
+      margin-right: 5%;
     }
 
     .right {
-        margin-left: 325;
+      margin-right: 10;
+      margin-left: 5%;
     }
 </style>
