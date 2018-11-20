@@ -21,11 +21,12 @@
 
         <!-- IMPORTANT: Images (left/right) needs to be fixed!!!! !-->
         <StackLayout orientation="horizontal" class="mobilityContainer">
-            <Image class="imgMobi left" src="~/assets/images/snail.png" />
-            <Image class="imgMobi right" src="~/assets/images/rabbit.png" />
+            <Image class="imgMobi left" src="~/assets/images/snail.png"  />
+            <Slider class="mobiSlider" v-model="mobilityLevel" />
+            <Image class="imgMobi right" src="~/assets/images/rabbit.png"/>
         </StackLayout>
 
-        <Slider v-model="mobilityLevel" />
+
 
         <Button class='btn' text="Speichern" @tap="saveChanges()" />
 
@@ -65,7 +66,7 @@
         name: 'settings-view',
         methods: {
             changeRoute(to) {
-                // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
+                // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
                 //this.$navigateTo(this.$routes[to]);
             },
             saveChanges() {
@@ -89,20 +90,26 @@
 
 <style scoped>
     ActionBar {
-        background-color: #53ba82;
-        color: #ffffff;
+      background-color: #53ba82;
+      color: #ffffff;
     }
 
     .imgMobi {
-        width: 35;
-        height: 35;
+      width: 35;
+      height: 35;
     }
 
-    .left {
-        margin-left: 10;
+    .mobiSlider{
+      width: 60%;
+    }
+
+   .left {
+      margin-left: 10;
+      margin-right: 5%;
     }
 
     .right {
-        margin-left: 325;
+      margin-right: 10;
+      margin-left: 5%;
     }
 </style>
