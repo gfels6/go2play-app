@@ -18,6 +18,12 @@
         name: 'friends-view',
         methods: {
 
+                /*
+                backendService.addFriend("gfels6", "test")
+                .then(data => {
+                    console.log("success");
+                })  */
+
         },
     }
 </script>

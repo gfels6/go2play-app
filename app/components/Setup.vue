@@ -43,7 +43,12 @@
      - Post Request für erstellung des Benutzers
      - Namen in Localstorage
      - Rabbit Image 'ent'hardcoden
+     - Title stylen
 */
+
+    import BackendService from '@/services/BackendService'
+
+    const backendService = new BackendService()
 
     export default {
         data() {
@@ -72,16 +77,24 @@
                 }
             },
             changeRoute(to) {
-                let bday = this.selectedDate.getDate() + "." + (this.selectedDate.getMonth() + 1) + "." + this.selectedDate.getFullYear();
-                console.log("Gender: " + this.selectedGender + " Geburtsdatum: " + this.selectedDate + " Mobility: " + this.sliderValue);
-                console.log("bday: " + bday);
+                let bday = this.selectedDate.getDate() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getFullYear();
+                //console.log("Gender: " + this.selectedGender + " Geburtsdatum: " + this.selectedDate + " Mobility: " + this.sliderValue);
+                //console.log("bday: " + bday);
                 if(this.selectedGender === "") {
                     console.log("Geschlecht nicht ausgewählt");
                     return;
                 }
+                
+                backendService.addUser("test", this.selectedGender, bday, this.sliderValue)
+                .then(data => {
+                    console.log("success:" + data);
+                    this.$navigateTo(this.$routes[to]);
+                }).catch(error => {
+                    console.log(error);
+                })
 
                 // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
-                this.$navigateTo(this.$routes[to]);
+                //this.$navigateTo(this.$routes[to]);
             },
         },
     }

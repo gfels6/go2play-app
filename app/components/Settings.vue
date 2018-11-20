@@ -9,6 +9,14 @@
 </template>
 
 <script>
+
+/* TODO:
+     - Anzeige Geschlecht (nicht modifizierbar)
+     - Anzeige Geburtsdatum (nicht modifizierbar)
+     - Anzeige Mobilitylevel (modifizierbar + speicherung Backend)
+     - Button & Routing Schrittzähler
+*/
+
     export default {
         data() {
             return {

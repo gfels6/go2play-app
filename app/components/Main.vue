@@ -14,6 +14,11 @@
 </template>
 
 <script>
+
+/* TODO:
+     - Verschönern der Buttons
+     - Anzeige igrwo der Steps und der WalkerCoins
+*/
     export default {
         data() {
             return {
