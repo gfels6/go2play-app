@@ -2,7 +2,7 @@
   <Page class="page">
     <ActionBar title="Einstellungen">
     </ActionBar>
-    
+
     <StackLayout orientation="vertical" class="page-content">
         <StackLayout orientation="horizontal" class="genderContainer">
             <Label class="title" :text="lblName" />
@@ -27,6 +27,10 @@
 
         <Slider v-model="mobilityLevel" />
 
+        <Button class='btn' text="Speichern" @tap="saveChanges()" />
+
+        <Button class='btn' text="Weiter" @tap="changeRoute('stepCounter')" />
+
     </StackLayout>
   </Page>
 </template>
@@ -40,6 +44,9 @@
      - Anzeige Mobilitylevel (modifizierbar + speicherung Backend)
      - Button & Routing Schrittzähler
 */
+
+    import BackendService from '@/services/BackendService'
+    const backendService = new BackendService()
 
     export default {
         data() {
@@ -61,10 +68,22 @@
                 // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
                 //this.$navigateTo(this.$routes[to]);
             },
-            mounted() {
-                console.log("mounted");
+            saveChanges() {
+
             },
         },
+        mounted() {
+            console.log("mounted");
+            backendService.getUser(localStorage.getItem('name'))
+            .then(data => {
+                console.log(data);
+                this.name = data.name;
+                this.gender = data.gender;
+                this.birthdate = data.birthyear;
+                this.mobilityLevel = data.mobility;
+            })
+        },
+
     }
 </script>
 

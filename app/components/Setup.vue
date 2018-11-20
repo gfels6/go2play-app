@@ -44,10 +44,10 @@
      - Namen in Localstorage
      - Rabbit Image 'ent'hardcoden
      - Title stylen
+     - mobilityLevel runden auf ganze Zahl (ios)
 */
 
     import BackendService from '@/services/BackendService'
-
     const backendService = new BackendService()
 
     export default {

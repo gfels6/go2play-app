@@ -12,6 +12,14 @@ export default class BackendService {
         .then(data => data.json());
       }
 
+      getUser(name) {
+        return fetch(baseUrl + "/users/" + name, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        })
+        .then(data => data.json());
+      }
+
       //Errorhandling noch nicht der wahnsinn!
       addUser(name, gender, birthdate, mobilityLevel) {
          return fetch(baseUrl + "/users", {
