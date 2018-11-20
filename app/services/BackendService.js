@@ -5,16 +5,11 @@ let baseUrl = "http://wsdeb2.i4mi.bfh.ch:8080/api";
 export default class BackendService {
 
       searchName(name) {
-        return http.request({
-          url: baseUrl + "/users/alreadyUsed?name=" + name,
+        return fetch(baseUrl + "/users/alreadyUsed?name=" + name, {
           method: "GET",
-          headers: "",
+          headers: { "Content-Type": "application/json" },
         })
-        .then(this.getJson)
-        .then(data => {
-         this.accountFound = data.userCount;
-          return data;
-        })
+        .then(data => data.json());
       }
 
       //Errorhandling noch nicht der wahnsinn!

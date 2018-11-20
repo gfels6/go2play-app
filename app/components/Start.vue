@@ -35,13 +35,14 @@
         tfName: "",
         inactiveButton: true,
         searchedName: "",
+        userCount: "",
       }
     },
     methods: {
         checkName (name) {
             backendService.searchName(name)
             .then(data => {
-                console.log(data.userCount);
+                console.log(data);
                 if(data.userCount == 0) {
                     this.inactiveButton = false;
                     this.searchedName = this.tfName;
