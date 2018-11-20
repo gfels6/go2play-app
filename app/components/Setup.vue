@@ -64,6 +64,7 @@
                 sliderValue: 50,
             };
         },
+        props: ['uniqueName'],
         name: 'settings-view',
         methods: {
             onTappedGender(gender){
@@ -81,13 +82,14 @@
                 //console.log("Gender: " + this.selectedGender + " Geburtsdatum: " + this.selectedDate + " Mobility: " + this.sliderValue);
                 //console.log("bday: " + bday);
                 if(this.selectedGender === "") {
-                    console.log("Geschlecht nicht ausgewählt");
+                    console.log("Geschlecht nicht ausgewählt!");
                     return;
                 }
                 
-                backendService.addUser("test", this.selectedGender, bday, this.sliderValue)
+                backendService.addUser(this.uniqueName, this.selectedGender, bday, this.sliderValue)
                 .then(data => {
                     console.log("success:" + data);
+                    localStorage.setItem('name', this.uniqueName);
                     this.$navigateTo(this.$routes[to]);
                 }).catch(error => {
                     console.log(error);

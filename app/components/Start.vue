@@ -33,8 +33,8 @@
         subTitle: 'Wie heisst du denn?',
         btnGo: "Ich will loslegen!",
         tfName: "",
-        nameUsed: "",
         inactiveButton: true,
+        searchedName: "",
       }
     },
     methods: {
@@ -43,17 +43,21 @@
             .then(data => {
                 console.log(data.userCount);
                 if(data.userCount == 0) {
-                    this.nameUsed = false;
                     this.inactiveButton = false;
+                    this.searchedName = this.tfName;
                 } else {
-                    this.nameUsed = true;
                     this.inactiveButton = true;
+                    this.searchedName = "";
                 }
             })
         },
         changeRoute(to) {
             // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
-            this.$navigateTo(this.$routes[to]);
+            this.$navigateTo(this.$routes[to], {
+                props: {
+                    uniqueName: this.searchedName,
+                }
+            });
         }
     }
   }
