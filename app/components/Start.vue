@@ -40,13 +40,11 @@
     },
     methods: {
         checkName (name) {
-          console.log("Checking " + name);
             backendService.searchName(name)
             .catch(err => {
               console.log(err);
             })
             .then(data => {
-                console.log(data);
                 if(data.userCount == 0) {
                     this.inactiveButton = false;
                     this.searchedName = this.tfName;
@@ -56,6 +54,7 @@
                       .then(result => {
                         if(result == "ich bin " + this.tfName){
                           this.searchedName = this.tfName;
+                          console.log(this.searchedName);
                           this.changeRoute('claimName');
                         }
                         if(result == "anderen Namen wählen"){

@@ -17,7 +17,7 @@
         </StackLayout>
       </StackLayout>
 
-      <Label class="title" :text="birthday" />
+
       <DatePicker v-model="selectedDate" minDate="1920-01-01" maxDate="2012-12-31" />
 
       <Label class="title" :text="mobilityLevel" />
@@ -25,7 +25,7 @@
       <!-- IMPORTANT: Images (left/right) needs to be fixed!!!! !-->
       <StackLayout orientation="horizontal" class="mobilityContainer">
         <Image class="imgMobi left" src="~/assets/images/snail.png"  />
-        <Slider class="mobiSlider" v-model="mobilityLevel" />
+        <Slider class="mobiSlider" v-model="sliderValue" />
         <Image class="imgMobi right" src="~/assets/images/rabbit.png"/>
       </StackLayout>
 
@@ -70,6 +70,7 @@
         methods: {
             onTappedGender(gender){
                 this.selectedGender = gender;
+                console.log("name is" + this.uniqueName);
                 if (gender == "male") {
                     this.isMaleActive = true;
                     this.isFemaleActive = false;
@@ -130,7 +131,7 @@
     .mobilityContainer{
       horizontal-align: center;
     }
-    
+
     .imgMobi {
       width: 35;
       height: 35;
