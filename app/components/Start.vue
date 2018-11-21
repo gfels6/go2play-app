@@ -70,7 +70,7 @@
             // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
             this.$navigateTo(this.$routes[to], {
                 props: {
-                    uniqueName: this.searchedName,
+                    uniqueName: this.tfName,
                 }
             });
         }

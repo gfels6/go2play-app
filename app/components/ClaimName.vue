@@ -3,7 +3,7 @@
     <ActionBar title="Name zurückerhalten">
     </ActionBar>
     <StackLayout orientation="vertical" class="page-content">
-      <Label class="title" :text="hi . this.uniqueName" />
+      <Label class="title" :text="greeting" />
     </StackLayout>
   </Page>
 </template>
@@ -12,6 +12,7 @@
     export default {
         data() {
             return {
+              greeting: "Hi " + this.uniqueName
 
             };
         },
