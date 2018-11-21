@@ -8,6 +8,6 @@ node_modules
 hooks
 platforms
 
-package-lock.json
+
 mkmf.log
 *.DS_Store

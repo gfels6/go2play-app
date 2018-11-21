@@ -40,7 +40,11 @@
     },
     methods: {
         checkName (name) {
+          console.log("Checking " + name);
             backendService.searchName(name)
+            .catch(err => {
+              console.log(err);
+            })
             .then(data => {
                 console.log(data);
                 if(data.userCount == 0) {
@@ -48,12 +52,22 @@
                     this.searchedName = this.tfName;
                 } else {
                     this.inactiveButton = true;
+                    action("Der Name \"" + this.tfName + "\" ist bereits vergeben.", "abbrechen", ["anderen Namen wählen", "ich bin " + this.tfName])
+                      .then(result => {
+                        if(result == "ich bin " + this.tfName){
+                          this.changeRoute('claimName');
+                        }
+                        if(result == "anderen Namen wählen"){
+                          this.tfName = "";
+                        }
+                      });
+
                     this.searchedName = "";
                 }
             })
         },
         changeRoute(to) {
-            // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
+            // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
             this.$navigateTo(this.$routes[to], {
                 props: {
                     uniqueName: this.searchedName,
