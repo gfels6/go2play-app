@@ -4,7 +4,7 @@
     </ActionBar>
     <StackLayout orientation="vertical" class="page-content">
 
-      <Label class="title" :text="gender" />
+      <Label class="lbl" :text="gender" />
 
       <StackLayout orientation="horizontal" class="genderContainer">
 
@@ -17,10 +17,11 @@
         </StackLayout>
       </StackLayout>
 
+      <Label class="lbl" :text="birthday" />
 
       <DatePicker v-model="selectedDate" minDate="1920-01-01" maxDate="2012-12-31" />
 
-      <Label class="title" :text="mobilityLevel" />
+      <Label class="lbl" :text="mobilityLevel" />
 
       <!-- IMPORTANT: Images (left/right) needs to be fixed!!!! !-->
       <StackLayout orientation="horizontal" class="mobilityContainer">
@@ -57,7 +58,7 @@
                 isFemaleActive: false,
                 selectedGender: "",
                 gender: "Geschlecht",
-                birthday: "Geburtsjahr",
+                birthday: "Geburtstag",
                 mobilityLevel: "Mobilitätslevel",
                 stepCounter: "Schrittzähler verbinden",
                 selectedDate: new Date(1990, new Date().getMonth(), new Date().getDate()),
@@ -163,5 +164,11 @@
     .right {
       margin-right: 10;
       margin-left: 5%;
+    }
+
+    .lbl {
+        margin-left: 25;
+        font-size: 16;
+        color:black;
     }
 </style>
