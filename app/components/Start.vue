@@ -55,6 +55,7 @@
                     action("Der Name \"" + this.tfName + "\" ist bereits vergeben.", "abbrechen", ["anderen Namen wählen", "ich bin " + this.tfName])
                       .then(result => {
                         if(result == "ich bin " + this.tfName){
+                          this.searchedName = this.tfName;
                           this.changeRoute('claimName');
                         }
                         if(result == "anderen Namen wählen"){
@@ -70,7 +71,7 @@
             // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
             this.$navigateTo(this.$routes[to], {
                 props: {
-                    uniqueName: this.tfName,
+                    uniqueName: this.searchedName,
                 }
             });
         }

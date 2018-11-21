@@ -22,7 +22,7 @@
         <!-- IMPORTANT: Images (left/right) needs to be fixed!!!! !-->
         <StackLayout orientation="horizontal" class="mobilityContainer">
             <Image class="imgMobi left" src="~/assets/images/snail.png"  />
-            <Slider class="mobiSlider" v-model="mobilityLevel" />
+            <Slider class="mobiSlider" v-model="sliderValue" />
             <Image class="imgMobi right" src="~/assets/images/rabbit.png"/>
         </StackLayout>
 
@@ -97,6 +97,10 @@
     .imgMobi {
       width: 35;
       height: 35;
+    }
+
+    .mobilityContainer{
+      horizontal-align: center;
     }
 
     .mobiSlider{
