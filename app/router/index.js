@@ -6,6 +6,8 @@ import Quiz from '../components/Quiz';
 import Settings from '../components/Settings';
 import Progress from '../components/Progress';
 import ClaimName from '../components/ClaimName';
+import NewGame from '../components/NewGame';
+import QuizGame from '../components/QuizGame';
 
 const routes = {
     setup: Setup,
@@ -15,7 +17,9 @@ const routes = {
     quiz: Quiz,
     settings: Settings,
     progress: Progress,
-    claimName: ClaimName
+    claimName: ClaimName,
+    newGame: NewGame,
+    quizGame: QuizGame,
 };
 
 export default routes;

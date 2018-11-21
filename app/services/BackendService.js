@@ -61,6 +61,26 @@ export default class BackendService {
        })
      }
 
+    addGame(name, friend) {
+      return fetch(baseUrl + "/games/new", {
+       method: "POST",
+       headers: { "Content-Type": "application/json" },
+       body: JSON.stringify({
+         username: name,
+         friend: friend,
+       }),
+     })
+     .then(data => data.json());
+    }
+
+    getQuestion(gameId) {
+      return fetch(baseUrl + "/games/" + gameId + "/questions", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+      .then(data => data.json());
+    }
+
       // Parsing to JSON
       getJson(response) {
         return new Promise((resolve, reject) => {

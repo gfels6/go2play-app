@@ -4,20 +4,20 @@
     </ActionBar>
 
     <StackLayout orientation="vertical" class="page-content">
-        <StackLayout orientation="horizontal" class="genderContainer">
-            <Label class="title" :text="lblName" />
-            <Label class="title" :text="name" />
+        <StackLayout orientation="horizontal" class="nameContainer">
+            <Label class="lbl" :text="lblName" />
+            <Label class="value" :text="name" />
         </StackLayout>
         <StackLayout orientation="horizontal" class="genderContainer">
-            <Label class="title" :text="lblGender" />
-            <Label class="title" :text="gender" />
+            <Label class="lbl" :text="lblGender" />
+            <Label class="value" :text="gender" />
         </StackLayout>
-        <StackLayout orientation="horizontal" class="genderContainer">
-            <Label class="title" :text="lblBirthdate" />
-            <Label class="title" :text="birthdate" />
+        <StackLayout orientation="horizontal" class="birthdateContainer">
+            <Label class="lbl" :text="lblBirthdate" />
+            <Label class="value" :text="birthdate" />
         </StackLayout>
 
-        <Label class="title" :text="lblMobilityLevel" />
+        <Label class="lbl mobility" :text="lblMobilityLevel" />
 
         <!-- IMPORTANT: Images (left/right) needs to be fixed!!!! !-->
         <StackLayout orientation="horizontal" class="mobilityContainer">
@@ -26,11 +26,8 @@
             <Image class="imgMobi right" src="~/assets/images/rabbit.png"/>
         </StackLayout>
 
-
-
         <Button class='btn' text="Speichern" @tap="saveChanges()" />
-
-        <Button class='btn' text="Weiter" @tap="changeRoute('stepCounter')" />
+        <Button class='btn' text="Schrittzähler" @tap="changeRoute('stepCounter')" />
 
     </StackLayout>
   </Page>
@@ -39,9 +36,6 @@
 <script>
 
 /* TODO:
-     - Anzeige Benutzername
-     - Anzeige Geschlecht (nicht modifizierbar)
-     - Anzeige Geburtsdatum (nicht modifizierbar)
      - Anzeige Mobilitylevel (modifizierbar + speicherung Backend)
      - Button & Routing Schrittzähler
 */
@@ -60,14 +54,14 @@
                 name: "default",
                 gender: "default",
                 birthdate: "default",
-                mobilityLevel: 0,
+                sliderValue: 0,
             };
         },
         name: 'settings-view',
         methods: {
             changeRoute(to) {
                 // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
-                //this.$navigateTo(this.$routes[to]);
+                this.$navigateTo(this.$routes[to]);
             },
             saveChanges() {
 
@@ -81,7 +75,7 @@
                 this.name = data.name;
                 this.gender = data.gender;
                 this.birthdate = data.birthyear;
-                this.mobilityLevel = data.mobility;
+                this.sliderValue = data.mobility;
             })
         },
 
@@ -107,7 +101,7 @@
       width: 60%;
     }
 
-   .left {
+    .left {
       margin-left: 10;
       margin-right: 5%;
     }
@@ -115,5 +109,31 @@
     .right {
       margin-right: 10;
       margin-left: 5%;
+    }
+
+    .lbl {
+        margin-left: 25;
+        font-size: 16;
+        color:black;
+    }
+
+    .value {
+        font-size: 16;
+    }
+
+    .nameContainer {
+        margin-top: 10;
+    }
+
+    .genderContainer {
+        margin-top: 8;
+    }
+
+    .birthdateContainer {
+        margin-top: 8;
+    }
+
+    .mobility {
+        margin-top: 8;
     }
 </style>

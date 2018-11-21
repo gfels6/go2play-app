@@ -3,6 +3,16 @@
     <ActionBar title="Hauptmenü">
     </ActionBar>
     <StackLayout orientation="vertical" class="page-content">
+        <StackLayout orientation="horizontal" class="container">
+            <StackLayout orientation="horizontal" class="steps">
+            <Label class="title left" :text="lblSteps" />
+            <Label class="title value" :text="steps" />
+            </StackLayout>
+            <StackLayout orientation="horizontal" class="coins">
+            <Label class="title right" :text="lblWalkerCoins" />
+            <Label class="title value" :text="walkerCoins" />
+            </StackLayout>
+        </StackLayout>
 
         <Button class='btn' text="Quiz" @tap="changeRoute('quiz')" />
         <Button class='btn' text="Freunde" @tap="changeRoute('friends')" />
@@ -17,12 +27,18 @@
 
 /* TODO:
      - Verschönern der Buttons
-     - Anzeige igrwo der Steps und der WalkerCoins
 */
+
+    import BackendService from '@/services/BackendService'
+    const backendService = new BackendService()
+
     export default {
         data() {
             return {
-
+                lblSteps: "Schritte:",
+                lblWalkerCoins: "Walker Coins:",
+                walkerCoins: 0,
+                steps: 0,
             };
         },
         name: 'main-view',
@@ -31,6 +47,15 @@
                 // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
                 this.$navigateTo(this.$routes[to]);
             },
+        },
+        mounted() {
+            console.log("mounted from Main");
+            backendService.getUser(localStorage.getItem('name'))
+            .then(data => {
+                console.log(data);
+                this.walkerCoins = data.walkerCoins;
+                this.steps = data.steps;
+            })
         },
     }
 </script>
@@ -41,4 +66,25 @@
         color: #ffffff;
     }
 
+    .container {
+        margin: 10, 15, 10, 20;
+    }
+    
+    .title {
+        font-size: 16;
+        color:black;
+    }
+
+    .value {
+        margin-left: 4;
+    }
+
+    .steps {
+        width: 48%;
+    }
+
+    .coins {
+        width: 48%;
+        horizontal-align: right;
+    }
 </style>
