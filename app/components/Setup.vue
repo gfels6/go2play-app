@@ -84,8 +84,23 @@
                 //console.log("Gender: " + this.selectedGender + " Geburtsdatum: " + this.selectedDate + " Mobility: " + this.sliderValue);
                 //console.log("bday: " + bday);
                 if(this.selectedGender === "") {
-                    console.log("Geschlecht nicht ausgewählt!");
-                    return;
+                  action("Bitte gib dein Geschlecht an.", "abbrechen", ["weiblich", "männlich"])
+                    .then(result => {
+                      if(result == "weiblich"){
+                        this.selectedGender = "female";
+                        this.isMaleActive = false;
+                        this.isFemaleActive = true;
+                      }
+                      if(result == "männlich"){
+                        this.selectedGender = "male";
+                        this.isMaleActive = true;
+                        this.isFemaleActive = false;
+                      }
+                      if(result == "abbrechen"){
+                        console.log("abgebrochen");
+                      }
+                    });
+                  return;
                 }
 
                 backendService.addUser(this.uniqueName, this.selectedGender, bday, this.sliderValue)
