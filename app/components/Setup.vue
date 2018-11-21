@@ -40,7 +40,6 @@
 <script>
 
 /* TODO:
-     - Modal für nicht ausgewähltes Geschlecht
      - Post Request für erstellung des Benutzers
      - Namen in Localstorage
      - Rabbit Image 'ent'hardcoden

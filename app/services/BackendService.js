@@ -56,12 +56,10 @@ export default class BackendService {
            nFriend: friend,
          }),
        })
-       .then(this.getJson)
        .then(data => {
          console.log(data);
        })
      }
-
 
       // Parsing to JSON
       getJson(response) {

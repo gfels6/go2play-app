@@ -15,7 +15,6 @@
 <script>
 
 /* TODO:
-     - Modal für "Name bereits vergeben"
      - Buttons in einen welchseln (Weiter nur bei unique Namen)
      - Weitergabe des Namen an den Setup Screen
      - Zurückbutton einschalten (ist aus fürs debuggen)
