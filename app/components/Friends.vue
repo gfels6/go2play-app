@@ -58,37 +58,42 @@
               });
             }
             if(data.userCount == 1){
-              confirm({
-                title: "Freund gefunden",
-                message: "Möchtest du " + friend + " als zu deinen Freunden hinzufügen?",
-                okButtonText: "hinzufügen",
-                cancelButtonText: "abbrechen"
-              })
-              .then(choice =>{
-                console.log(choice + " gewählt");
-                if(!choice){
-                  this.friendName = "";
-                }
-                if(choice){
-                  console.log("here");
-                  if(this.friends.includes(friend)){
-                    alert({
-                      title: "Oops",
-                      message: friend + " ist bereits auf der Freundesliste!",
-                      okButtonText: "OK"
-                    });
+              if(this.friends.includes(friend)){
+                alert({
+                  title: "Oops",
+                  message: friend + " ist bereits auf der Freundesliste!",
+                  okButtonText: "OK"
+                });
+              }
+              else if (friend == this.name) {
+                alert({
+                  title: "Oops",
+                  message: "Du kannst dich nicht selber als Freund hinzufügen.",
+                  okButtonText: "OK"
+                });
+              }
+              else{
+                confirm({
+                  title: "Freund gefunden",
+                  message: "Möchtest du " + friend + " als zu deinen Freunden hinzufügen?",
+                  okButtonText: "hinzufügen",
+                  cancelButtonText: "abbrechen"
+                })
+                .then(choice =>{
+                  if(!choice){
+                    this.friendName = "";
                   }
-                  else{
+                  if(choice){
                     console.log("try to add");
                     backendService.addFriend(this.name, friend)
                     .then(x => {
                       this.loadFriends();
                       console.log("success: added " + friend + " to " + this.name + "s friend list");
-                      this.friendName = "";  
+                      this.friendName = "";
                     });
                   }
-                }
-              })
+                })
+              }
             }
             if(choice > 1 || choice < 0){
               console.log("shit."); // there shouldn't be more than 1 (or less than 0) of an unique name
