@@ -18,4 +18,8 @@ tns debug <platform> --bundle
 tns run <platform> --bundle
 
 ## important for iOS
-Server must be listed on `<key>NSExceptionDomains</key>` in app/App_Resources/iOS/Info.plist 
+Server must be listed on `<key>NSExceptionDomains</key>` in app/App_Resources/iOS/Info.plist
+### deploy to iOS Hardware Device
+- first, you need an Apple ID
+- get the Apple ID registered with Olivier (I4MI)
+- follow this instructions: https://nativescript.nl/tips/how-to-test-your-nativescript-app-on-a-real-ios-device/
