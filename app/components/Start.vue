@@ -5,20 +5,14 @@
             <Image class="logo" src="~/assets/images/go_logo.png" />
             <Label class="title" :text="title" />
             <Label class="subTitle" :text="subTitle" />
-            <TextField v-model="tfName" hint="Name eingeben..." />
-            <Button class="active" text="Namen überprüfen" @tap="checkName(tfName)" />
-            <Button :class="[{ inactive: inactiveButton }, 'active']" text="Weiter" @tap="changeRoute('setup')" />
-        </StackLayout>
+            <TextField v-model="tfName" hint="Name eingeben..." @textChange="textWatch()"/>
+            <Button class="active" :text="buttonText" @tap="buttonAction()" />
+            </StackLayout>
     </Page>
 </template>
 
 <script>
 
-/* TODO:
-     - Buttons in einen welchseln (Weiter nur bei unique Namen)
-     - Weitergabe des Namen an den Setup Screen
-     - Zurückbutton einschalten (ist aus fürs debuggen)
-*/
 
   import BackendService from '@/services/BackendService'
 
@@ -32,47 +26,53 @@
         subTitle: 'Wie heisst du denn?',
         btnGo: "Ich will loslegen!",
         tfName: "",
-        inactiveButton: true,
+        buttonText: "Namen überprüfen",
+        nameChecked: false,
         searchedName: "",
         userCount: "",
       }
     },
     methods: {
-        checkName (name) {
-            backendService.searchName(name)
+      textWatch(){
+        this.nameChecked = false;
+        this.buttonText = "Namen überprüfen";
+      },
+      buttonAction () {
+        if(!this.nameChecked){
+          this.tfName = this.tfName.replace(/\s/g, ''); // remove clearspaces
+            backendService.searchName(encodeURI(this.tfName)) // encode for GET URL
             .catch(err => {
               console.log(err);
             })
             .then(data => {
-                if(data.userCount == 0) {
-                    this.inactiveButton = false;
-                    this.searchedName = this.tfName;
-                } else {
-                    this.inactiveButton = true;
-                    action("Der Name \"" + this.tfName + "\" ist bereits vergeben.", "abbrechen", ["anderen Namen wählen", "ich bin " + this.tfName])
-                      .then(result => {
-                        if(result == "ich bin " + this.tfName){
-                          this.searchedName = this.tfName;
-                          console.log(this.searchedName);
-                          this.changeRoute('claimName');
-                        }
-                        if(result == "anderen Namen wählen"){
-                          this.tfName = "";
-                        }
-                      });
-
-                    this.searchedName = "";
-                }
+              if(data.userCount == 0) {
+                this.nameChecked = true;
+                this.buttonText = "weiter";
+                this.searchedName = this.tfName;
+              } else {
+                action("Der Name \"" + this.tfName + "\" ist bereits vergeben.", "abbrechen", ["anderen Namen wählen", "ich bin " + this.tfName])
+                  .then(result => {
+                    if(result == "ich bin " + this.tfName){
+                      this.searchedName = this.tfName;
+                      console.log(this.searchedName);
+                      this.changeRoute('claimName');
+                    }
+                    if(result == "anderen Namen wählen"){
+                      this.tfName = "";
+                    }
+                  });
+                this.searchedName = "";
+              }
             })
-        },
-        changeRoute(to) {
-            // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
-            this.$navigateTo(this.$routes[to], {
-                props: {
-                    uniqueName: this.searchedName,
-                }
-            });
+          }
+        else{
+          this.$navigateTo(this.$routes['setup'],{ clearHistory: true }, {
+              props: {
+                  uniqueName: this.searchedName,
+              }
+          });
         }
+      },
     }
   }
 </script>
