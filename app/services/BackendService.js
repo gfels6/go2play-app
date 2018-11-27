@@ -5,7 +5,7 @@ let baseUrl = "http://wsdeb2.i4mi.bfh.ch:8080/api";
 export default class BackendService {
 
       searchName(name) {
-        return fetch(baseUrl + "/users/alreadyUsed?name=" + name, {
+        return fetch(baseUrl + "/users/alreadyUsed?name=" + encodeURI(name), {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         })
@@ -13,7 +13,7 @@ export default class BackendService {
       }
 
       getUser(name) {
-        return fetch(baseUrl + "/users/" + name, {
+        return fetch(baseUrl + "/users/" + encodeURI(name), {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         })
