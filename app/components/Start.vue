@@ -28,11 +28,12 @@
         tfName: "",
         buttonText: "Namen überprüfen",
         nameChecked: false,
-        searchedName: "",
         userCount: "",
       }
     },
     methods: {
+      // this method is called as soon some text is entered / altered
+      // so we have to make sure the name is valid before we can proceed
       textWatch(){
         this.nameChecked = false;
         this.buttonText = "Namen überprüfen";
@@ -40,39 +41,45 @@
       buttonAction () {
         if(!this.nameChecked){
           this.tfName = this.tfName.replace(/\s/g, ''); // remove clearspaces
-            backendService.searchName(encodeURI(this.tfName)) // encode for GET URL
+            backendService.searchName(this.tfName)
             .catch(err => {
               console.log(err);
             })
             .then(data => {
-              if(data.userCount == 0) {
+              if(data.userCount == 0 && this.tfName != "") {
                 this.nameChecked = true;
                 this.buttonText = "weiter";
-                this.searchedName = this.tfName;
-              } else {
+              } else if (this.tfName == "") {
+                alert("Name darf nicht leer sein");
+              }
+              else {
                 action("Der Name \"" + this.tfName + "\" ist bereits vergeben.", "abbrechen", ["anderen Namen wählen", "ich bin " + this.tfName])
                   .then(result => {
                     if(result == "ich bin " + this.tfName){
-                      this.searchedName = this.tfName;
-                      console.log(this.searchedName);
-                      this.changeRoute('claimName');
+                      this.changeRoute('claimName', true);
                     }
                     if(result == "anderen Namen wählen"){
                       this.tfName = "";
                     }
                   });
-                this.searchedName = "";
               }
             })
           }
         else{
-          this.$navigateTo(this.$routes['setup'],{ clearHistory: true }, {
-              props: {
-                  uniqueName: this.searchedName,
-              }
-          });
+          this.changeRoute('setup', true);
         }
       },
+      changeRoute(to, hideBackButton) {
+        console.log("changing page. tfName=" + this.tfName);
+        this.$navigateTo(this.$routes[to], {
+          clearHistory: hideBackButton,
+          props: {
+            uniqueName: this.tfName,
+          }
+        });
+      }
+
+
     }
   }
 </script>
