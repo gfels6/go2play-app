@@ -32,7 +32,7 @@ export default class BackendService {
             mobility: mobilityLevel,
             gender: gender,
             steps: 0,
-            walkerCoins: 0
+            walkerCoins: 200
           }),
         })
         .then(function(response) {
