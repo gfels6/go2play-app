@@ -10,6 +10,9 @@
 
         <Button class='btn' text="weiter" @tap="changeRoute('main')" />
 
+        <Label class="lbl" :text="test" />
+        <Label class="lbl" :text="'Heutige Schritte: ' + steps" />
+
     </StackLayout>
   </Page>
 </template>
@@ -33,6 +36,8 @@ import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-dat
                 isAndroid: platformModule.isAndroid,
                 health: "",
                 hasHealth: false,
+                test: "test",
+                steps: "0",
             };
         },
         name: 'stepCounter-view',
@@ -61,10 +66,27 @@ import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-dat
 
                 // ask user for permission 
                 if(this.hasHealth){
-                  this.health.requestAuthorization(types)
-                  .then(authorized => console.log("authorized: "authorized))
+                  this.health.requestAuthorization([{name: "steps", accessType: "read"}])
+                  .then(authorized => console.log("authorized: " + authorized))
                   .catch(error => console.log("Request auth error: ", error));
                 }
+
+                this.health.query(
+                {
+                startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
+                endDate: new Date(), // now
+                dataType: "steps", // equal to the 'name' property of 'HealthDataType'
+                unit: "count", // make sure this is compatible with the 'dataType' (see below)
+                aggregateBy: "day", // optional, one of: "hour", "day", "sourceAndDay"
+                sortOrder: "desc" // optional, default "asc"
+                })
+                .then(result => this.test = result)
+                .then(res => {
+                    //umwandlung json?
+                    console.log(res);
+                    this.steps = res[0].value;
+                })
+                .catch(error => this.resultToShow = error);
             },
 
         },
