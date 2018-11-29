@@ -24,7 +24,6 @@
 */
 
 import * as platformModule from 'tns-core-modules/platform'
-// runs only on iOS, comment following line for Android
 import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-data";
 
 
@@ -44,11 +43,28 @@ import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-dat
             },
             addCounter(counter) {
             console.log("Wanna add: " + counter);
-            // runs only on iOS, comment following 4 lines for Android
+                //
                 this.health = new HealthData();
                 this.health.isAvailable(false)
-                  .then(available => this.hasHealth = available);
-                console.log(this.hasHealth);
+                  .then(available => {
+                    this.hasHealth = available;
+                    console.log(counter + " is available: " + available);
+                  });
+
+                // this array specifies which informations we need from healthKit / googleFit
+                var types = [
+                    {name: "height", accessType: "none"},
+                    {name: "weight", accessType: "none"},
+                    {name: "steps", accessType: "read"},
+                    {name: "distance", accessType: "read"}
+                ];
+
+                // ask user for permission 
+                if(this.hasHealth){
+                  this.health.requestAuthorization(types)
+                  .then(authorized => console.log("authorized: "authorized))
+                  .catch(error => console.log("Request auth error: ", error));
+                }
             },
 
         },
