@@ -24,21 +24,44 @@
 */
 
 import * as platformModule from 'tns-core-modules/platform'
+import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-data";
+
 
     export default {
         data() {
             return {
                 isAndroid: platformModule.isAndroid,
+                health: "",
+                hasHealth: false,
             };
         },
         name: 'stepCounter-view',
         methods: {
             changeRoute(to) {
-                // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
+                // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
                 this.$navigateTo(this.$routes[to]);
             },
             addCounter(counter) {
-                console.log("Wanna add: " + counter);
+            console.log("Wanna add: " + counter);
+                this.health = new HealthData();
+                this.health.isAvailable(false)
+                  .then(available => this.hasHealth = available);
+                console.log(this.hasHealth);
+
+                var types = [
+                    {name: "height", accessType: "write"},
+                    {name: "weight", accessType: "readAndWrite"},
+                    {name: "steps", accessType: "read"},
+                    {name: "distance", accessType: "read"}
+                ];
+                console.log("ist es ein Array? " + Array.isArray(types));
+
+                if(this.hasHealth){
+                  this.health.requestAuthorization(types)
+                  .then(authorized => console.log(authorized))
+                  .catch(error => console.log("Request auth error: ", error));
+                }
+
             },
 
         },
