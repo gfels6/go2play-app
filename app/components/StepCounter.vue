@@ -24,6 +24,7 @@
 */
 
 import * as platformModule from 'tns-core-modules/platform'
+// runs only on iOS, comment following line for Android
 import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-data";
 
 
@@ -43,25 +44,11 @@ import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-dat
             },
             addCounter(counter) {
             console.log("Wanna add: " + counter);
+            // runs only on iOS, comment following 4 lines for Android
                 this.health = new HealthData();
                 this.health.isAvailable(false)
                   .then(available => this.hasHealth = available);
                 console.log(this.hasHealth);
-
-                var types = [
-                    {name: "height", accessType: "write"},
-                    {name: "weight", accessType: "readAndWrite"},
-                    {name: "steps", accessType: "read"},
-                    {name: "distance", accessType: "read"}
-                ];
-                console.log("ist es ein Array? " + Array.isArray(types));
-
-                if(this.hasHealth){
-                  this.health.requestAuthorization(types)
-                  .then(authorized => console.log(authorized))
-                  .catch(error => console.log("Request auth error: ", error));
-                }
-
             },
 
         },
