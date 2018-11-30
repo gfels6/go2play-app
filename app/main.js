@@ -6,6 +6,11 @@ import VueDevtools from 'nativescript-vue-devtools'
 import routes from './router'
 
 require( "nativescript-localstorage" );
+// !!!!! run next line to clear name in localStorage !!!!!
+//localStorage.clear();
+
+import HelperService from '@/services/HelperService'
+const helperService = new HelperService()
 
 if(TNS_ENV !== 'production') {
   Vue.use(VueDevtools)
@@ -15,18 +20,8 @@ Vue.config.silent = false //(TNS_ENV === 'production')
 
 Vue.prototype.$routes = routes;
 
-// !!!!! run next line to clear name in localStorage !!!!!
-//localStorage.clear();
-
-// ugly, please do beautify :)
-let name = localStorage.getItem('name') || false;
-console.log("local user?: " + name);
 let hasName;
-if(name != false){
-  hasName = true;
-} else {
-  hasName = false;
-}
+hasName = helperService.checkForName();
 
 // if it has name im localStorage, go directly to Main
 new Vue({

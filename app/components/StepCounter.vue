@@ -28,7 +28,8 @@
 
 import * as platformModule from 'tns-core-modules/platform'
 import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-data";
-
+import HelperService from '@/services/HelperService'
+const helperService = new HelperService()
 
     export default {
         data() {
@@ -63,21 +64,11 @@ import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-dat
                   .catch(error => console.log("Request auth error: ", error));
                 }
 
-                this.health.query(
-                {
-                startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // 3 days ago
-                endDate: new Date(), // now
-                dataType: "steps", // equal to the 'name' property of 'HealthDataType'
-                unit: "count", // make sure this is compatible with the 'dataType' (see below)
-                aggregateBy: "day", // optional, one of: "hour", "day", "sourceAndDay"
-                sortOrder: "desc" // optional, default "asc"
-                })
+                helperService.getSteps()
                 .then(result => {
                     this.stepObjects = result;
-                    console.log(JSON.stringify(result));
                     this.steps = this.stepObjects[0].value;
                 })
-                .catch(error => this.resultToShow = error);
             },
 
         },
