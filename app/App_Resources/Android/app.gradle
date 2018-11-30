@@ -3,7 +3,7 @@
 android {
   defaultConfig {  
     generatedDensities = []
-    applicationId = "org.nativescript.application"
+    applicationId = "ch.bfh.i4mi.go2play"
   }
   aaptOptions {  
     additionalParameters "--no-version-vectors"  
