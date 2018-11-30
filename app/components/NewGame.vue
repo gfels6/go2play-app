@@ -26,7 +26,6 @@
             return {
                 name: "",
                 friends: [],
-                friendName: "",
                 lblFriends: "Aktuelle Freunde:",
                 lblRandomEnemy: "Zufälliger Gegner",
             };
@@ -43,9 +42,10 @@
             },
             onItemTap(event){
                 console.log("You touched " + this.friends[event.index] + " ;)");
-                this.friendName = this.friends[event.index];
-
-                backendService.addGame(this.name, this.friendName)
+                this.addGame(this.friends[event.index])
+            },
+            addGame(friendName) {
+                backendService.addGame(this.name, friendName)
                 .then(data => {
                     console.log("successfully added Game!");
                     //console.log(data);
@@ -63,6 +63,11 @@
             },
             getRandomEnemy() {
                 console.log("Random Enemy!");
+                backendService.getFilteredUser(this.name)
+                    .then(users => {
+                        let number = Math.floor(Math.random() * users.length);
+                        this.addGame(users[number].name);
+                    })
             }
         },
 

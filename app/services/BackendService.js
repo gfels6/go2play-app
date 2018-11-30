@@ -20,6 +20,14 @@ export default class BackendService {
         .then(data => data.json());
       }
 
+      getFilteredUser(name) {
+        return fetch(baseUrl + "/users?filter[where][name][nlike]=" + encodeURI(name), {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        })
+        .then(data => data.json());
+      }
+
       //Errorhandling noch nicht der wahnsinn!
       addUser(name, gender, birthdate, mobilityLevel) {
          return fetch(baseUrl + "/users", {
