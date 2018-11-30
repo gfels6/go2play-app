@@ -53,7 +53,7 @@
             onItemTap(event){
                 console.log("You touched " + this.games[event.index] + " ;)");
                 this.gameId = this.games[event.index];
-                this.changeRoute('quizGame');
+                this.changeRoute('quizOverview');
             },
         },
         mounted() {

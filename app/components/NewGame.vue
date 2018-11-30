@@ -51,7 +51,7 @@
                     //console.log(data);
                     this.gameId = data.id;
                     console.log(this.gameId)
-                    this.changeRoute('quizGame');
+                    this.changeRoute('quizOverview');
                 });
             },
             loadFriends(){

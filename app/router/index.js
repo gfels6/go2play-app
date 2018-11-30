@@ -9,6 +9,7 @@ import Progress from '../components/Progress';
 import ClaimName from '../components/ClaimName';
 import NewGame from '../components/NewGame';
 import QuizGame from '../components/QuizGame';
+import QuizOverview from '../components/QuizOverview';
 //import FriendDetail from '../components/friendDetail';
 
 const routes = {
@@ -23,6 +24,7 @@ const routes = {
     newGame: NewGame,
     quizGame: QuizGame,
     start: Start,
+    quizOverview: QuizOverview,
 };
 
 export default routes;

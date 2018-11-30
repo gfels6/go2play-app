@@ -22,6 +22,9 @@
                 //this.$navigateTo(this.$routes[to]);
             },
         },
+        mounted() {
+            
+        }
     }
 </script>
 
