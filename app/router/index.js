@@ -9,7 +9,7 @@ import Progress from '../components/Progress';
 import ClaimName from '../components/ClaimName';
 import NewGame from '../components/NewGame';
 import QuizGame from '../components/QuizGame';
-import FriendDetail from '../components/friendDetail';
+//import FriendDetail from '../components/friendDetail';
 
 const routes = {
     setup: Setup,
