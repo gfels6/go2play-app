@@ -28,6 +28,8 @@
 
         <Button class='btn' text="Speichern" @tap="saveChanges()" />
         <Button class='btn' text="Schrittzähler" @tap="changeRoute('stepCounter')" />
+        <Button class='btn' text="App zurücksetzen" @tap="resetApp()" />
+
 
     </StackLayout>
   </Page>
@@ -39,7 +41,7 @@
      - Anzeige Mobilitylevel (modifizierbar + speicherung Backend)
      - Button & Routing Schrittzähler
 */
-
+    require( "nativescript-localstorage" );
     import BackendService from '@/services/BackendService'
     const backendService = new BackendService()
 
@@ -62,6 +64,11 @@
             changeRoute(to) {
                 // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
                 this.$navigateTo(this.$routes[to]);
+            },
+            resetApp(){
+              console.log("delete local storage...");
+              localStorage.clear();
+              this.changeRoute('start');
             },
             saveChanges() {
 
