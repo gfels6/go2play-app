@@ -40,11 +40,13 @@ export default class BackendService {
               throw Error(response.statusText);
           }
           return response;
-      }).then(function(response) {
+        })
+        .then(function(response) {
           console.log("ok");
-      }).catch(function(error) {
+        })
+        .catch(function(error) {
           console.log(error);
-      });
+        });
       }
 
       addFriend(name, friend) {
@@ -55,11 +57,20 @@ export default class BackendService {
            username: name,
            nFriend: friend,
          }),
-       })
-       .then(data => {
-         console.log(data);
-       })
-     }
+        })
+        .then(function(response) {
+          if (!response.ok) {
+            throw Error(response.statusText);
+          }
+          return response;
+        })
+        .then(function(response) {
+          console.log("ok");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      }
 
     addGame(name, friend) {
       return fetch(baseUrl + "/games/new", {
