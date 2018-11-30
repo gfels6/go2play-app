@@ -25,7 +25,7 @@ export default class HelperService {
       }
 
     calculateSteps(steps) {
-        console.log(steps);
+        localStorage.setItem('steps', steps);
     }
 
     checkForName() {

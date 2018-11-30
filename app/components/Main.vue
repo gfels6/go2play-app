@@ -54,8 +54,14 @@
             .then(data => {
                 console.log(data);
                 this.walkerCoins = data.walkerCoins;
-                this.steps = data.steps;
             })
+            
+            let localSteps = localStorage.getItem('steps');
+            if(localSteps === null) {
+                this.steps = 0;
+            } else {
+                this.steps = localSteps;
+            }
         },
     }
 </script>
