@@ -107,7 +107,7 @@
 
     .question{
         vertical-align: center;
-        horizontal-align: center;
+        margin-left: 10;
         margin-top: 50;
     }
 
