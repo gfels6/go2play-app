@@ -10,7 +10,7 @@
 
         <Button class='btn' text="weiter" @tap="changeRoute('main')" />
 
-        <Label class="lbl" :text="test" />
+        <Label class="lbl" :text="stepObjects" />
         <Label class="lbl" :text="'Heutige Schritte: ' + steps" />
 
     </StackLayout>
@@ -36,7 +36,7 @@ import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-dat
                 isAndroid: platformModule.isAndroid,
                 health: "",
                 hasHealth: false,
-                test: "test",
+                stepObjects: "test",
                 steps: "0",
             };
         },
@@ -56,14 +56,6 @@ import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-dat
                     console.log(counter + " is available: " + available);
                   });
 
-                // this array specifies which informations we need from healthKit / googleFit
-                var types = [
-                    {name: "height", accessType: "none"},
-                    {name: "weight", accessType: "none"},
-                    {name: "steps", accessType: "read"},
-                    {name: "distance", accessType: "read"}
-                ];
-
                 // ask user for permission 
                 if(this.hasHealth){
                   this.health.requestAuthorization([{name: "steps", accessType: "read"}])
@@ -80,11 +72,10 @@ import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-dat
                 aggregateBy: "day", // optional, one of: "hour", "day", "sourceAndDay"
                 sortOrder: "desc" // optional, default "asc"
                 })
-                .then(result => this.test = result)
-                .then(res => {
-                    //umwandlung json?
-                    console.log(res);
-                    this.steps = res[0].value;
+                .then(result => {
+                    this.stepObjects = result;
+                    console.log(JSON.stringify(result));
+                    this.steps = this.stepObjects[0].value;
                 })
                 .catch(error => this.resultToShow = error);
             },
