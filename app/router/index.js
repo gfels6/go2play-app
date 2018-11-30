@@ -1,4 +1,5 @@
 import Setup from '../components/Setup';
+import Start from '../components/Start';
 import StepCounter from '../components/StepCounter';
 import Main from '../components/Main';
 import Friends from '../components/Friends';
@@ -8,6 +9,7 @@ import Progress from '../components/Progress';
 import ClaimName from '../components/ClaimName';
 import NewGame from '../components/NewGame';
 import QuizGame from '../components/QuizGame';
+import FriendDetail from '../components/friendDetail';
 
 const routes = {
     setup: Setup,
@@ -20,6 +22,7 @@ const routes = {
     claimName: ClaimName,
     newGame: NewGame,
     quizGame: QuizGame,
+    start: Start,
 };
 
 export default routes;
