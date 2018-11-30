@@ -5,24 +5,24 @@
     <StackLayout orientation="vertical" class="page-content">
 
         <StackLayout orientation="vertical" class="questionContent">
-            <Label class="question" :text="question" />
+            <Label class="question" :text="question" textWrap="true" />
         </StackLayout>
 
         <StackLayout orientation="vertical" class="answerMain">
             <StackLayout orientation="horizontal" class="answerRow">
                 <StackLayout orientation="vertical" class="answer">
-                    <Label class="textAnswer" :text="answer1" />
+                    <Label class="textAnswer" :text="answer1" textWrap="true" />
                 </StackLayout>
                 <StackLayout orientation="vertical" class="answer">
-                    <Label class="textAnswer" :text="answer2" />
+                    <Label class="textAnswer" :text="answer2" textWrap="true" />
                 </StackLayout>
             </StackLayout>
             <StackLayout orientation="horizontal" class="answerRow">
                 <StackLayout orientation="vertical" class="answer">
-                    <Label class="textAnswer" :text="answer3" />
+                    <Label class="textAnswer" :text="answer3" textWrap="true" />
                 </StackLayout>
                 <StackLayout orientation="vertical" class="answer">
-                    <Label class="textAnswer" :text="answer4" />
+                    <Label class="textAnswer" :text="answer4" textWrap="true" />
                 </StackLayout>
             </StackLayout>
         </StackLayout>
@@ -60,12 +60,13 @@
             getContent() {
                 backendService.getQuestion(this.gameId)
                 .then(data => {
+                    console.log(data);
                     console.log("questions: " + data[0].answers[0]);
                     this.question = data[0].question;
                     this.answer1 = data[0].answers[0];
-                    this.answer2 = data[1].answers[1];
-                    this.answer3 = data[2].answers[2];
-                    this.answer4 = data[3].answers[3];
+                    this.answer2 = data[0].answers[1];
+                    this.answer3 = data[0].answers[2];
+                    this.answer4 = data[0].answers[3];
                 })
             },
             setProgressbarWidth(percent) {
