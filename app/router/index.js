@@ -10,7 +10,7 @@ import ClaimName from '../components/ClaimName';
 import NewGame from '../components/NewGame';
 import QuizGame from '../components/QuizGame';
 import QuizOverview from '../components/QuizOverview';
-//import FriendDetail from '../components/friendDetail';
+import FriendDetail from '../components/friendDetail';
 
 const routes = {
     setup: Setup,
@@ -25,6 +25,7 @@ const routes = {
     quizGame: QuizGame,
     start: Start,
     quizOverview: QuizOverview,
+    friendDetail: FriendDetail,
 };
 
 export default routes;

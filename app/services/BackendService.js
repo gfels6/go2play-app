@@ -80,6 +80,29 @@ export default class BackendService {
         });
       }
 
+      /*
+        Deletes the relationship between a user and a friend. None of the users is deleted, nor are games
+        parameters  - name: unique name of the user
+                    - friend: unique name of the friend
+        returns     nothing
+        author      hessg1
+        version     2018-12-03
+
+        TODO: fix "[TypeError: Network request failed: JSON Parse error: Unexpected EOF]"
+      */
+      deleteFriendship(name, friend){
+        return fetch(baseUrl + "/users/" + name + "/friends/rel/" + friend, {
+         method: "DELETE",
+         headers: { "Content-Type": "application/json" },
+        })
+        .then(function(response) {
+          console.log("Friendship canceled </3");
+        })
+        .catch(function(error) {
+          console.log("Fehler:" + error);
+        });
+      }
+
     addGame(name, friend) {
       return fetch(baseUrl + "/games/new", {
        method: "POST",

@@ -13,7 +13,7 @@
       <Label :text="'\nFreund hinzufügen:'" textWrap="true" class="normalText" />
       <StackLayout orientation="horizontal" class="page-content">
         <TextField v-model="friendName" hint="Name des Freundes" />
-        <Button class="active" :text="friendButton" @tap="lookup(friendName)" />
+        <Button class="btn" :text="friendButton" @tap="lookup(friendName)" />
       </StackLayout>
     </StackLayout>
 
@@ -42,6 +42,11 @@
       methods: {
         onItemTap(event){
           console.log("You touched " + this.friends[event.index] + " ;)");
+          this.$navigateTo(this.$routes['friendDetail'], {
+              props: {
+                  friendName: this.friends[event.index],
+              }
+          });
         },
 
         lookup(friend){
@@ -92,7 +97,7 @@
                       this.friendName = "";
                     });
                   }
-                })
+                });
               }
             }
             if(choice > 1 || choice < 0){
