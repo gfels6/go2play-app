@@ -103,7 +103,7 @@
                   return;
                 }
 
-                backendService.addUser(this.uniqueName, this.selectedGender, bday, this.sliderValue)
+                backendService.addUser(this.uniqueName, this.selectedGender, bday, Math.round(this.sliderValue))
                 .then(data => {
                     console.log("success:" + data);
                     localStorage.setItem('name', this.uniqueName);

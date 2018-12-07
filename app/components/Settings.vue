@@ -61,27 +61,49 @@
         },
         name: 'settings-view',
         methods: {
-            changeRoute(to) {
-                // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
-                this.$navigateTo(this.$routes[to]);
-            },
-            resetApp(){
-              console.log("delete local storage...");
-              localStorage.clear();
-              this.changeRoute('start');
-            },
-            saveChanges() {
+          changeRoute(to) {
+              // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
+              this.$navigateTo(this.$routes[to]);
+          },
+          resetApp(){
+            // lets just check if the user is sure
+            confirm({
+              title: "Zurücksetzen",
+              message: "Möchtest du die App wirklich zurücksetzen? Es werden alle lokalen Daten gelöscht. Wenn du dich neu einloggst, kannst du die Daten wiederherstellen.",
+              okButtonText: "zurücksetzen",
+              cancelButtonText: "abbrechen"
+            })
+            .then(choice =>{
+              if(choice){
+                console.log("delete local storage...");
+                localStorage.clear();
+                this.changeRoute('start');
+              }
+            });
+          },
 
-            },
+          saveChanges()
+          {
+            // rounding is important for consistence, because on iOS the slider
+            // returns DOUBLE, on android INTEGER
+            this.sliderValue = Math.round(this.sliderValue);
+
+            // save locally
+            localStorage.setItem('sliderValue', this.sliderValue);
+
+            // save remotely
+            backendService.updateParameter(this.name, "mobility", this.sliderValue);
+
+            this.changeRoute('main');
+          },
         },
         mounted() {
-            console.log("mounted");
+            console.log("mounted settings page");
             backendService.getUser(localStorage.getItem('name'))
             .then(data => {
-                console.log(data);
                 this.name = data.name;
                 this.gender = data.gender;
-                this.birthdate = data.birthyear;
+                this.birthdate = data.birthyear.substring(data.birthyear.length - 4);
                 this.sliderValue = data.mobility;
             })
         },

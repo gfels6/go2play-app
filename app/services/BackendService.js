@@ -84,7 +84,7 @@ export default class BackendService {
         Deletes the relationship between a user and a friend. None of the users is deleted, nor are games
         parameters  - name: unique name of the user
                     - friend: unique name of the friend
-        returns     nothing
+        returns     just a promise
         author      hessg1
         version     2018-12-03
 
@@ -100,6 +100,36 @@ export default class BackendService {
         })
         .catch(function(error) {
           console.log("Fehler:" + error);
+        });
+      }
+      /*
+        Update a single parameter of an user (e.g. mobility).
+        parameters  - name: unique name of the user
+                    - param: name of the parameter to be updated (Stick to the
+                      API reference for correct naming.)
+                    - value: the new value of the parameter
+        returns     a promise :)
+        author      hessg1
+        version     2018-12-07
+      */
+      updateParameter(name, param, value){
+        console.log("update param " + param + ": " + value + " for user " + name);
+        return fetch(baseUrl + "/users/" + name, {
+         method: "PATCH",
+         headers: { "Content-Type": "application/json" },
+         body: "{\"" + param + "\":" + value + "}",
+       })
+        .then(function(response) {
+          if (!response.ok) {
+              throw Error(response.statusText);
+          }
+          return response;
+        })
+        .then(function(response) {
+          console.log("ok");
+        })
+        .catch(function(error) {
+          console.log(error);
         });
       }
 
