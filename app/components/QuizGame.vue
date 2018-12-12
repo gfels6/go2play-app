@@ -60,13 +60,12 @@
             getContent() {
                 backendService.getQuestion(this.gameId)
                 .then(data => {
-                    console.log(data);
-                    console.log("questions: " + data[0].answers[0]);
-                    this.question = data[0].question;
-                    this.answer1 = data[0].answers[0];
-                    this.answer2 = data[0].answers[1];
-                    this.answer3 = data[0].answers[2];
-                    this.answer4 = data[0].answers[3];
+                    console.log("questions: " + data.rounds[0].gameQuestions[1].question);
+                    this.question = data.rounds[0].gameQuestions[1].question;
+                    this.answer1 = data.rounds[0].gameQuestions[1].answers[0];
+                    this.answer2 = data.rounds[0].gameQuestions[1].answers[1];
+                    this.answer3 = data.rounds[0].gameQuestions[1].answers[2];
+                    this.answer4 = data.rounds[0].gameQuestions[1].answers[3];
                 })
             },
             setProgressbarWidth(percent) {

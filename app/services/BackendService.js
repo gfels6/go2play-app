@@ -146,7 +146,7 @@ export default class BackendService {
     }
 
     getQuestion(gameId) {
-      return fetch(baseUrl + "/games/" + gameId + "/questions", {
+      return fetch(baseUrl + "/games/" + gameId, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       })
