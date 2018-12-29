@@ -63,7 +63,7 @@
             },
             getRandomEnemy() {
                 console.log("Random Enemy!");
-                backendService.getFilteredUser(this.name)
+                backendService.getRandomEnemy(this.name)
                     .then(users => {
                         let number = Math.floor(Math.random() * users.length);
                         this.addGame(users[number].name);

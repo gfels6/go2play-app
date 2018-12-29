@@ -4,6 +4,14 @@ let baseUrl = "http://wsdeb2.i4mi.bfh.ch:8080/api";
 
 export default class BackendService {
 
+      /*
+        Searching for a username if it exists already
+        parameters  - name: name of a possible user
+        returns     a promise with userCount
+                    1 = user exists 0 = user doesnt exist
+        author      gfels6
+        version     2018-12-29
+      */  
       searchName(name) {
         return fetch(baseUrl + "/users/alreadyUsed?name=" + encodeURI(name), {
           method: "GET",
@@ -12,6 +20,13 @@ export default class BackendService {
         .then(data => data.json());
       }
 
+      /*
+        Select a user with all its information
+        parameters  - name: unique name of the user
+        returns     a promise the user information
+        author      gfels6
+        version     2018-12-29
+      */
       getUser(name) {
         return fetch(baseUrl + "/users/" + encodeURI(name), {
           method: "GET",
@@ -20,7 +35,14 @@ export default class BackendService {
         .then(data => data.json());
       }
 
-      getFilteredUser(name) {
+      /*
+        Search for an enemy, it gives you a list with all user except yourself
+        parameters  - name: unique name of the user
+        returns     a promise with all users except the one that is executing
+        author      gfels6
+        version     2018-12-29
+      */
+      getRandomUser(name) {
         return fetch(baseUrl + "/users?filter[where][name][nlike]=" + encodeURI(name), {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -28,7 +50,16 @@ export default class BackendService {
         .then(data => data.json());
       }
 
-      //Errorhandling noch nicht der wahnsinn!
+      /*
+        Creates a new user with the selected attributes
+        parameters  - name: unique name of the user
+                    - gender: gender (male, female)
+                    - birthdate: birthdate as a string
+                    - mobilityLevel: number from between 0 and 100
+        returns     a promise
+        author      gfels6
+        version     2018-12-29
+      */
       addUser(name, gender, birthdate, mobilityLevel) {
          return fetch(baseUrl + "/users", {
           method: "POST",
@@ -57,6 +88,14 @@ export default class BackendService {
         });
       }
 
+      /*
+        Creates the relationship between two users
+        parameters  - name: unique name of the user
+                    - friend: name of the friend
+        returns     a promise
+        author      gfels6
+        version     2018-12-29
+      */
       addFriend(name, friend) {
         return fetch(baseUrl + "/users/addFriend", {
          method: "POST",
@@ -102,6 +141,7 @@ export default class BackendService {
           console.log("Fehler:" + error);
         });
       }
+
       /*
         Update a single parameter of an user (e.g. mobility).
         parameters  - name: unique name of the user
@@ -133,6 +173,14 @@ export default class BackendService {
         });
       }
 
+      /*
+        Create a new game between two players
+        parameters  - name: unique name of the user
+                    - friend: name of the friend
+        returns     a promise with the gameID
+        author      gfels6
+        version     2018-12-29
+      */
     addGame(name, friend) {
       return fetch(baseUrl + "/games/new", {
        method: "POST",
@@ -152,17 +200,5 @@ export default class BackendService {
       })
       .then(data => data.json());
     }
-
-      // Parsing to JSON
-      getJson(response) {
-        return new Promise((resolve, reject) => {
-          console.info('Content: ' + response.content.toString())
-          resolve(response.content.toJSON())
-        })
-          .catch(e => {
-            console.error('Error parsing JSON response: ' + e)
-            throw 'Error parsing JSON response: ' + e
-          })
-      }
 
 }
