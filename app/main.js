@@ -18,12 +18,17 @@ if(TNS_ENV !== 'production') {
 // Prints Vue logs when --env.production is *NOT* set while building
 Vue.config.silent = false //(TNS_ENV === 'production')
 
+// Adding all routes globally
 Vue.prototype.$routes = routes;
 
+/* 
+  Checking if it is already a name in the local Storage
+  If it is so, then go directly to the Main view
+  If not then go to the start view  
+*/
 let hasName;
 hasName = helperService.checkForName();
 
-// if it has name im localStorage, go directly to Main
 new Vue({
   render: h => h('frame', [h(hasName ? Main : Start)])
 }).$start()
