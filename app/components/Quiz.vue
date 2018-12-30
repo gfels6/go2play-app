@@ -11,22 +11,22 @@
             <Label class="value" :text="'(' + countedOpenGames + ')'" />
         </StackLayout>
 
-        <ListView for="game in openGames" @itemTap="onItemTap" separatorColor="transparent">
+        <ListView class="itemContainer" for="game in openGames" @itemTap="onItemTap" separatorColor="transparent">
             <v-template>
-                <StackLayout orientation="vertical" class="itemContainer">
+                <StackLayout orientation="vertical">
                     <label :text="game.user1 + ' - ' + game.user2 + '   Am Zug: ' + game.activeUser" class="listItem"/>
                 </StackLayout>
             </v-template>
         </ListView>
 
-        <StackLayout orientation="horizontal" class="gameContainer">
+        <StackLayout orientation="horizontal" class="gameContainer mt">
             <Label class="lbl" :text="lblFinishedGames" />
             <Label class="value" :text="'(' + countedFinishedGames + ')'" />
         </StackLayout>
 
-        <ListView for="game in finishedGames" @itemTap="onItemTap" separatorColor="transparent">
+        <ListView class="itemContainer" for="game in finishedGames" @itemTap="onItemTap" separatorColor="transparent">
             <v-template>
-                <StackLayout orientation="vertical" class="itemContainer">
+                <StackLayout orientation="vertical">
                     <label :text="game.user1 + ' - ' + game.user2" class="listItem"/>
                 </StackLayout>
             </v-template>
@@ -99,18 +99,20 @@
         margin-left: 25;
         font-size: 18;
         color:black;
+        font-weight: bold;
     }
 
     .value {
         margin-left: 5;
         font-size: 18;
         color:black;
+        font-weight: bold;
     }
 
     .listItem {
         width: 90%;
         padding: 8;
-        font-size: 18;
+        font-size: 16;
         background-color: #53ba82;
         color: #ffffff;
         border-radius: 5;
@@ -120,7 +122,11 @@
     }
 
     .itemContainer {
+        margin-top: 7;
+    }
 
+    .mt {
+        margin-top: 15;
     }
 
 </style>
