@@ -13,7 +13,9 @@
 
         <ListView for="game in openGames" @itemTap="onItemTap" separatorColor="transparent">
             <v-template>
-                <label :text="game.user1 + ' - ' + game.user2 + '   Am Zug: ' + game.activeUser" class="listItem"/>
+                <StackLayout orientation="vertical" class="itemContainer">
+                    <label :text="game.user1 + ' - ' + game.user2 + '   Am Zug: ' + game.activeUser" class="listItem"/>
+                </StackLayout>
             </v-template>
         </ListView>
 
@@ -24,7 +26,9 @@
 
         <ListView for="game in finishedGames" @itemTap="onItemTap" separatorColor="transparent">
             <v-template>
-                <label :text="game.user1 + ' - ' + game.user2" class="listItem"/>
+                <StackLayout orientation="vertical" class="itemContainer">
+                    <label :text="game.user1 + ' - ' + game.user2" class="listItem"/>
+                </StackLayout>
             </v-template>
         </ListView>
 
@@ -104,10 +108,19 @@
     }
 
     .listItem {
-      margin-left: 20;
-      padding: 10;
-      font-size: 20;
-      color: #53ba82;
+        width: 90%;
+        padding: 8;
+        font-size: 18;
+        background-color: #53ba82;
+        color: #ffffff;
+        border-radius: 5;
+        border-width: 1;
+        border-color: #42a972;
+        margin-bottom: 2;
+    }
+
+    .itemContainer {
+
     }
 
 </style>
