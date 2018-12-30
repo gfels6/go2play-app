@@ -20,12 +20,12 @@
             };
         },
         name: 'quizoverview-view',
-        props: ['gameId'],
+        props: ['game'],
         methods: {
             changeRoute(to) {
                 this.$navigateTo(this.$routes[to], {
                     props: {
-                        gameId: this.gameId,
+                        gameId: this.game.id,
                     }
                 });
             },

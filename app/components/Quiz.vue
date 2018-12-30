@@ -8,12 +8,23 @@
 
         <StackLayout orientation="horizontal" class="gameContainer">
             <Label class="lbl" :text="lblOpenGames" />
-            <Label class="value" :text="'(' + openGames + ')'" />
+            <Label class="value" :text="'(' + countedOpenGames + ')'" />
         </StackLayout>
 
-        <ListView for="game in games" @itemTap="onItemTap" separatorColor="transparent">
+        <ListView for="game in openGames" @itemTap="onItemTap" separatorColor="transparent">
             <v-template>
-            <label :text="game" class="listItem"/>
+                <label :text="game.user1 + ' - ' + game.user2 + '   Am Zug: ' + game.activeUser" class="listItem"/>
+            </v-template>
+        </ListView>
+
+        <StackLayout orientation="horizontal" class="gameContainer">
+            <Label class="lbl" :text="lblFinishedGames" />
+            <Label class="value" :text="'(' + countedFinishedGames + ')'" />
+        </StackLayout>
+
+        <ListView for="game in finishedGames" @itemTap="onItemTap" separatorColor="transparent">
+            <v-template>
+                <label :text="game.user1 + ' - ' + game.user2" class="listItem"/>
             </v-template>
         </ListView>
 
@@ -29,9 +40,12 @@
         data() {
             return {
                 lblOpenGames: "Offene Spiele",
-                openGames: 0,
-                games: [],
-                gameId: "",
+                lblFinishedGames: "Beendete Spiele",
+                countedOpenGames: 0,
+                countedFinishedGames: 0,
+                finishedGames: [],
+                openGames: [],
+                game: "",
             };
         },
         name: 'quiz-view',
@@ -39,20 +53,28 @@
             changeRoute(to) {
                 this.$navigateTo(this.$routes[to], {
                     props: {
-                        gameId: this.gameId,
+                        game: this.game,
                     }
                 });
             },
             loadGames() {
-                backendService.getUser(localStorage.getItem('name'))
+                backendService.searchOpenGames(localStorage.getItem('name'))
                 .then(data => {
-                    this.games = data.game;
-                    this.openGames = data.game.length;
+                    this.openGames = data;
+                    this.countedOpenGames = this.openGames.length;
+                    //this.openGames = data.game.length;
+                })
+
+                backendService.searchFinishedGames(localStorage.getItem('name'))
+                .then(data => {
+                    this.finishedGames = data;
+                    this.countedFinishedGames = this.finishedGames.length;
+                    //console.log(this.finishedGames[0].id);
                 })
             },
             onItemTap(event){
-                console.log("You touched " + this.games[event.index] + " ;)");
-                this.gameId = this.games[event.index];
+                console.log("You touched " + event.item.id + " ;)");
+                this.game = event.item;
                 this.changeRoute('quizOverview');
             },
         },

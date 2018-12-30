@@ -173,14 +173,14 @@ export default class BackendService {
         });
       }
 
-      /*
-        Create a new game between two players
-        parameters  - name: unique name of the user
-                    - friend: name of the friend
-        returns     a promise with the gameID
-        author      gfels6
-        version     2018-12-29
-      */
+    /*
+      Create a new game between two players
+      parameters  - name: unique name of the user
+                  - friend: name of the friend
+      returns     a promise with the gameID
+      author      gfels6
+      version     2018-12-29
+    */
     addGame(name, friend) {
       return fetch(baseUrl + "/games/new", {
        method: "POST",
@@ -193,6 +193,36 @@ export default class BackendService {
      .then(data => data.json());
     }
 
+    /*
+      Search for all open games (they have the activeUser != "game finished")
+      parameters  - name: unique name of the user
+      returns     a promise with all open games
+      author      gfels6
+      version     2018-12-30
+    */
+    searchOpenGames(name) {
+      return fetch(baseUrl + "/games?filter[where][or][0][user1]=" + name + "&filter[where][or][1][user2]=" + name + "&filter[where][and][2][activeUser][nlike]=game%20finished", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+      .then(data => data.json());
+    }
+
+    /*
+      Search for all finished games (they have the activeUser = "game finished")
+      parameters  - name: unique name of the user
+      returns     a promise with all finished games
+      author      gfels6
+      version     2018-12-30
+    */
+    searchFinishedGames(name) {
+      return fetch(baseUrl + "/games?filter[where][or][0][user1]=" + name + "&filter[where][or][1][user2]=" + name + "&filter[where][and][2][activeUser][like]=game%20finished", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+      .then(data => data.json());
+    }
+    
     getQuestion(gameId) {
       return fetch(baseUrl + "/games/" + gameId, {
         method: "GET",
