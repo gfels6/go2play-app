@@ -23,3 +23,10 @@ Server must be listed on `<key>NSExceptionDomains</key>` in app/App_Resources/iO
 - first, you need an Apple ID
 - get the Apple ID registered with Olivier (I4MI)
 - follow this instructions: https://nativescript.nl/tips/how-to-test-your-nativescript-app-on-a-real-ios-device/
+```
+
+## Local Storage
+Overview over the variables in Local Storage
+- name: the user's name
+- steps: the number of steps on this day
+- lastCheckedSteps: date when the total steps where last checked
