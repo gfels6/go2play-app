@@ -4,7 +4,22 @@
     </ActionBar>
     <StackLayout orientation="vertical" class="page-content">
 
-        <Label class="heading" :text="this.you + '  ' + this.scoreUser + ':' + this.scoreEnemy + '  ' + this.enemy" />
+        <Label class="heading" :text="this.user + '  ' + this.scoreUser + ':' + this.scoreEnemy + '  ' + this.enemy" />
+
+        <StackLayout class="lblContainer" orientation="horizontal">
+            <Label class="lbl" :text="lblRound1" />
+            <Label class="value" :text="this.scoreUserR1 + ':' + this.scoreEnemyR1" />
+        </StackLayout>
+
+        <StackLayout class="lblContainer" orientation="horizontal">
+            <Label class="lbl" :text="lblRound2" />
+            <Label class="value" :text="this.scoreUserR2 + ':' + this.scoreEnemyR2" />
+        </StackLayout>
+
+        <StackLayout class="lblContainer" orientation="horizontal">
+            <Label class="lbl" :text="lblRound3" />
+            <Label class="value" :text="this.scoreUserR3 + ':' + this.scoreEnemyR3" />
+        </StackLayout>
 
         <StackLayout :class="[{ inactive: !finished }, 'lblContainer']" orientation="horizontal">
             <Label class="lbl" :text="lblWinning" />
@@ -23,10 +38,19 @@
             return {
                 lblStatus: "",
                 lblWinning: "Gewinner: ",
-                you: "",
+                lblRound1: "Runde 1: ",
+                lblRound2: "Runde 2: ",
+                lblRound3: "Runde 3: ",
+                user: "",
                 enemy: "",
-                totalAnswersYou: [],
+                totalAnswersUser: [],
                 totalAnswersEnemy: [],
+                scoreUserR1: 0,
+                scoreUserR2: 0,
+                scoreUserR3: 0,
+                scoreEnemyR1: 0,
+                scoreEnemyR2: 0,
+                scoreEnemyR3: 0,
                 scoreEnemy: 0,
                 scoreUser: 0,
                 userWon: "",
@@ -45,30 +69,30 @@
                 });
             },
             checkWhoIsTheEnemy(){
-                if(this.game.user1 === this.you){
+                if(this.game.user1 === this.user){
                     this.enemy = this.game.user2;
                 }
                 else{
                     this.enemy = this.game.user1;
                 }
             },
-            calculatePoints(){
-
-            }
         },
         mounted() {
-            this.you = localStorage.getItem('name');
+            this.user = localStorage.getItem('name');
             this.checkWhoIsTheEnemy();
 
             for (var i = 0; i < this.game.activeRound; i++) {
                 for (let j = 0; j < this.game.rounds[i].gameQuestions.length; j++) {
-                    this.totalAnswersYou.push(this.game.rounds[i].gameQuestions[j][this.you]);
+                    console.log(i);
+                    this.totalAnswersUser.push(this.game.rounds[i].gameQuestions[j][this.user]);
                     this.totalAnswersEnemy.push(this.game.rounds[i].gameQuestions[j][this.enemy]);
                     if(this.game.rounds[i].gameQuestions[j][this.enemy] == 1){
                         this.scoreEnemy++;
+                        this["scoreEnemyR"+(i+1)]++;
                     }
-                    if(this.game.rounds[i].gameQuestions[j][this.you] == 1){
+                    if(this.game.rounds[i].gameQuestions[j][this.user] == 1){
                         this.scoreUser++;
+                        this["scoreUserR"+(i+1)]++;
                     }
                 }
             }
@@ -78,11 +102,10 @@
                 this.userWon = this.game.winner; 
             }
 
-            if(this.game.activeUser == this.you){
+            if(this.game.activeUser == this.user){
                 this.yourTurn = true;
             }
 
-            this.calculatePoints();
         }
     }
 </script>
