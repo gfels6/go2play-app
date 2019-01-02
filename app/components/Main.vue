@@ -30,13 +30,15 @@
 */
 
     import BackendService from '@/services/BackendService'
+    import HelperService from '@/services/HelperService'
     const backendService = new BackendService()
+    const helperService = new HelperService()
 
     export default {
         data() {
             return {
                 lblSteps: "Schritte:",
-                lblWalkerCoins: "Walker Coins:",
+                lblWalkerCoins: "Walker$:",
                 walkerCoins: 0,
                 steps: 0,
             };
@@ -44,18 +46,28 @@
         name: 'main-view',
         methods: {
             changeRoute(to) {
-                // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
+                // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
                 this.$navigateTo(this.$routes[to]);
-            },
+            }
         },
         mounted() {
             console.log("mounted from Main");
             backendService.getUser(localStorage.getItem('name'))
             .then(data => {
-                console.log(data);
-                this.walkerCoins = data.walkerCoins;
+              this.walkerCoins = data.walkerCoins;
             })
-            
+
+            // this calls the steps since last check and
+            // calculates how much walkerCoins are earned by walking
+            helperService.getStepsSinceLastCheck()
+            .then(steps => helperService.calculateCoins(steps))
+            .then(coins => {
+              this.walkerCoins = this.walkerCoins + coins;
+              backendService.updateParameter(localStorage.getItem('name'),'walkerCoins',this.walkerCoins);
+            });
+
+
+            // this calculates the steps of this day
             let localSteps = localStorage.getItem('steps');
             if(localSteps === null) {
                 this.steps = 0;
@@ -75,7 +87,7 @@
     .container {
         margin: 10, 15, 10, 20;
     }
-    
+
     .title {
         font-size: 16;
         color:black;
