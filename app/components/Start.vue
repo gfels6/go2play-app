@@ -46,7 +46,7 @@
               console.log(err);
             })
             .then(data => {
-              if(data.userCount == 0 && this.tfName != "") {
+              if(data.userCount == 0 && this.tfName != "" && this.tfName != "both") { // name can't be empty or "both", since this is a reserved term in the backend
                 this.nameChecked = true;
                 this.buttonText = "weiter";
               } else if (this.tfName == "") {
