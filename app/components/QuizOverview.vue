@@ -4,22 +4,7 @@
     </ActionBar>
     <StackLayout orientation="vertical" class="page-content">
 
-        <Label class="question" :text="tbd" textWrap="true" />
-
-        <StackLayout orientation="horizontal" class="lblContainer">
-            <Label class="lbl" :text="lblEnemy" />
-            <Label class="value" :text="this.game.user2" />
-        </StackLayout>
-
-        <StackLayout orientation="horizontal" class="lblContainer">
-            <Label class="lbl" :text="lblScoreUser" />
-            <Label class="value" :text="scoreUser" />
-        </StackLayout>
-
-        <StackLayout orientation="horizontal" class="lblContainer">
-            <Label class="lbl" :text="lblScoreEnemy" />
-            <Label class="value" :text="scoreEnemy" />
-        </StackLayout>
+        <Label class="heading" :text="this.you + '  ' + this.scoreUser + ':' + this.scoreEnemy + '  ' + this.enemy" />
 
         <StackLayout :class="[{ inactive: !finished }, 'lblContainer']" orientation="horizontal">
             <Label class="lbl" :text="lblWinning" />
@@ -36,19 +21,17 @@
     export default {
         data() {
             return {
-                tbd: "Hier werden die Spieldetails stehen (Überblick, Wer ist am gewinnen etc)",
                 lblStatus: "",
-                lblEnemy: "Dein Gegner: ",
-                lblScoreUser: "Deine Punkte: ",
-                lblScoreEnemy: "Punkte vom Gegner: ",
-                lblWinning: "Gewonnen hat: ",
+                lblWinning: "Gewinner: ",
+                you: "",
                 enemy: "",
+                totalAnswersYou: [],
+                totalAnswersEnemy: [],
                 scoreEnemy: 0,
                 scoreUser: 0,
                 userWon: "",
                 finished: false,
                 yourTurn: false,
-
             };
         },
         name: 'quizoverview-view',
@@ -61,12 +44,32 @@
                     }
                 });
             },
+            checkWhoIsTheEnemy(){
+                if(this.game.user1 === this.you){
+                    this.enemy = this.game.user2;
+                }
+                else{
+                    this.enemy = this.game.user1;
+                }
+            },
+            calculatePoints(){
+
+            }
         },
         mounted() {
-            for (var i = 0; i < this.game.rounds.length; i++) {
-                console.log("PAIR " + i + ": " + this.game.rounds[i].roundNumber);
+            this.you = localStorage.getItem('name');
+            this.checkWhoIsTheEnemy();
+
+            for (var i = 0; i < this.game.activeRound; i++) {
                 for (let j = 0; j < this.game.rounds[i].gameQuestions.length; j++) {
-                    console.log("question: " + this.game.rounds[i].gameQuestions[j].jntme);
+                    this.totalAnswersYou.push(this.game.rounds[i].gameQuestions[j][this.you]);
+                    this.totalAnswersEnemy.push(this.game.rounds[i].gameQuestions[j][this.enemy]);
+                    if(this.game.rounds[i].gameQuestions[j][this.enemy] == 1){
+                        this.scoreEnemy++;
+                    }
+                    if(this.game.rounds[i].gameQuestions[j][this.you] == 1){
+                        this.scoreUser++;
+                    }
                 }
             }
 
@@ -75,9 +78,11 @@
                 this.userWon = this.game.winner; 
             }
 
-            if(this.game.activeUser == localStorage.getItem('name')){
+            if(this.game.activeUser == this.you){
                 this.yourTurn = true;
             }
+
+            this.calculatePoints();
         }
     }
 </script>
@@ -93,6 +98,14 @@
         font-size: 18;
         color:black;
         font-weight: bold;
+    }
+
+    .heading {
+        margin-top: 20;
+        font-size: 28;
+        color: #53ba82;
+        font-weight: bold;
+        horizontal-align: center;
     }
 
     .value {
