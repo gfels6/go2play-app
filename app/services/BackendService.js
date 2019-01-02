@@ -11,7 +11,7 @@ export default class BackendService {
                     1 = user exists 0 = user doesnt exist
         author      gfels6
         version     2018-12-29
-      */  
+      */
       searchName(name) {
         return fetch(baseUrl + "/users/alreadyUsed?name=" + encodeURI(name), {
           method: "GET",
@@ -125,21 +125,28 @@ export default class BackendService {
                     - friend: unique name of the friend
         returns     just a promise
         author      hessg1
-        version     2018-12-03
+        version     2019-01-02
 
-        TODO: fix "[TypeError: Network request failed: JSON Parse error: Unexpected EOF]"
+        api call returns empty response, this is not an error but is treated as one in fetch
+        so we have to catch this here because fetch crashes on null response
+        see: https://mcculloughwebservices.com/2016/09/23/handling-a-null-response-from-an-api/
       */
       deleteFriendship(name, friend){
         return fetch(baseUrl + "/users/" + name + "/friends/rel/" + friend, {
          method: "DELETE",
-         headers: { "Content-Type": "application/json" },
+         headers: { "Content-Type": "application/json" }
         })
-        .then(function(response) {
-          console.log("Friendship canceled </3");
+        .then((res) => {
+          res.text()
         })
-        .catch(function(error) {
-          console.log("Fehler:" + error);
-        });
+	       .then((text) => {
+           text.length ? JSON.parse(text) : {};
+
+         })
+	        .catch((error) => {
+              console.log("caught to throw");
+		          throw error;
+	        });
       }
 
       /*
@@ -222,7 +229,7 @@ export default class BackendService {
       })
       .then(data => data.json());
     }
-    
+
     getQuestion(gameId) {
       return fetch(baseUrl + "/games/" + gameId, {
         method: "GET",

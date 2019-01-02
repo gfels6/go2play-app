@@ -40,10 +40,19 @@
           .then(choice =>{
             if(choice){
               // TODO: should the games with this friend also be deleted?
-              console.log("delete Friend");
               backendService.deleteFriendship(this.name, this.friendName)
               .then(x => {
-                changeRoute("friends");
+                this.changeRoute("friends");
+              })
+              .catch(err => {
+                // handling our special backend behaviour
+                if(err = "TypeError: Network request failed: JSON Parse error: Unexpected EOF"){
+                  console.log("special error detected");
+                  this.changeRoute("friends");
+                }
+                else{
+                  console.log("Fehler:" + err);
+                }
               });
             }
           });
