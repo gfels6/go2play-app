@@ -42,13 +42,13 @@
               // TODO: should the games with this friend also be deleted?
               backendService.deleteFriendship(this.name, this.friendName)
               .then(x => {
-                this.changeRoute("friends");
+                this.changeRoute("main");
               })
               .catch(err => {
                 // handling our special backend behaviour
                 if(err = "TypeError: Network request failed: JSON Parse error: Unexpected EOF"){
                   console.log("special error detected");
-                  this.changeRoute("friends");
+                  this.changeRoute("main");
                 }
                 else{
                   console.log("Fehler:" + err);
@@ -70,7 +70,7 @@
         },
         changeRoute(to) {
             // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
-            this.$navigateTo(this.$routes[to]);
+            this.$navigateTo(this.$routes[to], { clearHistory: true });
         },
       },
 
