@@ -10,12 +10,12 @@
 
         <StackLayout orientation="vertical" class="answerMain">
             <StackLayout orientation="horizontal" class="answerRow">
-                    <Button class="btnAnswer" :text="answer1" textWrap="true" />
-                    <Button class="btnAnswer" :text="answer2" textWrap="true" />
+                    <Button class="btnAnswer" :text="txtAnswer1" textWrap="true"  @tap="onTappedAnswer(1)" />
+                    <Button class="btnAnswer" :text="txtAnswer2" textWrap="true"  @tap="onTappedAnswer(2)" />
             </StackLayout>
             <StackLayout orientation="horizontal" class="answerRow">
-                    <Button class="btnAnswer" :text="answer3" textWrap="true" />
-                    <Button class="btnAnswer" :text="answer4" textWrap="true" />
+                    <Button class="btnAnswer" :text="txtAnswer3" textWrap="true"  @tap="onTappedAnswer(3)" />
+                    <Button class="btnAnswer" :text="txtAnswer4" textWrap="true"  @tap="onTappedAnswer(4)" />
             </StackLayout>
         </StackLayout>
 
@@ -37,11 +37,14 @@
                 user: "",
                 dataSet: "",
                 question: "Question",
-                answer1: "Answer 1",
-                answer2: "Answer 2",
-                answer3: "Answer 3",
-                answer4: "Answer 4",
+                txtAnswer1: "Answer 1",
+                txtAnswer2: "Answer 2",
+                txtAnswer3: "Answer 3",
+                txtAnswer4: "Answer 4",
+                answers: [],
+                intervalId: "",
                 columns: "",
+                positions: [1,2,3,4],
             };
         },
         name: 'quizgame-view',
@@ -63,23 +66,48 @@
             },
             setUpProgressbar(){
                 let percent = 100;
-                let intervalId = setInterval(() => {
+                this.intervalId = setInterval(() => {
                     this.setProgressbarWidth(percent);
                     percent--;
                     if (percent < 0) {
-                        clearInterval(intervalId);
+                        clearInterval(this.intervalId);
                     }
                 }, 120);
             },
             startQuiz(){
-                //console.log(this.dataSet.gameQuestions[0]);
-                this.question = this.dataSet.gameQuestions[1].question;
-                this.answer1 = this.dataSet.gameQuestions[1].answers[0];
-                this.answer2 = this.dataSet.gameQuestions[1].answers[1];
-                this.answer3 = this.dataSet.gameQuestions[1].answers[2];
-                this.answer4 = this.dataSet.gameQuestions[1].answers[3];
+                this.setQuestion(0);
+            },
+            setQuestion(number){
+                this.question = this.dataSet.gameQuestions[number].question;
+                this.shuffleArray(this.positions);
+                console.log("Nach Shuffle: " + this.positions);
+
+                for (let i = 0; i < this.positions.length; i++) {
+                    this["txtAnswer"+(this.positions[i])] = this.dataSet.gameQuestions[number].answers[i];
+                }
+
                 this.setUpProgressbar();
             },
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            },
+            onTappedAnswer(id){
+
+                clearInterval(this.intervalId);
+                //console.log(this.positions);
+                //console.log(this.positions.indexOf(id));
+
+                //this.answers.push(this.positions.indexOf(id));
+
+                if(this.positions.indexOf(id) == 0){
+                    console.log("wuhu richtig!");
+                } else {
+                    console.log("fautsch");
+                }
+            }
         },
         mounted() {
             console.log("mounted game: " + this.gameId);
@@ -109,24 +137,6 @@
         vertical-align: center;
         margin-left: 10;
         margin-top: 50;
-    }
-
-    .answer{
-        border-radius: 5;
-        border-width: 1;
-        color: white;
-        background-color: black;
-        margin: 10;
-        font-size: 18;
-        border-color: #2b3c6a;
-        height: 80;
-        width: 45%;
-    }
-
-    .textAnswer {
-        margin-top: 20;
-        horizontal-align: center;
-        vertical-align: center;
     }
 
     .btnAnswer {
