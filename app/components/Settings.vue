@@ -88,9 +88,6 @@
             // returns DOUBLE, on android INTEGER
             this.sliderValue = Math.round(this.sliderValue);
 
-            // save locally
-            localStorage.setItem('sliderValue', this.sliderValue);
-
             // save remotely
             backendService.updateParameter(this.name, "mobility", this.sliderValue);
 
