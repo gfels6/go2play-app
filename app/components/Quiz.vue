@@ -50,6 +50,7 @@
                 finishedGames: [],
                 openGames: [],
                 game: "",
+                name: "",
             };
         },
         name: 'quiz-view',
@@ -62,18 +63,16 @@
                 });
             },
             loadGames() {
-                backendService.searchOpenGames(localStorage.getItem('name'))
+                backendService.searchOpenGames(this.name)
                 .then(data => {
                     this.openGames = data;
                     this.countedOpenGames = this.openGames.length;
-                    //this.openGames = data.game.length;
                 })
 
-                backendService.searchFinishedGames(localStorage.getItem('name'))
+                backendService.searchFinishedGames(this.name)
                 .then(data => {
                     this.finishedGames = data;
                     this.countedFinishedGames = this.finishedGames.length;
-                    //console.log(this.finishedGames[0].id);
                 })
             },
             onItemTap(event){
