@@ -10,20 +10,12 @@
 
         <StackLayout orientation="vertical" class="answerMain">
             <StackLayout orientation="horizontal" class="answerRow">
-                <StackLayout orientation="vertical" class="answer">
-                    <Label class="textAnswer" :text="answer1" textWrap="true" />
-                </StackLayout>
-                <StackLayout orientation="vertical" class="answer">
-                    <Label class="textAnswer" :text="answer2" textWrap="true" />
-                </StackLayout>
+                    <Button class="btnAnswer" :text="answer1" textWrap="true" />
+                    <Button class="btnAnswer" :text="answer2" textWrap="true" />
             </StackLayout>
             <StackLayout orientation="horizontal" class="answerRow">
-                <StackLayout orientation="vertical" class="answer">
-                    <Label class="textAnswer" :text="answer3" textWrap="true" />
-                </StackLayout>
-                <StackLayout orientation="vertical" class="answer">
-                    <Label class="textAnswer" :text="answer4" textWrap="true" />
-                </StackLayout>
+                    <Button class="btnAnswer" :text="answer3" textWrap="true" />
+                    <Button class="btnAnswer" :text="answer4" textWrap="true" />
             </StackLayout>
         </StackLayout>
 
@@ -42,6 +34,8 @@
     export default {
         data() {
             return {
+                user: "",
+                dataSet: "",
                 question: "Question",
                 answer1: "Answer 1",
                 answer2: "Answer 2",
@@ -58,32 +52,39 @@
                 //this.$navigateTo(this.$routes[to]);
             },
             getContent() {
-                backendService.getQuestion(this.gameId)
+                backendService.getActualRound(this.gameId, this.user)
                 .then(data => {
-                    console.log("questions: " + data.rounds[0].gameQuestions[1].question);
-                    this.question = data.rounds[0].gameQuestions[1].question;
-                    this.answer1 = data.rounds[0].gameQuestions[1].answers[0];
-                    this.answer2 = data.rounds[0].gameQuestions[1].answers[1];
-                    this.answer3 = data.rounds[0].gameQuestions[1].answers[2];
-                    this.answer4 = data.rounds[0].gameQuestions[1].answers[3];
+                    this.dataSet = data;
+                    this.startQuiz();
                 })
             },
             setProgressbarWidth(percent) {
                 this.columns = percent + "*," + (100 - percent) + "*";
-            }
+            },
+            setUpProgressbar(){
+                let percent = 100;
+                let intervalId = setInterval(() => {
+                    this.setProgressbarWidth(percent);
+                    percent--;
+                    if (percent < 0) {
+                        clearInterval(intervalId);
+                    }
+                }, 120);
+            },
+            startQuiz(){
+                //console.log(this.dataSet.gameQuestions[0]);
+                this.question = this.dataSet.gameQuestions[1].question;
+                this.answer1 = this.dataSet.gameQuestions[1].answers[0];
+                this.answer2 = this.dataSet.gameQuestions[1].answers[1];
+                this.answer3 = this.dataSet.gameQuestions[1].answers[2];
+                this.answer4 = this.dataSet.gameQuestions[1].answers[3];
+                this.setUpProgressbar();
+            },
         },
         mounted() {
             console.log("mounted game: " + this.gameId);
+            this.user = localStorage.getItem('name');
             this.getContent();
-            
-            let percent = 100;
-            let intervalId = setInterval(() => {
-            this.setProgressbarWidth(percent);
-            percent--;
-            if (percent < 0) {
-                clearInterval(intervalId);
-            }
-            }, 100);
         },
     }
 </script>
@@ -126,6 +127,18 @@
         margin-top: 20;
         horizontal-align: center;
         vertical-align: center;
+    }
+
+    .btnAnswer {
+        border-radius: 5;
+        border-width: 1;
+        color: white;
+        background-color: black;
+        margin: 10;
+        font-size: 18;
+        border-color: #2b3c6a;
+        height: 80;
+        width: 45%;
     }
 
     .progressbar {
