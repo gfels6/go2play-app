@@ -123,7 +123,8 @@ export default class BackendService {
         Deletes the relationship between a user and a friend. None of the users is deleted, nor are games
         parameters  - name: unique name of the user
                     - friend: unique name of the friend
-        returns     just a promise
+        returns     throws error if successful "TypeError: Network request failed: JSON Parse error: Unexpected EOF"
+                    because API returns NULL body that can't be handled by fetch()
         author      hessg1
         version     2019-01-02
 
