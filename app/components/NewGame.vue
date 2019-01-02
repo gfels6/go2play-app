@@ -48,10 +48,9 @@
                 backendService.addGame(this.name, friendName)
                 .then(data => {
                     console.log("successfully added Game!");
-                    //console.log(data);
                     this.gameId = data.id;
                     console.log(this.gameId)
-                    this.changeRoute('quizOverview');
+                    this.changeRoute('quiz');
                 });
             },
             loadFriends(){
