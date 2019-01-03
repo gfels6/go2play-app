@@ -10,12 +10,12 @@
 
         <StackLayout orientation="vertical" class="answerMain">
             <StackLayout orientation="horizontal" class="answerRow">
-                    <Button :isEnabled="btnEnabled" :class="[{ green: rightAnswer === 1 },{ red: wrongAnswer === 1 }, 'btnAnswer']" :text="txtAnswer1" textWrap="true"  @tap="onTappedAnswer(1)" />
-                    <Button :isEnabled="btnEnabled" :class="[{ green: rightAnswer === 2 },{ red: wrongAnswer === 2 }, 'btnAnswer']" :text="txtAnswer2" textWrap="true"  @tap="onTappedAnswer(2)" />
+                    <Button :isEnabled="btnEnabled" :class="[{ green: rightAnswer === 1 },{ red: wrongAnswer === 1 },{ grey: randomNumber.includes(1) }, 'btnAnswer']" :text="txtAnswer1" textWrap="true"  @tap="onTappedAnswer(1)" />
+                    <Button :isEnabled="btnEnabled" :class="[{ green: rightAnswer === 2 },{ red: wrongAnswer === 2 },{ grey: randomNumber.includes(2) }, 'btnAnswer']" :text="txtAnswer2" textWrap="true"  @tap="onTappedAnswer(2)" />
             </StackLayout>
             <StackLayout orientation="horizontal" class="answerRow">
-                    <Button :isEnabled="btnEnabled" :class="[{ green: rightAnswer === 3 },{ red: wrongAnswer === 3 }, 'btnAnswer']" :text="txtAnswer3" textWrap="true"  @tap="onTappedAnswer(3)" />
-                    <Button :isEnabled="btnEnabled" :class="[{ green: rightAnswer === 4 },{ red: wrongAnswer === 4 }, 'btnAnswer']" :text="txtAnswer4" textWrap="true"  @tap="onTappedAnswer(4)" />
+                    <Button :isEnabled="btnEnabled" :class="[{ green: rightAnswer === 3 },{ red: wrongAnswer === 3 },{ grey: randomNumber.includes(3) }, 'btnAnswer']" :text="txtAnswer3" textWrap="true"  @tap="onTappedAnswer(3)" />
+                    <Button :isEnabled="btnEnabled" :class="[{ green: rightAnswer === 4 },{ red: wrongAnswer === 4 },{ grey: randomNumber.includes(4) }, 'btnAnswer']" :text="txtAnswer4" textWrap="true"  @tap="onTappedAnswer(4)" />
             </StackLayout>
         </StackLayout>
 
@@ -25,6 +25,15 @@
 
         <Button :class="[{ inactive: !nextQuestion }, 'btn']" :text="btnNext"  @tap="startQuiz()" />
         <Button :class="[{ inactive: !finished }, 'btn']" :text="btnBack"  @tap="changeRoute('main')" />
+
+        <StackLayout orientation="horizontal" class="jokerContainer">
+            <StackLayout :class="[{ inactive: !play }, 'btn-img']" orientation="vertical" padding="10" @tap="jokerTime()" >
+                <Image class="img" src="~/assets/images/addTime.png" />
+            </StackLayout>
+            <StackLayout :class="[{ inactive: !play }, 'btn-img']" orientation="vertical" padding="10" @tap="jokerFifty()" >
+                <Image class="img" src="~/assets/images/5050.png" />
+            </StackLayout>
+        </StackLayout>
 
     </StackLayout>
   </Page>
@@ -56,6 +65,9 @@
                 btnNext: "Nächste Frage",
                 btnBack: "Zurück zum Menü",
                 finished: false,
+                play: true,
+                joker: 0,
+                randomNumber: [],
             };
         },
         name: 'quizgame-view',
@@ -88,8 +100,10 @@
             },
             startQuiz(){
                 this.btnEnabled = true;
-                this.rightAnswer = 0,
-                this.wrongAnswer = 0,
+                this.play = true;
+                this.joker = 0;
+                this.rightAnswer = 0;
+                this.wrongAnswer = 0;
                 this.nextQuestion = false;
                 this.setQuestion(this.questionNumber);
             },
@@ -114,6 +128,7 @@
 
                 clearInterval(this.intervalId);
                 this.btnEnabled = false;
+                this.play = false;
                 if(id > 0 && id <= 4) {
                     this.answers.push(this.positions.indexOf(id)+1);
                 }
@@ -121,8 +136,6 @@
                     this.answers.push(0);
                 }
                 this.rightAnswer = this.positions[0];
-
-                console.log(this.answers);
 
                 if(this.positions[0] == id){
                     console.log("wuhu richtig!");
@@ -143,6 +156,17 @@
                 }
                 
                 
+            },
+            jokerTime() {
+                clearInterval(this.intervalId);
+                this.setUpProgressbar();
+                console.log("Time Joker");
+            },
+            jokerFifty() {
+                //Should be randomized (position 1-3, not only 1 and 2)
+                this.randomNumber.push(this.positions[1]);
+                this.randomNumber.push(this.positions[2]);
+                console.log("FiftyFifty Joker");
             }
         },
         mounted() {
@@ -159,6 +183,21 @@
         color: #ffffff;
     }
 
+    .jokerContainer {
+        horizontal-align: center;
+    }
+
+    .btn-img{
+        border-radius: 5;
+        border-width: 1;
+        color: white;
+        margin: 10;
+        font-size: 22;
+        border-color: #2b3c6a;
+        height: 80;
+        width: 80;
+    }
+
     .questionContent{
         border-radius: 5;
         border-width: 1;
@@ -166,13 +205,13 @@
         margin: 10;
         font-size: 22;
         border-color: #2b3c6a;
-        height: 150;
+        height: 130;
     }
 
     .question{
         vertical-align: center;
         margin-left: 10;
-        margin-top: 50;
+        margin-top: 40;
     }
 
     .btnAnswer {
@@ -180,7 +219,7 @@
         border-width: 1;
         color: white;
         background-color: black;
-        margin: 10;
+        margin: 8,8,8,10;
         font-size: 18;
         border-color: #2b3c6a;
         height: 80;
@@ -207,6 +246,10 @@
 
     .red {
         background-color: red;
+    }
+
+    .grey {
+        background-color: #AAAAAA;
     }
 
     .inactive {
