@@ -4,7 +4,7 @@
     </ActionBar>
 
     <StackLayout orientation="vertical" class="page-content">
-      <Label :text="friendName + ' hat ' + friendGames.length + ' Spiele und ' + friendWalkerCoins + ' WalkerCoins. Wow!\nWie oft du gegen ihn gespielt und gewonnen hast, weiss ich aber noch nicht.'" class="normalText" textWrap="true"/>
+      <Label :text="friendName + ' schätzt seine Fitness mit ' + friendMobility + '% ein,  hat ' + friendGames.length + ' Spiele und ' + friendWalkerCoins + ' WalkerCoins. Wow!\nWie oft du gegen ihn gespielt und gewonnen hast, weiss ich aber noch nicht.'" class="normalText" textWrap="true"/>
       <Button class='btn' text="herausfordern!" @tap="addGame()" />
       <Button class='btn' text="löschen" @tap="deleteFriend()" />
     </StackLayout>
