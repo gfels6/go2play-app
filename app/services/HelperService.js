@@ -84,11 +84,13 @@ export default class HelperService {
       version     2019-01-03
     */
     calculateCoins(steps){
-      console.log("we are here and calculate for " + steps + " steps");
+
 
       return backendService.getUser(localStorage.getItem('name'))
       .then(data => {
         let dailygoal = 80 * data.mobility + 2000;
+        dailygoal = dailygoal > 0 ? dailygoal : 2000; // so we don't run into division by zero if mobility couldn't be loaded
+        steps = steps === undefined ? 0 : steps
         console.log("your goal: " + dailygoal + " - your steps: " + steps);
         let coins = Math.round((steps / dailygoal) * 100);
         // limit number of coins aquired in one round to 500

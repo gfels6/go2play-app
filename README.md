@@ -30,3 +30,4 @@ Overview over the variables in Local Storage
 - name: the user's name
 - steps: the number of steps on this day
 - lastCheckedSteps: date when the total steps where last checked
+- connected: Google Health / Healthkit is connected
