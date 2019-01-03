@@ -23,6 +23,9 @@
             <StackLayout col="0" class="progressbar-value"></StackLayout>
         </GridLayout>
 
+        <Button :class="[{ inactive: !nextQuestion }, 'btn']" :text="btnNext"  @tap="startQuiz()" />
+        <Button :class="[{ inactive: !finished }, 'btn']" :text="btnBack"  @tap="changeRoute('main')" />
+
     </StackLayout>
   </Page>
 </template>
@@ -48,7 +51,11 @@
                 positions: [1,2,3,4],
                 rightAnswer: 0,
                 wrongAnswer: 0,
-                question: 0,
+                questionNumber: 0,
+                nextQuestion: false,
+                btnNext: "Nächste Frage",
+                btnBack: "Zurück zum Menü",
+                finished: false,
             };
         },
         name: 'quizgame-view',
@@ -56,7 +63,7 @@
         methods: {
             changeRoute(to) {
                 // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
-                //this.$navigateTo(this.$routes[to]);
+                this.$navigateTo(this.$routes[to]);
             },
             getContent() {
                 backendService.getActualRound(this.gameId, this.user)
@@ -80,7 +87,11 @@
                 }, 120);
             },
             startQuiz(){
-                this.setQuestion(0);
+                this.btnEnabled = true;
+                this.rightAnswer = 0,
+                this.wrongAnswer = 0,
+                this.nextQuestion = false;
+                this.setQuestion(this.questionNumber);
             },
             setQuestion(number){
                 this.question = this.dataSet.gameQuestions[number].question;
@@ -119,6 +130,19 @@
                     console.log("fautsch");
                     this.wrongAnswer = id;
                 }
+
+                if(this.questionNumber == 0 || this.questionNumber == 1) {
+                    this.questionNumber++;
+                    this.nextQuestion = true;
+                } else if (this.questionNumber == 2) {
+                    backendService.setAnswers(this.gameId, this.user, this.dataSet.roundNumber, this.answers)
+                    .then(data => {
+                        console.log("ichwarhier!");
+                    })
+                    this.finished = true;
+                }
+                
+                
             }
         },
         mounted() {
@@ -183,6 +207,10 @@
 
     .red {
         background-color: red;
+    }
+
+    .inactive {
+        visibility: collapsed;
     }
 
 </style>

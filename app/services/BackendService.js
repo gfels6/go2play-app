@@ -231,20 +231,25 @@ export default class BackendService {
       .then(data => data.json());
     }
 
-    getQuestion(gameId) {
-      return fetch(baseUrl + "/games/" + gameId, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      })
-      .then(data => data.json());
-    }
-
     getActualRound(gameId, name) {
       return fetch(baseUrl + "/games/" + gameId +"/round", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           username: name,
+        }),
+      })
+      .then(data => data.json());
+    }
+
+    setAnswers(gameId, name, round, answers) {
+      return fetch(baseUrl + "/games/" + gameId + "/answer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: name,
+          roundNr: round,
+          answers: answers
         }),
       })
       .then(data => data.json());
