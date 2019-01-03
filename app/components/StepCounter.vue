@@ -4,14 +4,13 @@
     </ActionBar>
     <StackLayout orientation="vertical" class="page-content">
 
-        <Button class='btn' text="Fitbit" @tap="addCounter('fitbit')" />
-        <Button :class="[{ inactive: !isAndroid }, 'btn']" text="Google Fit" @tap="addCounter('googleFit')" />
-        <Button :class="[{ inactive: isAndroid }, 'btn']" text="Apple Healthkit" @tap="addCounter('healthKit')" />
+        <Button :class="[{ inactive: !isAndroid }, 'btn']" :text="androidBtn" @tap="addCounter('googleFit')" />
+        <Button :class="[{ inactive: isAndroid }, 'btn']" :text="iosBtn" @tap="addCounter('healthKit')" />
 
-        <Button class='btn' text="weiter" @tap="changeRoute('main')" />
+        <Button class='btn' text="OK" @tap="changeRoute('main')" />
 
-        <Label class="lbl" :text="stepObjects" />
-        <Label class="lbl" :text="'Heutige Schritte: ' + steps" />
+        <!--Label class="lbl" :text="stepObjects" />
+        <Label class="lbl" :text="'Heutige Schritte: ' + steps" /-->
 
     </StackLayout>
   </Page>
@@ -39,6 +38,8 @@ const helperService = new HelperService()
                 hasHealth: false,
                 stepObjects: "test",
                 steps: "0",
+                androidBtn: localStorage.getItem('connected') ? "Google Fit (verbunden)" : "Google Fit verbinden",
+                iosBtn: localStorage.getItem('connected') ? "HealthKit (verbunden)" : "Health Kit verbinden"
             };
         },
         name: 'stepCounter-view',
@@ -49,7 +50,7 @@ const helperService = new HelperService()
             },
             addCounter(counter) {
             console.log("Wanna add: " + counter);
-                //
+
                 this.health = new HealthData();
                 this.health.isAvailable(false)
                   .then(available => {
@@ -57,13 +58,15 @@ const helperService = new HelperService()
                     console.log(counter + " is available: " + available);
                   });
 
-                // ask user for permission 
+                // ask user for permission
                 if(this.hasHealth){
                   this.health.requestAuthorization([{name: "steps", accessType: "read"}])
                   .then(authorized => console.log("authorized: " + authorized))
                   .catch(error => console.log("Request auth error: ", error));
                 }
-
+                localStorage.setItem('connected',true);
+                this.androidBtn = "verbunden";
+                this.iosBtn = "verbunden";
                 helperService.getSteps()
                 .then(result => {
                     this.stepObjects = result;

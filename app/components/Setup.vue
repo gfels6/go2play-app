@@ -107,6 +107,7 @@
                 .then(data => {
                     console.log("success:" + data);
                     localStorage.setItem('name', this.uniqueName);
+                    localStorage.setItem('connected', false); // initialize local storage variable for checking if stepcounter is connected
                     this.$navigateTo(this.$routes[to]);
                 }).catch(error => {
                     console.log(error);
