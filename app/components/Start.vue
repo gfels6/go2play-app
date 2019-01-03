@@ -24,7 +24,6 @@
       return {
         title: 'Willkommen!',
         subTitle: 'Wie heisst du denn?',
-        btnGo: "Ich will loslegen!",
         tfName: "",
         buttonText: "Namen überprüfen",
         nameChecked: false,
@@ -38,6 +37,15 @@
         this.nameChecked = false;
         this.buttonText = "Namen überprüfen";
       },
+
+      /*
+        Handles the different actions of the button: Check name and if name is available: register
+
+        parameters  none
+        returns     a promise with the number of steps
+        author      hessg1 / gfels6
+        version     2018-12
+      */
       buttonAction () {
         if(!this.nameChecked){
           this.tfName = this.tfName.replace(/\s/g, ''); // remove clearspaces
@@ -48,7 +56,7 @@
             .then(data => {
               if(data.userCount == 0 && this.tfName != "" && this.tfName != "both") { // name can't be empty or "both", since this is a reserved term in the backend
                 this.nameChecked = true;
-                this.buttonText = "weiter";
+                this.buttonText = "registrieren";
               } else if (this.tfName == "") {
                 alert("Name darf nicht leer sein");
               }

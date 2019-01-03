@@ -17,13 +17,7 @@
 </template>
 
 <script>
-/* TODO:
-     - FitBit anschliessen
-     - Google Fit anschliessen
-     - Apple Healthkit anschliessen
-     - Button "leuchten" wenn angeschlossen (oder sonst wie umsetzen)
-     - Design Button "Weiter" weiter unten
-*/
+
 
 import * as platformModule from 'tns-core-modules/platform'
 import { AggregateBy, HealthData, HealthDataType } from "nativescript-health-data";
@@ -38,6 +32,7 @@ const helperService = new HelperService()
                 hasHealth: false,
                 stepObjects: "test",
                 steps: "0",
+                // check if a stepcounter is connected and adjust button-text accordingly
                 androidBtn: localStorage.getItem('connected') ? "Google Fit (verbunden)" : "Google Fit verbinden",
                 iosBtn: localStorage.getItem('connected') ? "HealthKit (verbunden)" : "Health Kit verbinden"
             };
@@ -45,17 +40,22 @@ const helperService = new HelperService()
         name: 'stepCounter-view',
         methods: {
             changeRoute(to) {
-                // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
                 this.$navigateTo(this.$routes[to]);
             },
+
+            /*
+              Adds the systems stepcounter (google fit on Android, HealthKit on iOS)
+              parameters  none
+              returns     nothing
+              author      gfels6, hessg1
+              version     2019-01-02
+            */
             addCounter(counter) {
-            console.log("Wanna add: " + counter);
 
                 this.health = new HealthData();
                 this.health.isAvailable(false)
                   .then(available => {
                     this.hasHealth = available;
-                    console.log(counter + " is available: " + available);
                   });
 
                 // ask user for permission

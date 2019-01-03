@@ -36,11 +36,6 @@
 </template>
 
 <script>
-
-/* TODO:
-     - Anzeige Mobilitylevel (modifizierbar + speicherung Backend)
-     - Button & Routing Schrittzähler
-*/
     require( "nativescript-localstorage" );
     import BackendService from '@/services/BackendService'
     const backendService = new BackendService()
@@ -65,6 +60,14 @@
               // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
               this.$navigateTo(this.$routes[to]);
           },
+          /*
+            Resets the whole app and deletes the local storage
+
+            parameters  none
+            returns     none, just deletes everything
+            author      hessg1
+            version     2018-12-14
+          */
           resetApp(){
             // lets just check if the user is sure
             confirm({
@@ -76,12 +79,22 @@
             .then(choice =>{
               if(choice){
                 console.log("delete local storage...");
+
                 localStorage.clear();
                 this.changeRoute('start');
               }
             });
           },
 
+
+          /*
+            Persists the changes made to the server.
+
+            parameters  none
+            returns     nothing
+            author      hessg1
+            version     2018-12-10
+          */
           saveChanges()
           {
             // rounding is important for consistence, because on iOS the slider

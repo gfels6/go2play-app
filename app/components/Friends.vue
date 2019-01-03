@@ -21,10 +21,6 @@
 </template>
 
 <script>
-/* TODO:
-     - Liste der Freunde
-     - Freund hinzufügen
-*/
 
   import BackendService from '@/services/BackendService';
   const backendService = new BackendService();
@@ -40,8 +36,8 @@
       },
       name: 'friends-view',
       methods: {
+        // navigates to a friends detail page
         onItemTap(event){
-          console.log("You touched " + this.friends[event.index] + " ;)");
           this.$navigateTo(this.$routes['friendDetail'], {
               props: {
                   friendName: this.friends[event.index],
@@ -49,6 +45,14 @@
           });
         },
 
+        /*
+          Searches a friend
+
+          parameters  friend: the friends name
+          returns     nothing, but adds the friend if found and the user accepted
+          author      hessg1
+          version     2018-12-12
+        */
         lookup(friend){
           backendService.searchName(friend)
           .catch(err => {
@@ -106,6 +110,14 @@
           })
         },
 
+        /*
+          Loads the friends from server and displays them on the page.
+
+          parameters  none
+          returns     nothing, but loads friends on to page
+          author      hessg1
+          version     2018-12-12
+        */
         loadFriends(){
           console.log("load friends");
           backendService.getUser(this.name)
@@ -115,10 +127,10 @@
         }
       },
 
+      // initialize some stuff when mounting page
       mounted() {
         this.name = localStorage.getItem('name');
         this.loadFriends();
-        console.log("page mounted, user: " + this.name);
       },
     }
 </script>

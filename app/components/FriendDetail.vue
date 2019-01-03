@@ -30,6 +30,15 @@
       name: 'friendDetail-view',
       props: ['friendName'],
       methods: {
+
+        /*
+          Deletes a Friendshio.
+
+          parameters  none, refers to the friend on whose detail page we are right now
+          returns     nothing
+          author      hessg1
+          version     2019-01-03
+        */
         deleteFriend(){
           confirm({
             title: "Bist du dir sicher?",
@@ -58,16 +67,25 @@
           });
 
         },
+
+        /*
+          Adds a game with this friend
+
+
+          parameters  none
+          returns     nothing, but navigates to the quiz page
+          author      hessg1
+          version     2019-01-02
+        */
         addGame() {
             backendService.addGame(this.name, this.friendName)
             .then(data => {
-                console.log("successfully added Game!");
-                //console.log(data);
                 this.gameId = data.id;
                 console.log(this.gameId)
-                this.changeRoute('quizOverview');
+                this.changeRoute('quiz');
             });
         },
+
         changeRoute(to) {
             // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
             this.$navigateTo(this.$routes[to], { clearHistory: true });
@@ -76,6 +94,7 @@
 
       mounted() {
         this.name = localStorage.getItem('name');
+        // load friends details
         backendService.getUser(this.friendName).then(data => {
               this.friendGender = data.gender;
               this.friendMobility = data.mobility;

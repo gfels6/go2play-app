@@ -25,10 +25,6 @@
 
 <script>
 
-/* TODO:
-     - Verschönern der Buttons
-*/
-
     import BackendService from '@/services/BackendService'
     import HelperService from '@/services/HelperService'
     const backendService = new BackendService()
@@ -51,12 +47,14 @@
             }
         },
         mounted() {
-            console.log("mounted from Main");
+
+            // load walkerCoins from server
             backendService.getUser(localStorage.getItem('name'))
             .then(data => {
               this.walkerCoins = data.walkerCoins;
             })
 
+            // check if we already connected a step counter
             if(localStorage.getItem('connected')){
               // this calls the steps since last check and
               // calculates how much walkerCoins are earned by walking
