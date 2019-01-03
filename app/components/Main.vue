@@ -57,14 +57,16 @@
               this.walkerCoins = data.walkerCoins;
             })
 
-            // this calls the steps since last check and
-            // calculates how much walkerCoins are earned by walking
-            helperService.getStepsSinceLastCheck()
-            .then(steps => helperService.calculateCoins(steps))
-            .then(coins => {
-              this.walkerCoins = this.walkerCoins + coins;
-              backendService.updateParameter(localStorage.getItem('name'),'walkerCoins',this.walkerCoins);
-            });
+            if(localStorage.getItem('connected')){
+              // this calls the steps since last check and
+              // calculates how much walkerCoins are earned by walking
+              helperService.getStepsSinceLastCheck()
+              .then(steps => helperService.calculateCoins(steps))
+              .then(coins => {
+                this.walkerCoins = this.walkerCoins + coins;
+                backendService.updateParameter(localStorage.getItem('name'),'walkerCoins',this.walkerCoins);
+              });
+            }
 
 
             // this calculates the steps of this day
