@@ -76,17 +76,17 @@ export default class HelperService {
       As of now, the calculation is done with a linear function.
 
       TODO: implement a non-linear number, that constrains the maximum number of coins one can collect in one day
+      (workaround: limited the maximum number of coins to 500 per calculation)
 
       parameters  - steps: the number of steps
       returns     a promise with the number of coins
       author      hessg1
-      version     2019-01-02
+      version     2019-01-03
     */
     calculateCoins(steps){
       console.log("we are here and calculate for " + steps + " steps");
 
-      return backendService.getUser('Gabriel')
-
+      return backendService.getUser(localStorage.getItem('name'))
       .then(data => {
         let dailygoal = 80 * data.mobility + 2000;
         console.log("your goal: " + dailygoal + " - your steps: " + steps);
