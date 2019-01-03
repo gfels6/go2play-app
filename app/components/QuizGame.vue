@@ -23,17 +23,23 @@
             <StackLayout col="0" class="progressbar-value"></StackLayout>
         </GridLayout>
 
+        <Label class="coins" :text="lblWalkerCoins + this.walkerCoins" />
+
         <Button :class="[{ inactive: !nextQuestion }, 'btn']" :text="btnNext"  @tap="startQuiz()" />
         <Button :class="[{ inactive: !finished }, 'btn']" :text="btnBack"  @tap="changeRoute('main')" />
 
         <StackLayout orientation="horizontal" class="jokerContainer">
-            <StackLayout :class="[{ inactive: !play }, 'btn-img']" orientation="vertical" padding="10" @tap="jokerTime()" >
+            <StackLayout :class="[{ inactive: !play }, 'btn-img']" orientation="vertical" padding="5" @tap="jokerTime()" >
                 <Image class="img" src="~/assets/images/addTime.png" />
+                <Label class="costs" :text="costTimeJoker" />
             </StackLayout>
-            <StackLayout :class="[{ inactive: !play }, 'btn-img']" orientation="vertical" padding="10" @tap="jokerFifty()" >
+            <StackLayout :isEnabled="btnJokerEnabled" :class="[{ inactive: !play }, { grey: !btnJokerEnabled }, 'btn-img']" orientation="vertical" padding="5" @tap="jokerFifty()" >
                 <Image class="img" src="~/assets/images/5050.png" />
+                <Label class="costs" :text="costFiftyJoker" />
             </StackLayout>
         </StackLayout>
+
+        
 
     </StackLayout>
   </Page>
@@ -68,6 +74,12 @@
                 play: true,
                 joker: 0,
                 randomNumber: [],
+                lblWalkerCoins: "Walker Coins: ",
+                walkerCoins: 0,
+                costFiftyJoker: 50,
+                costTimeJoker: 25,
+                btnJokerEnabled: true,
+
             };
         },
         name: 'quizgame-view',
@@ -99,6 +111,7 @@
                 }, 120);
             },
             startQuiz(){
+                this.getWalkerCoins();
                 this.btnEnabled = true;
                 this.play = true;
                 this.joker = 0;
@@ -158,15 +171,38 @@
                 
             },
             jokerTime() {
-                clearInterval(this.intervalId);
-                this.setUpProgressbar();
-                console.log("Time Joker");
+                if(this.walkerCoins >= this.costTimeJoker) {
+                    let correctCoins = this.walkerCoins - this.costTimeJoker;
+                    this.walkerCoins = correctCoins;
+                    backendService.updateParameter(this.user, "walkerCoins", correctCoins)
+                    .then(data => {
+                    })
+                    
+                    clearInterval(this.intervalId);
+                    this.setUpProgressbar();
+                }
+
             },
             jokerFifty() {
-                //Should be randomized (position 1-3, not only 1 and 2)
-                this.randomNumber.push(this.positions[1]);
-                this.randomNumber.push(this.positions[2]);
-                console.log("FiftyFifty Joker");
+                if(this.walkerCoins >= this.costFiftyJoker) {
+                    let correctCoins = this.walkerCoins - this.costFiftyJoker;
+                    this.walkerCoins = correctCoins;
+                    this.btnJokerEnabled = false;
+                    backendService.updateParameter(this.user, "walkerCoins", correctCoins)
+                    .then(data => {
+                    })
+
+                    //Should be randomized (position 1-3, not only 1 and 2)
+                    this.randomNumber.push(this.positions[1]);
+                    this.randomNumber.push(this.positions[2]);
+                }
+ 
+            },
+            getWalkerCoins(){
+                backendService.getUser(this.user)
+                .then(data => {
+                    this.walkerCoins = data.walkerCoins;
+                })
             }
         },
         mounted() {
@@ -183,6 +219,17 @@
         color: #ffffff;
     }
 
+    .costs {
+        font-size: 16;
+        color: black;
+        horizontal-align: center;
+    }
+
+    .img {
+        height: 50;
+        width: 50;
+    }
+
     .jokerContainer {
         horizontal-align: center;
     }
@@ -190,9 +237,7 @@
     .btn-img{
         border-radius: 5;
         border-width: 1;
-        color: white;
         margin: 10;
-        font-size: 22;
         border-color: #2b3c6a;
         height: 80;
         width: 80;
@@ -254,6 +299,11 @@
 
     .inactive {
         visibility: collapsed;
+    }
+
+    .coins {
+        horizontal-align: center;
+        font-size: 20;
     }
 
 </style>
