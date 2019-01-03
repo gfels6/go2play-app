@@ -2,7 +2,9 @@
   <Page class="page">
     <ActionBar title="Quiz">
     </ActionBar>
+    
     <StackLayout orientation="vertical" class="page-content">
+
 
         <Button class='btn' text="Neues Spiel" @tap="changeRoute('newGame')" />
 
@@ -11,28 +13,35 @@
             <Label class="value" :text="'(' + countedOpenGames + ')'" />
         </StackLayout>
 
-        <ListView class="itemContainer" for="game in openGames" @itemTap="onItemTap" separatorColor="transparent">
-            <v-template>
-                <StackLayout orientation="vertical">
-                    <label :text="game.user1 + ' - ' + game.user2 + '   Am Zug: ' + game.activeUser" class="listItem"/>
-                </StackLayout>
-            </v-template>
-        </ListView>
+        <ScrollView orientation="vertical">
+            <ListView class="itemContainer" for="game in openGames" @itemTap="onItemTap" separatorColor="transparent">
+                <v-template>
+                    <StackLayout orientation="vertical">
+                        <label :text="game.user1 + ' - ' + game.user2 + '   Am Zug: ' + game.activeUser" class="listItem"/>
+                    </StackLayout>
+                </v-template>
+            </ListView>
+        </ScrollView>
 
         <StackLayout orientation="horizontal" class="gameContainer mt">
             <Label class="lbl" :text="lblFinishedGames" />
             <Label class="value" :text="'(' + countedFinishedGames + ')'" />
         </StackLayout>
 
-        <ListView class="itemContainer" for="game in finishedGames" @itemTap="onItemTap" separatorColor="transparent">
-            <v-template>
-                <StackLayout orientation="vertical">
-                    <label :text="game.user1 + ' - ' + game.user2" class="listItem"/>
-                </StackLayout>
-            </v-template>
-        </ListView>
+        <ScrollView orientation="vertical">
+            <ListView class="itemContainer" for="game in finishedGames" @itemTap="onItemTap" separatorColor="transparent">
+                <v-template>
+                    <StackLayout orientation="vertical">
+                        <label :text="game.user1 + ' - ' + game.user2" class="listItem"/>
+                    </StackLayout>
+                </v-template>
+            </ListView>
+        </ScrollView>
+
+       
 
     </StackLayout>
+     
   </Page>
 </template>
 
@@ -122,6 +131,7 @@
 
     .itemContainer {
         margin-top: 7;
+        height: 200;
     }
 
     .mt {
