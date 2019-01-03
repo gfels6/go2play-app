@@ -10,12 +10,12 @@
 
         <StackLayout orientation="vertical" class="answerMain">
             <StackLayout orientation="horizontal" class="answerRow">
-                    <Button :isEnabled="btnEnabled" class="btnAnswer" :text="txtAnswer1" textWrap="true"  @tap="onTappedAnswer(1)" />
-                    <Button :isEnabled="btnEnabled" class="btnAnswer" :text="txtAnswer2" textWrap="true"  @tap="onTappedAnswer(2)" />
+                    <Button :isEnabled="btnEnabled" :class="[{ green: rightAnswer === 1 },{ red: wrongAnswer === 1 }, 'btnAnswer']" :text="txtAnswer1" textWrap="true"  @tap="onTappedAnswer(1)" />
+                    <Button :isEnabled="btnEnabled" :class="[{ green: rightAnswer === 2 },{ red: wrongAnswer === 2 }, 'btnAnswer']" :text="txtAnswer2" textWrap="true"  @tap="onTappedAnswer(2)" />
             </StackLayout>
             <StackLayout orientation="horizontal" class="answerRow">
-                    <Button :isEnabled="btnEnabled" class="btnAnswer" :text="txtAnswer3" textWrap="true"  @tap="onTappedAnswer(3)" />
-                    <Button :isEnabled="btnEnabled" class="btnAnswer" :text="txtAnswer4" textWrap="true"  @tap="onTappedAnswer(4)" />
+                    <Button :isEnabled="btnEnabled" :class="[{ green: rightAnswer === 3 },{ red: wrongAnswer === 3 }, 'btnAnswer']" :text="txtAnswer3" textWrap="true"  @tap="onTappedAnswer(3)" />
+                    <Button :isEnabled="btnEnabled" :class="[{ green: rightAnswer === 4 },{ red: wrongAnswer === 4 }, 'btnAnswer']" :text="txtAnswer4" textWrap="true"  @tap="onTappedAnswer(4)" />
             </StackLayout>
         </StackLayout>
 
@@ -46,6 +46,9 @@
                 columns: "",
                 btnEnabled: true,
                 positions: [1,2,3,4],
+                rightAnswer: 0,
+                wrongAnswer: 0,
+                question: 0,
             };
         },
         name: 'quizgame-view',
@@ -72,6 +75,7 @@
                     percent--;
                     if (percent < 0) {
                         clearInterval(this.intervalId);
+                        this.onTappedAnswer(0);
                     }
                 }, 120);
             },
@@ -99,12 +103,21 @@
 
                 clearInterval(this.intervalId);
                 this.btnEnabled = false;
-                this.answers.push(this.positions.indexOf(id));
+                if(id > 0 && id <= 4) {
+                    this.answers.push(this.positions.indexOf(id)+1);
+                }
+                else{
+                    this.answers.push(0);
+                }
+                this.rightAnswer = this.positions[0];
 
-                if(this.positions.indexOf(id) == 0){
+                console.log(this.answers);
+
+                if(this.positions[0] == id){
                     console.log("wuhu richtig!");
                 } else {
                     console.log("fautsch");
+                    this.wrongAnswer = id;
                 }
             }
         },
@@ -162,6 +175,14 @@
     .progressbar-value {
         background: #53ba82;
         border-radius: 10;
+    }
+
+    .green {
+        background-color: #53ba82;
+    }
+
+    .red {
+        background-color: red;
     }
 
 </style>
