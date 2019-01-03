@@ -10,12 +10,12 @@
 
         <StackLayout orientation="vertical" class="answerMain">
             <StackLayout orientation="horizontal" class="answerRow">
-                    <Button class="btnAnswer" :text="txtAnswer1" textWrap="true"  @tap="onTappedAnswer(1)" />
-                    <Button class="btnAnswer" :text="txtAnswer2" textWrap="true"  @tap="onTappedAnswer(2)" />
+                    <Button :isEnabled="btnEnabled" class="btnAnswer" :text="txtAnswer1" textWrap="true"  @tap="onTappedAnswer(1)" />
+                    <Button :isEnabled="btnEnabled" class="btnAnswer" :text="txtAnswer2" textWrap="true"  @tap="onTappedAnswer(2)" />
             </StackLayout>
             <StackLayout orientation="horizontal" class="answerRow">
-                    <Button class="btnAnswer" :text="txtAnswer3" textWrap="true"  @tap="onTappedAnswer(3)" />
-                    <Button class="btnAnswer" :text="txtAnswer4" textWrap="true"  @tap="onTappedAnswer(4)" />
+                    <Button :isEnabled="btnEnabled" class="btnAnswer" :text="txtAnswer3" textWrap="true"  @tap="onTappedAnswer(3)" />
+                    <Button :isEnabled="btnEnabled" class="btnAnswer" :text="txtAnswer4" textWrap="true"  @tap="onTappedAnswer(4)" />
             </StackLayout>
         </StackLayout>
 
@@ -44,6 +44,7 @@
                 answers: [],
                 intervalId: "",
                 columns: "",
+                btnEnabled: true,
                 positions: [1,2,3,4],
             };
         },
@@ -97,10 +98,8 @@
             onTappedAnswer(id){
 
                 clearInterval(this.intervalId);
-                //console.log(this.positions);
-                //console.log(this.positions.indexOf(id));
-
-                //this.answers.push(this.positions.indexOf(id));
+                this.btnEnabled = false;
+                this.answers.push(this.positions.indexOf(id));
 
                 if(this.positions.indexOf(id) == 0){
                     console.log("wuhu richtig!");
