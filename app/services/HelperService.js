@@ -38,8 +38,8 @@ export default class HelperService {
         version     2019-01-02
       */
     getStepsSinceLastCheck(){
-      // check when the steps where last checked, or set this date to a week ago if it never was checked
-      let since = localStorage.getItem('lastCheckedSteps') || new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+      // check when the steps where last checked, or set this date to five days ago if it never was checked
+      let since = localStorage.getItem('lastCheckedSteps') || new Date(new Date().getTime() - 5 * 24 * 60 * 60 * 1000);
       console.log("get steps since last check");
       console.log("since: " + since);
 
@@ -90,7 +90,10 @@ export default class HelperService {
       .then(data => {
         let dailygoal = 80 * data.mobility + 2000;
         console.log("your goal: " + dailygoal + " - your steps: " + steps);
-        return Math.round((steps / dailygoal) * 100);
+        let coins = Math.round((steps / dailygoal) * 100);
+        // limit number of coins aquired in one round to 500
+        coins = coins > 500 ? 500 : coins;
+        return coins;
       })
       .catch(err => console.log(err));
 
