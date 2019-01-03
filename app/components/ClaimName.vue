@@ -31,8 +31,7 @@
               localStorage.setItem('name', this.uniqueName);
 
             // und weiternavigieren
-              // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
-              this.$navigateTo(this.$routes[to]);
+              this.$navigateTo(this.$routes[to], { clearHistory: true });
           }
         },
     }

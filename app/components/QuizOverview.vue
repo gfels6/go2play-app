@@ -27,12 +27,17 @@
         </StackLayout>
 
         <Button :class="[{ inactive: !yourTurn }, 'btn']" text="Spielen" @tap="changeRoute('quizGame')" />
+        <Button :class="[{ inactive: game.activeRound > 1 }, 'btn']" text="löschen" @tap="deleteThisGame()" />
 
     </StackLayout>
   </Page>
 </template>
 
 <script>
+
+  import BackendService from '@/services/BackendService'
+  const backendService = new BackendService()
+
     export default {
         data() {
             return {
@@ -76,6 +81,23 @@
                     this.enemy = this.game.user1;
                 }
             },
+
+            // deletes this game
+            deleteThisGame(){
+              backendService.deleteGame(this.user, this.game.id)
+              .then(res => {
+                this.changeRoute('quiz');
+              })
+              .catch(err => {
+                // this is because the server responds with an empty body, that's not a proper error
+                if(err = "TypeError: Network request failed: JSON Parse error: Unexpected EOF"){
+                  this.changeRoute('quiz');
+                }
+                else{
+                  console.log("error " + err);
+                }
+              });
+            }
         },
         mounted() {
             this.user = localStorage.getItem('name');
@@ -99,12 +121,14 @@
 
             if(this.game.activeUser == "game finished"){
                 this.finished = true;
-                this.userWon = this.game.winner; 
+                this.userWon = this.game.winner;
             }
 
             if(this.game.activeUser == this.user){
                 this.yourTurn = true;
             }
+
+            console.log("activeround:" + this.game.activeRound);
 
         }
     }

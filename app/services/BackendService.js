@@ -20,6 +20,36 @@ export default class BackendService {
         .then(data => data.json());
       }
 
+
+      /*
+        Deletes a game
+        parameters  - name: name of one of the users in the game
+                    - id: id of the game
+        returns     nothing
+        author      hessg1
+        version     2019-01-03
+      */
+      deleteGame(name, id) {
+        console.log("delete game: " + id + " / user: " + name);
+        return fetch(baseUrl + "/users/" + name + "/games/" + id, {
+         method: "DELETE",
+         headers: { "Content-Type": "application/json" }
+        })
+        .then((res) => {
+          console.log("game deleted");
+          res.text()
+        })
+	       .then((text) => {
+           console.log("delete game we are here");
+           text.length ? JSON.parse(text) : {};
+
+         })
+	        .catch((error) => {
+              console.log("caught to throw");
+		          throw error;
+	        });
+      }
+
       /*
         Select a user with all its information
         parameters  - name: unique name of the user
