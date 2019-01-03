@@ -127,9 +127,6 @@
             if(this.game.activeUser == this.user){
                 this.yourTurn = true;
             }
-
-            console.log("activeround:" + this.game.activeRound);
-
         }
     }
 </script>

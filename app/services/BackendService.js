@@ -25,7 +25,8 @@ export default class BackendService {
         Deletes a game
         parameters  - name: name of one of the users in the game
                     - id: id of the game
-        returns     nothing
+        returns     throws error if successful "TypeError: Network request failed: JSON Parse error: Unexpected EOF"
+                    because API returns NULL body that can't be handled by fetch()
         author      hessg1
         version     2019-01-03
       */
