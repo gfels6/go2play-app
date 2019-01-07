@@ -45,7 +45,8 @@ export default {
       steps: 0,
       // an object wrapping the image path, so it can be passed to TomService
       tom: {
-        img: "~/assets/images/tom.png"
+        img: "~/assets/images/tom.png",
+        saidsomething: false
       }
     };
   },
@@ -65,7 +66,7 @@ export default {
     version     2019-01-07
     */
     tomTurnschuh(){
-      help.sayWithOptions("Was möchtest du wissen?", "Deine Frage an Tom:", ["Was sind Walker Coins?", "Wie bekomme ich Walker Coins?", "Wie kann ich spielen?", "Wie funktionieren die Joker?", "Wer ist dieser Tom?"])
+      help.sayWithOptions("Was möchtest du wissen?", "Deine Frage an Tom:", ["Was sind Walker Coins?", "Wie bekomme ich Walker Coins?", "Wie kann ich spielen?", "Wie funktionieren die Joker?", "Wer ist dieser Tom Turnschuh?"])
       .then(question => {
         if(question == "Was sind Walker Coins?"){
           help.say("Walker Coins sind die Währung in diesem Spiel.\nDu kannst sie ganz einfach verdienen, indem du täglich Schritte gehst.\n\nVerbinde dazu in den Einstellungen einen Schrittzähler.")
@@ -87,7 +88,7 @@ export default {
   },
   mounted() {
 
-    // initialize Tom Turbo
+    // initialize Tom Turnschuh
     help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
 
     // load walkerCoins from server
