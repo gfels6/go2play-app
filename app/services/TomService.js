@@ -9,6 +9,7 @@ const colour = new Color("#444444");
 var tom = {img: null};
 var Vibrate = null;
 var vib = null;
+var last = "";
 
 
 export default class TomService {
@@ -27,22 +28,44 @@ export default class TomService {
     Vibrate  = vibrator; //require("nativescript-vibrate").Vibrate;
     vib = new Vibrate();
     tom = aTom;
+    last = "";
   }
 
   /*
   Displays the user a message from tom.
 
-    parameters  - title: The title of the notification
-                - text: The main text of the notification
-    returns     -
+    parameters  - text: The main text of the notification
+    returns     nothing
     author      hessg1
     version     2019-01-06
   */
-  say(title, text) {
+  say(text){
+    let milliseconds = (text.length > 200) ? 10000 : 5000; // longer strings must be displayed for a longer time
+    this.last = text;
     feedBack.show({
-      title: title,
+      title: "Tom Turnschuh sagt:",
       message: text,
-      duration: 10000,
+      duration: milliseconds,
+      backgroundColor: colour,
+      onHide: () => {tom.img = "~/assets/images/tom.png"}
+    });
+    tom.img = "~/assets/images/tom_laugh.png";
+    tom.saidsomething = true;
+  }
+
+  /*
+  Repeats the last message from tom
+
+    parameters  none
+    returns     nothing
+    author      hessg1
+    version     2019-01-07
+  */
+  sayLast(){
+    feedBack.show({
+      title: "Tom Turnschuh sagt:",
+      message: last,
+      duration: 5000,
       backgroundColor: colour,
       onHide: () => {tom.img = "~/assets/images/tom.png"}
     });
@@ -52,34 +75,34 @@ export default class TomService {
   /*
   Displays a question from tom and allows the user to pick one of several answers.
 
-    parameters  - title: The title of the notification
-                - text: The main text of the notification
+    parameters  - text: The main text of the notification
                 - answers: an array with the options the user can pick for answering
     returns     - a promise with the text of the answer the user picked
     author      hessg1
     version     2019-01-06
   */
-  sayWithOptions(title, text, shorttext, answers) {
+  sayWithOptions(text, shorttext, answers) {
     tom.img = "~/assets/images/tom_laugh.png";
     return new Promise(function (resolve, reject) {
       feedBack.show({
-        title: title,
+        title: "Tom Turnschuh sagt:",
         message: text,
         duration: 10000,
         backgroundColor: colour,
         onHide: () => {
           tom.img = "~/assets/images/tom_dontknow.png";
-          action(shorttext, "abbrechen", answers)
-            .then(result => {
-              tom.img = "~/assets/images/tom_laugh.png";
-              if(result == "abbrechen") reject("no response")
-              else resolve(result);
-            });
         }
       });
+      setTimeout(()=>{
+        action(shorttext, "abbrechen", answers)
+          .then(result => {
+            tom.img = "~/assets/images/tom_laugh.png";
+            if(result == "abbrechen") reject("no response")
+            else resolve(result);
+          });
+        }, 500);
     });
   }
-
 
   /*
   Sets a Notification Badge on the Tom icon and vibrates the phone

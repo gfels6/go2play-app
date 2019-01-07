@@ -81,7 +81,7 @@
                 console.log("delete local storage...");
 
                 localStorage.clear();
-                this.changeRoute('start');
+                this.$navigateTo(this.$routes['start'],{ clearHistory: true });
               }
             });
           },
