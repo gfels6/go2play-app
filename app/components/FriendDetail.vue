@@ -75,7 +75,6 @@
           })
           .then(choice =>{
             if(choice){
-              // TODO: should the games with this friend also be deleted?
               backendService.deleteFriendship(this.name, this.friendName)
               .then(x => {
                 this.changeRoute("main");
@@ -115,7 +114,7 @@
 
         changeRoute(to) {
             // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to]
-            this.$navigateTo(this.$routes[to], { clearHistory: true });
+            this.$navigateTo(this.$routes[to]);
         },
       },
 

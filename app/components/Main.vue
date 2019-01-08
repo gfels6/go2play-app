@@ -19,7 +19,7 @@
 
     <Button class='btn' text="Quiz" @tap="changeRoute('quiz')" />
     <Button class='btn' text="Freunde" @tap="changeRoute('friends')" />
-    <Button class='btn' text="Fortschritt" @tap="changeRoute('progress')" />
+    <Button class='btn' text="Statistik" @tap="changeRoute('progress')" />
     <Button class='btn' text="Einstellungen" @tap="changeRoute('settings')" />
 
   </StackLayout>
@@ -70,7 +70,7 @@ export default {
     version     2019-01-07
     */
     tomTurnschuh(){
-      help.sayWithOptions("Was möchtest du wissen?", "Deine Frage an Tom:", ["Was sind Walker Coins?", "Wie bekomme ich Walker Coins?", "Wie kann ich spielen?", "Wie funktionieren die Joker?", "Wer ist dieser Tom Turnschuh?"])
+      help.sayWithOptions("Was möchtest du wissen?", ["Was sind Walker Coins?", "Wie bekomme ich Walker Coins?", "Wie kann ich spielen?", "Wie funktionieren die Joker?", "Wer ist dieser Tom Turnschuh?"])
       .then(question => {
         if(question == "Was sind Walker Coins?"){
           help.say("Walker Coins sind die Währung in diesem Spiel.\nDu kannst sie ganz einfach verdienen, indem du täglich Schritte gehst.\n\nVerbinde dazu in den Einstellungen einen Schrittzähler.")

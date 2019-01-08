@@ -4,6 +4,7 @@ import { Color } from "tns-core-modules/color";
 const feedBack = new Feedback();
 // the color of toms toasts
 const colour = new Color("#444444");
+const duration = 6000;
 
 //to be initialized in constructor
 var tom = {img: null};
@@ -40,12 +41,11 @@ export default class TomService {
     version     2019-01-06
   */
   say(text){
-    let milliseconds = (text.length > 200) ? 10000 : 5000; // longer strings must be displayed for a longer time
     this.last = text;
     feedBack.show({
       title: "Tom Turnschuh sagt:",
       message: text,
-      duration: milliseconds,
+      duration: (text.length > 200) ? 2*duration : duration, // longer strings must be displayed for a longer time
       backgroundColor: colour,
       onHide: () => {tom.img = "~/assets/images/tom.png"}
     });
@@ -81,7 +81,7 @@ export default class TomService {
     author      hessg1
     version     2019-01-06
   */
-  sayWithOptions(text, shorttext, answers) {
+  sayWithOptions(text, answers) {
     tom.img = "~/assets/images/tom_laugh.png";
     return new Promise(function (resolve, reject) {
       feedBack.show({
@@ -94,10 +94,13 @@ export default class TomService {
         }
       });
       setTimeout(()=>{
-        action(shorttext, "abbrechen", answers)
+        action("Deine Frage an Tom:", "abbrechen", answers)
           .then(result => {
+            feedBack.hide();
             tom.img = "~/assets/images/tom_laugh.png";
-            if(result == "abbrechen") reject("no response")
+            if(result == "abbrechen") {
+              reject("no response");
+            }
             else resolve(result);
           });
         }, 500);
