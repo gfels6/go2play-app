@@ -208,6 +208,8 @@ export default {
 
         clearInterval(this.intervalId);
         this.setUpProgressbar();
+      } else {
+        help.say("Du hast leider nicht genügend Walker Coins um den Zeit-Joker zu nutzen.");
       }
 
     },
@@ -224,7 +226,7 @@ export default {
         this.randomNumber.push(this.positions[1]);
         this.randomNumber.push(this.positions[2]);
       } else {
-        //Toast should be implemented here
+        help.say("Du hast leider nicht genügend Walker Coins um den 50:50-Joker zu nutzen.");
       }
 
     },
