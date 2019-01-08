@@ -54,11 +54,11 @@
             return {
                 user: "",
                 dataSet: "",
-                question: "Question",
-                txtAnswer1: "Answer 1",
-                txtAnswer2: "Answer 2",
-                txtAnswer3: "Answer 3",
-                txtAnswer4: "Answer 4",
+                question: "Frage",
+                txtAnswer1: "Antwort 1",
+                txtAnswer2: "Antwort 2",
+                txtAnswer3: "Antwort 3",
+                txtAnswer4: "Antwort 4",
                 answers: [],
                 intervalId: "",
                 columns: "",
@@ -117,12 +117,12 @@
                 this.rightAnswer = 0;
                 this.wrongAnswer = 0;
                 this.nextQuestion = false;
+                this.randomNumber = [];
                 this.setQuestion(this.questionNumber);
             },
             setQuestion(number){
                 this.question = this.dataSet.gameQuestions[number].question;
                 this.shuffleArray(this.positions);
-                console.log("Nach Shuffle: " + this.positions);
 
                 for (let i = 0; i < this.positions.length; i++) {
                     this["txtAnswer"+(this.positions[i])] = this.dataSet.gameQuestions[number].answers[i];
@@ -150,9 +150,7 @@
                 this.rightAnswer = this.positions[0];
 
                 if(this.positions[0] == id){
-                    console.log("wuhu richtig!");
                 } else {
-                    console.log("fautsch");
                     this.wrongAnswer = id;
                 }
 
@@ -162,7 +160,7 @@
                 } else if (this.questionNumber == 2) {
                     backendService.setAnswers(this.gameId, this.user, this.dataSet.roundNumber, this.answers)
                     .then(data => {
-                        console.log("ichwarhier!");
+                        console.log("answer logged into backend!");
                     })
                     this.finished = true;
                 }
@@ -194,6 +192,8 @@
                     //Should be randomized (position 1-3, not only 1 and 2)
                     this.randomNumber.push(this.positions[1]);
                     this.randomNumber.push(this.positions[2]);
+                } else {
+                    //Toast should be implemented here
                 }
  
             },
