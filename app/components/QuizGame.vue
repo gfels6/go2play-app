@@ -86,7 +86,6 @@
         props: ['gameId'],
         methods: {
             changeRoute(to) {
-                // zurückbutton geht dann nicht mehr ',{ clearHistory: true }' nach [to] 
                 this.$navigateTo(this.$routes[to]);
             },
             getContent() {
