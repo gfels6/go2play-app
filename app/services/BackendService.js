@@ -262,6 +262,14 @@ export default class BackendService {
       .then(data => data.json());
     }
 
+    /*
+      Search for the actual round (also check if its your turn)
+      parameters  - name: name of the user who wants to play
+                  - gameId: id of the game
+      returns     a promise with the questions and answers (3x for the hole round)
+      author      gfels6
+      version     2018-12-30
+    */
     getActualRound(gameId, name) {
       return fetch(baseUrl + "/games/" + gameId +"/round", {
         method: "POST",
@@ -273,6 +281,16 @@ export default class BackendService {
       .then(data => data.json());
     }
 
+    /*
+      Set the answers into the game/round object
+      parameters  - gameID: id of the game
+                  - name: name of the user who played the game
+                  - round: which round is actual playing (needs to be correct)
+                  - answers: array with the answers like this [1,2,3]
+      returns     a promise
+      author      gfels6
+      version     2018-12-30
+    */
     setAnswers(gameId, name, round, answers) {
       return fetch(baseUrl + "/games/" + gameId + "/answer", {
         method: "POST",
