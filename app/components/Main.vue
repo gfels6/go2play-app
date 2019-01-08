@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       lblSteps: "Schritte:",
-      lblWalkerCoins: "Walker$:",
+      lblWalkerCoins: "Walker Coins:",
       walkerCoins: 0,
       steps: 0,
       // an object wrapping the image path, so it can be passed to TomService
