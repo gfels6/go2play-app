@@ -1,10 +1,14 @@
 <template>
   <Page class="page">
     <ActionBar title="Meine Freunde">
+      <NavigationButton @tap="goHome" text="Home" android.systemIcon="ic_menu_back" />
+      <ActionItem @tap="tomTurnschuh" ios.position="right" android.position="actionBar" >
+      <StackLayout><Image :src="tom.img" width="40" height="40" /></StackLayout>
+      </ActionItem>
     </ActionBar>
 
     <StackLayout orientation="vertical" class="page-content">
-      <Label :text="'Du hast ' + friends.length + ' Freunde:'" textWrap="true" class="normalText" />
+      <Label :text="'Du hast ' + friends.length + ' Freund' + (friends.length > 1 ? 'e':'')   +':'" textWrap="true" class="normalText" />
       <ListView for="friend in friends" @itemTap="onItemTap" separatorColor="transparent">
         <v-template>
           <label :text="friend" class="listItem"/>
@@ -24,6 +28,8 @@
 
   import BackendService from '@/services/BackendService';
   const backendService = new BackendService();
+  import TomService from '@/services/TomService'
+  let help = null;
 
     export default {
       data() {
@@ -31,11 +37,35 @@
           name: "",
           friends: [],
           friendName: "",
-          friendButton: "suchen"
+          friendButton: "suchen",
+          // an object wrapping the image path, so it can be passed to TomService
+          tom: {
+            img: "~/assets/images/tom.png",
+            saidsomething: false,
+            notif_text: ""
+          }
         };
       },
       name: 'friends-view',
       methods: {
+
+        // navigates to the main screen
+        goHome(){
+          this.$navigateTo(this.$routes['main'],{ clearHistory: true });
+        },
+
+        /*
+        This function handles the push events on Tom Turnschuh Icon in the Actionbar
+
+        parameters  none
+        returns     nothing
+        author      hessg1
+        version     2019-01-07
+        */
+        tomTurnschuh(){
+          help.say("Hier siehst du deine Freunde im Spiel und kannst neue Freunde hinzufügen.")
+        },
+
         // navigates to a friends detail page
         onItemTap(event){
           this.$navigateTo(this.$routes['friendDetail'], {
@@ -60,28 +90,17 @@
           })
           .then(data =>{
             if(data.userCount == 0){
-              alert({
-                title: "Nicht gefunden",
-                message: "Sieht aus als wäre " + friend + " noch nicht registriert. Vielleicht hast du dich vertippt?",
-                okButtonText: "OK"
-              });
+              help.say("Sieht aus als wäre " + friend + " noch nicht registriert. Vielleicht hast du dich vertippt?");
             }
             if(data.userCount == 1){
               if(this.friends.includes(friend)){
-                alert({
-                  title: "Oops",
-                  message: friend + " ist bereits auf der Freundesliste!",
-                  okButtonText: "OK"
-                });
+                help.say(friend + " ist bereits auf der Freundesliste!");
               }
               else if (friend == this.name) {
-                alert({
-                  title: "Oops",
-                  message: "Du kannst dich nicht selber als Freund hinzufügen.",
-                  okButtonText: "OK"
-                });
+                help.say("Hast du keine anderen Freunde als dich selbst?");
               }
               else{
+                help.say(friend + " mag ich auch! :)");
                 confirm({
                   title: "Freund gefunden",
                   message: "Möchtest du " + friend + " als zu deinen Freunden hinzufügen?",
@@ -131,6 +150,8 @@
       mounted() {
         this.name = localStorage.getItem('name');
         this.loadFriends();
+        // initialize Tom Turnschuh
+        help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
       },
     }
 </script>

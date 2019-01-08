@@ -46,7 +46,8 @@ export default {
       // an object wrapping the image path, so it can be passed to TomService
       tom: {
         img: "~/assets/images/tom.png",
-        saidsomething: false
+        saidsomething: false,
+        notif_text: ""
       }
     };
   },

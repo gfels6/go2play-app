@@ -8,7 +8,7 @@
 
 ``
 ## put this with the imports:```
-import TomService from '@/services/TomService'
+import TomService from '@/services/TomService';
 let help = null;
 
 
