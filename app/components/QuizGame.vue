@@ -48,6 +48,9 @@
 <script>
     import BackendService from '@/services/BackendService';
     const backendService = new BackendService();
+    import * as application from "application";
+    import { AndroidApplication, AndroidActivityBackPressedEventData } from "application";
+    import { isAndroid } from "platform";
 
     export default {
         data() {
@@ -208,6 +211,12 @@
             console.log("mounted game: " + this.gameId);
             this.user = localStorage.getItem('name');
             this.getContent();
+
+            if (isAndroid) {
+                application.android.on(AndroidApplication.activityBackPressedEvent, (AndroidActivityBackPressedEventData) => {
+                    AndroidActivityBackPressedEventData.cancel = true; // prevents default back button behavior
+                })
+            }
         },
     }
 </script>

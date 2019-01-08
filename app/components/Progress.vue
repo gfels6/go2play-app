@@ -42,9 +42,7 @@
             },
             evaluateMatches(userData){
                 this.gamesTotal = userData.matches.length;
-
                 for (let i = 0; i < userData.matches.length; i++) {
-                    console.log(userData.matches[i].result);
                     if (userData.matches[i].result == "won") {
                         this.gamesWon++;
                     } else if (userData.matches[i].result == "lost") {

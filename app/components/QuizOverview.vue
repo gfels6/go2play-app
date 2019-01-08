@@ -36,9 +36,6 @@
 <script>
 
     import BackendService from '@/services/BackendService';
-    import * as application from "application";
-    import { AndroidApplication, AndroidActivityBackPressedEventData } from "application";
-    import { isAndroid } from "platform";
     const backendService = new BackendService()
 
     export default {
@@ -133,11 +130,6 @@
                 this.yourTurn = true;
             }
 
-            if (isAndroid) {
-                application.android.on(AndroidApplication.activityBackPressedEvent, (AndroidActivityBackPressedEventData) => {
-                    AndroidActivityBackPressedEventData.cancel = true; // prevents default back button behavior
-                })
-            }
         }
     }
 </script>
