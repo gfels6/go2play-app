@@ -109,17 +109,30 @@ export default {
 
     // check if we already connected a step counter
     if(localStorage.getItem('connected')){
+      console.log("counter connected");
       // this calls the steps since last check and
       // calculates how much walkerCoins are earned by walking
       helperService.getStepsSinceLastCheck()
-      .then(steps => helperService.calculateCoins(steps))
-      .then(coins => {
-        this.walkerCoins = this.walkerCoins + coins;
-        backendService.updateParameter(localStorage.getItem('name'),'walkerCoins',this.walkerCoins);
+      .then(steps => {helperService.calculateCoins(steps)
+        .then(coins => {
+          // log steps and generated coins
+          var stepLog = localStorage.getItem('stepsLog');
+          stepLog = Array.isArray(stepLog) ? stepLog : []; // catch error by users older than this function
+          stepLog.push({date: new Date().getTime(), steps: steps, coins: coins});
+          localStorage.setItemObject('stepsLog', stepLog);
 
-        if(coins > 1){
-          help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten " + coins + " Walker Coins verdient!\n\nDu hast insgesamt " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");
-        }
+          // calculate and save total walker coins
+          this.walkerCoins = this.walkerCoins + coins;
+          backendService.updateParameter(localStorage.getItem('name'),'walkerCoins',this.walkerCoins);
+
+          // display a message from Tom if we earned any coins
+          if(coins > 1){
+            help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten " + coins + " Walker Coins verdient!\n\nDu hast insgesamt " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");
+          }
+          if(coins == 500){
+            help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten 500 Walker Coins verdient!\nLogge dich häufiger ein, um mehr Coins zu verdienen.\n\nInsgesamt hast du " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");
+          }
+        });
       });
     }
 

@@ -94,8 +94,6 @@ export default {
 
     changeRoute(to) {
       let bday = this.selectedDate.getDate() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getFullYear();
-      //console.log("Gender: " + this.selectedGender + " Geburtsdatum: " + this.selectedDate + " Mobility: " + this.sliderValue);
-      //console.log("bday: " + bday);
       if(this.selectedGender === "") {
         action("Bitte gib dein Geschlecht an.", "abbrechen", ["weiblich", "männlich"])
         .then(result => {
@@ -120,6 +118,7 @@ export default {
       .then(data => {
         console.log("success:" + data);
         localStorage.setItem('name', this.uniqueName);
+        localStorage.setItem('stepsLog', [{date: new Date().getTime(), steps: 0}]); // initialize the log for steps
         localStorage.setItem('connected', false); // initialize local storage variable for checking if stepcounter is connected
         this.$navigateTo(this.$routes[to]);
       }).catch(error => {

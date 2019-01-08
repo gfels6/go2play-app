@@ -31,3 +31,4 @@ Overview over the variables in Local Storage
 - steps: the number of steps on this day
 - lastCheckedSteps: date when the total steps where last checked
 - connected: Google Health / Healthkit is connected
+- stepsLog: Array with objects containing evaluated: {date: the timestamp, steps: number of steps logged, coins: number of walkercoins added}
