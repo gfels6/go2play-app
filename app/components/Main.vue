@@ -31,6 +31,9 @@
 import BackendService from '@/services/BackendService'
 import HelperService from '@/services/HelperService'
 import TomService from '@/services/TomService'
+import * as application from "application";
+import { AndroidApplication, AndroidActivityBackPressedEventData } from "application";
+import { isAndroid } from "platform";
 let help = null;
 const backendService = new BackendService()
 const helperService = new HelperService()
@@ -88,6 +91,12 @@ export default {
     }
   },
   mounted() {
+
+    if (isAndroid) {
+      application.android.on(AndroidApplication.activityBackPressedEvent, (AndroidActivityBackPressedEventData) => {
+        AndroidActivityBackPressedEventData.cancel = false; // reactivate default back button behavior
+      })
+    }
 
     // initialize Tom Turnschuh
     help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
