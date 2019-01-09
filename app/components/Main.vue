@@ -35,8 +35,8 @@ import * as application from "application";
 import { AndroidApplication, AndroidActivityBackPressedEventData } from "application";
 import { isAndroid } from "platform";
 let help = null;
-const backendService = new BackendService()
-const helperService = new HelperService()
+const backendService = new BackendService();
+const helperService = new HelperService();
 
 
 export default {
@@ -107,46 +107,52 @@ export default {
     backendService.getUser(localStorage.getItem('name'))
     .then(data => {
       this.walkerCoins = data.walkerCoins;
+
+      // check if we already connected a step counter
+      if(localStorage.getItem('connected')){
+        // this calls the steps since last check and
+        // calculates how much walkerCoins are earned by walking
+        helperService.getStepsSinceLastCheck()
+        .then(steps => {helperService.calculateCoins(steps)
+          .then(coins => {
+            // log steps and generated coins
+            var stepLog = localStorage.getItem('stepsLog');
+            stepLog = Array.isArray(stepLog) ? stepLog : []; // catch error by users older than this function
+            stepLog.push({date: new Date().getTime(), steps: steps, coins: coins});
+            localStorage.setItemObject('stepsLog', stepLog);
+
+            // calculate and save total walker coins
+            this.walkerCoins = this.walkerCoins + coins;
+            backendService.updateParameter(localStorage.getItem('name'),'walkerCoins',this.walkerCoins);
+
+            // display a message from Tom if we earned any coins
+            if(coins > 1){
+              if(this.onboarding){
+                help.say("Willkommen!\nZum Start habe ich deine Schritte der letzten fünf Tage in Walker Coins umgerechnet.\nSomit hast du " + coins + " Walker Coins verdient!\n\nDamit kannst du im Quiz Joker kaufen.");
+                localStorage.setItem('onboarding', false);
+              }
+              else{
+                help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten " + coins + " Walker Coins verdient!\n\nDu hast insgesamt " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");
+              }
+            }
+            if(coins == 500){
+              help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten 500 Walker Coins verdient!\nLogge dich häufiger ein, um mehr Coins zu verdienen.\n\nInsgesamt hast du " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");
+            }
+          });
+        });
+      }
     })
 
-    // check if we already connected a step counter
-    if(localStorage.getItem('connected')){
-      // this calls the steps since last check and
-      // calculates how much walkerCoins are earned by walking
-      helperService.getStepsSinceLastCheck()
-      .then(steps => {helperService.calculateCoins(steps)
-        .then(coins => {
-          // log steps and generated coins
-          var stepLog = localStorage.getItem('stepsLog');
-          stepLog = Array.isArray(stepLog) ? stepLog : []; // catch error by users older than this function
-          stepLog.push({date: new Date().getTime(), steps: steps, coins: coins});
-          localStorage.setItemObject('stepsLog', stepLog);
 
-          // calculate and save total walker coins
-          this.walkerCoins = this.walkerCoins + coins;
-          backendService.updateParameter(localStorage.getItem('name'),'walkerCoins',this.walkerCoins);
-
-          // display a message from Tom if we earned any coins
-          if(coins > 1){
-            if(this.onboarding){
-              help.say("Willkommen!\nZum Start habe ich deine Schritte der letzten fünf Tage in Walker Coins umgerechnet.\nSomit hast du " + coins + " Walker Coins verdient!\n\nDamit kannst du im Quiz Joker kaufen.");
-              localStorage.setItem('onboarding', false);
-            }
-            else{
-              help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten " + coins + " Walker Coins verdient!\n\nDu hast insgesamt " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");
-            }
-          }
-          if(coins == 500){
-            help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten 500 Walker Coins verdient!\nLogge dich häufiger ein, um mehr Coins zu verdienen.\n\nInsgesamt hast du " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");
-          }
-        });
-      });
-    }
 
     // this calculates the steps of this day
     let localSteps = localStorage.getItem('steps');
     if(localSteps === null) {
-      this.steps = 0;
+      helperService.getSteps()
+      .then(result => {
+        this.stepObjects = result;
+        this.steps = this.stepObjects[0].value;
+      })
     } else {
       this.steps = localSteps;
     }

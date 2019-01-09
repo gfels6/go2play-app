@@ -30,11 +30,12 @@ export default {
       isAndroid: platformModule.isAndroid,
       health: "",
       hasHealth: false,
+      connected: false,
       stepObjects: "test",
       steps: "0",
       // check if a stepcounter is connected and adjust button-text accordingly
-      androidBtn: localStorage.getItem('connected') ? "Google Fit (verbunden)" : "Google Fit verbinden",
-      iosBtn: localStorage.getItem('connected') ? "HealthKit (verbunden)" : "Health Kit verbinden",
+      androidBtn: this.connected ? "Google Fit (verbunden)" : "Google Fit verbinden",
+      iosBtn: this.connected ? "HealthKit (verbunden)" : "Health Kit verbinden",
       // an object wrapping the image path, so it can be passed to TomService
       tom: {
         img: "~/assets/images/tom.png",
@@ -111,6 +112,7 @@ export default {
   },
 
 mounted() {
+  this.connected = localStorage.getItem('connected');
   // initialize Tom Turnschuh
   help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
   help.notify(3000);

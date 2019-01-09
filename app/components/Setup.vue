@@ -132,7 +132,7 @@ export default {
   mounted() {
     // initialize Tom Turnschuh
     help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
-
+    localStorage.setItem('connected', false);
     localStorage.setItem('onboarding', true);
     help.say("Bevor wir loslegen können, brauche ich noch ein paar Informationen von dir.");
     help.notify(10000);

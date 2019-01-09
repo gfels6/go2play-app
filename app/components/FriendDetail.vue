@@ -83,7 +83,7 @@
                 // handling our special backend behaviour
                 if(err = "TypeError: Network request failed: JSON Parse error: Unexpected EOF"){
                   console.log("special error detected");
-                  this.changeRoute("main");
+                  this.$navigateTo(this.$routes["main"],{ clearHistory: true });
                 }
                 else{
                   console.log("Fehler:" + err);
