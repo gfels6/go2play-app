@@ -115,7 +115,6 @@ mounted() {
   this.connected = localStorage.getItem('connected');
   // initialize Tom Turnschuh
   help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
-  help.notify(3000);
 },
 }
 </script>
