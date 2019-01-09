@@ -47,7 +47,7 @@ export default {
   name: 'stepCounter-view',
   methods: {
     changeRoute(to) {
-      this.$navigateTo(this.$routes[to]);
+      this.$navigateTo(this.$routes[to],{ clearHistory: true });
     },
     /*
     This function handles the push events on Tom Turnschuh Icon in the Actionbar

@@ -45,7 +45,7 @@ export default class TomService {
     feedBack.show({
       title: "Tom Turnschuh sagt:",
       message: text,
-      duration: (text.length > 200) ? 2*duration : duration, // longer strings must be displayed for a longer time
+      duration: (text.length > 150) ? 2*duration : duration, // longer strings must be displayed for a longer time
       backgroundColor: colour,
       onHide: () => {tom.img = "~/assets/images/tom.png"}
     });

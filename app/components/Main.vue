@@ -102,6 +102,7 @@ export default {
     // initialize Tom Turnschuh
     help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
     this.onboarding = localStorage.getItem('onboarding');
+    console.log("onboarding: " + this.onboarding);
 
     // load walkerCoins from server
     backendService.getUser(localStorage.getItem('name'))
@@ -127,11 +128,14 @@ export default {
 
             // display a message from Tom if we earned any coins
             if(coins > 1){
+              console.log("new coins / onboarding: "+ this.onboarding);
               if(this.onboarding){
+                console.log("onboarding ist true imfall");
                 help.say("Willkommen!\nZum Start habe ich deine Schritte der letzten fünf Tage in Walker Coins umgerechnet.\nSomit hast du " + coins + " Walker Coins verdient!\n\nDamit kannst du im Quiz Joker kaufen.");
                 localStorage.setItem('onboarding', false);
               }
               else{
+                console.log("onboarding ist false imfall");
                 help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten " + coins + " Walker Coins verdient!\n\nDu hast insgesamt " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");
               }
             }
