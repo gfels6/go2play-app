@@ -109,7 +109,6 @@ export default {
 
     // check if we already connected a step counter
     if(localStorage.getItem('connected')){
-      console.log("counter connected");
       // this calls the steps since last check and
       // calculates how much walkerCoins are earned by walking
       helperService.getStepsSinceLastCheck()

@@ -40,8 +40,6 @@ export default class HelperService {
     getStepsSinceLastCheck(){
       // check when the steps where last checked, or set this date to five days ago if it never was checked
       let since = localStorage.getItem('lastCheckedSteps') || new Date(new Date().getTime() - 5 * 24 * 60 * 60 * 1000);
-      console.log("get steps since last check");
-      console.log("since: " + since);
 
       return health.query(
           {
@@ -88,10 +86,9 @@ export default class HelperService {
 
       return backendService.getUser(localStorage.getItem('name'))
       .then(data => {
-        let dailygoal = 80 * data.mobility + 2000;
+        let dailygoal = this.calculateGoal(data.mobility);
         dailygoal = dailygoal > 0 ? dailygoal : 2000; // so we don't run into division by zero if mobility couldn't be loaded
         steps = steps === undefined ? 0 : steps
-        console.log("your goal: " + dailygoal + " - your steps: " + steps);
         let coins = Math.round((steps / dailygoal) * 100);
         // limit number of coins aquired in one round to 500
         coins = coins > 500 ? 500 : coins;
@@ -102,6 +99,17 @@ export default class HelperService {
 
     }
 
+    /*
+      Calculates the daily step goal, depending on the mobility of an user
+
+      parameters  - fitness: the mobility (0-100)
+      returns     - the daily goal for the given mobility (2000-10000)
+      author      hessg1
+      version     2019-01-09
+    */
+    calculateGoal(fitness){
+      return 80 * fitness + 2000;
+    }
 
     /*
       Does some funny things with TRUEs and FALSEs.

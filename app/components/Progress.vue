@@ -7,17 +7,25 @@
       </ActionItem>
     </ActionBar>
     <StackLayout orientation="vertical" class="page-content">
+      <Label class="titleLbl" text="Spielstatistik" />
       <Label class="lbl" :text="lblgamesTotal + gamesTotal" />
       <Label class="lbl" :text="lblgamesWon + gamesWon" />
       <Label class="lbl" :text="lblgamesLost + gamesLost" />
       <Label class="lbl" :text="lblgamesTie + gamesTie" />
+
+      <Label class="titleLbl" text="Bewegungsstatistik" />
+      <Label class="lbl" :text="lblGoal + goal + '.'" textWrap="true"/>
+      <Label class="lbl" :text="lblTotalSteps + sinceDate + ': ' + totalSteps" textWrap="true"/>
+      <Label class="lbl" :text="lblAvgSteps + avgSteps" textWrap="true"/>
     </StackLayout>
   </Page>
 </template>
 
 <script>
 import BackendService from '@/services/BackendService';
+import HelperService from '@/services/HelperService'
 const backendService = new BackendService();
+const helperService = new HelperService();
 import TomService from '@/services/TomService';
 let help = null;
 
@@ -33,6 +41,13 @@ export default {
       gamesWon: 0,
       gamesLost: 0,
       gamesTie: 0,
+      lblGoal: "Dein tägliches Schrittziel ist ",
+      goal: 0,
+      lblTotalSteps: "Schritte seit dem ",
+      sinceDate: "Beginn",
+      totalSteps: 0,
+      lblAvgSteps: "Schritte pro Tag: ",
+      avgSteps: 0,
       // an object wrapping the image path, so it can be passed to TomService
       tom: {
         img: "~/assets/images/tom.png",
@@ -87,6 +102,37 @@ export default {
       });
     },
 
+    /*
+    This function calculates the values for the step statistics
+
+    parameters  none
+    returns     nothing (sets sinceDate, avgSteps and totalSteps properties)
+    author      hessg1
+    version     2019-01-09
+    */
+    calculateStepStatictics(){
+      // calculate step goal
+      backendService.getUser(this.user)
+      .then(data => {this.goal = helperService.calculateGoal(data.mobility);});
+
+      //
+      var log = localStorage.getItem('stepsLog');
+      console.log(log)
+      if(log != null){
+        var since = new Date(log[0].date);
+        this.sinceDate = since.getDay() + '.' + (since.getMonth()+1) + '.' + since.getFullYear();
+
+        // calculate total steps
+        for(var i = 1; i < log.length; i++){ // intentionally not starting with 0, so we don't count the steps before first initialisation of app
+          this.totalSteps = this.totalSteps + log[i].steps;
+        }
+
+        //calculate average steps
+        var diff = (new Date() - since) / 1000 / 24 / 60 / 60; // difference in full days
+        this.avgSteps = (diff<1)? '-' :this.totalSteps / diff;
+    }
+    },
+
     evaluateMatches(userData){
       this.gamesTotal = userData.matches.length;
       for (let i = 0; i < userData.matches.length; i++) {
@@ -102,6 +148,9 @@ export default {
   },
   mounted() {
     this.user = localStorage.getItem('name');
+
+    this.calculateStepStatictics();
+
     this.getAllFinishedGames();
     // initialize Tom Turnschuh
     help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
@@ -119,6 +168,12 @@ ActionBar {
 .lbl {
   margin-left: 25;
   font-size: 18;
+  color:black;
+}
+.titleLbl {
+  margin-left: 25;
+  margin-top: 20;
+  font-size: 20;
   color:black;
   font-weight: bold;
 }
