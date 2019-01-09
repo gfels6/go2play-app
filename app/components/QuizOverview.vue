@@ -1,6 +1,7 @@
 <template>
   <Page class="page">
     <ActionBar title="Spielübersicht">
+      <NavigationButton @tap="goToQuiz" text="Quiz" android.systemIcon="ic_menu_back" />
       <ActionItem @tap="tomTurnschuh" ios.position="right" android.position="actionBar" >
         <StackLayout><Image :src="tom.img" width="40" height="40" /></StackLayout>
       </ActionItem>
@@ -112,6 +113,12 @@
             help.say("Klicke auf \"Spielen\", um die Fragen zu beantworten. \n\nWenn du genug Walker Coins hast, kannst du dir während dem Spiel Joker kaufen.\nZeit-Joker kannst du so viele kaufen, wie du dir leisten kannst\nDen 50:50-Joker kannst du nur einmal pro Runde einsetzen.\n\nWalker-Coins kannst du verdienen, indem du einen Schrittzähler installierst und dann dein tägliches Schrittziel erreichst.");
           }
         }
+      },
+
+      goToQuiz(){
+        this.$navigateTo(this.$routes['quiz'],{
+          clearHistory: true,
+        });
       },
 
       checkWhoIsTheEnemy(){

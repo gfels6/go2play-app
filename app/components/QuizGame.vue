@@ -29,7 +29,7 @@
       <Label class="coins" :text="lblWalkerCoins + this.walkerCoins" />
 
       <Button :class="[{ inactive: !nextQuestion }, 'btn']" :text="btnNext"  @tap="startQuiz()" />
-      <Button :class="[{ inactive: !finished }, 'btn']" :text="btnBack"  @tap="changeRoute('main')" />
+      <Button :class="[{ inactive: !finished }, 'btn']" :text="btnBack"  @tap="changeRoute('quizOverview')" />
 
       <StackLayout orientation="horizontal" class="jokerContainer">
         <StackLayout :class="[{ inactive: !play }, 'btn-img']" orientation="vertical" padding="5" @tap="jokerTime()" >
@@ -97,7 +97,12 @@ export default {
   props: ['gameId'],
   methods: {
     changeRoute(to) {
-      this.$navigateTo(this.$routes[to]);
+        this.$navigateTo(this.$routes[to], {
+        clearHistory: true,
+        props: {
+          gameId: this.gameId,
+        }
+      });
     },
     /*
     This function handles the push events on Tom Turnschuh Icon in the Actionbar

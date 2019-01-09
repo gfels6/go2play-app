@@ -94,7 +94,9 @@ export default {
     },
     // navigates to the main screen
     goHome(){
-      this.$navigateTo(this.$routes['main'],{ clearHistory: true });
+      this.$navigateTo(this.$routes['main'],{
+        clearHistory: true,
+      });
     },
     loadGames() {
       backendService.searchOpenGames(this.name)
