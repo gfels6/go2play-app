@@ -62,7 +62,7 @@ export default {
       countedFinishedGames: 0,
       finishedGames: [],
       openGames: [],
-      game: "",
+      clickedGame: "",
       name: "",
       // an object wrapping the image path, so it can be passed to TomService
       tom: {
@@ -77,7 +77,7 @@ export default {
     changeRoute(to) {
       this.$navigateTo(this.$routes[to], {
         props: {
-          game: this.game,
+          gameId: this.clickedGame,
         }
       });
     },
@@ -111,7 +111,7 @@ export default {
     },
     onItemTap(event){
       console.log("You touched " + event.item.id + " ;)");
-      this.game = event.item;
+      this.clickedGame = event.item.id;
       this.changeRoute('quizOverview');
     },
   },

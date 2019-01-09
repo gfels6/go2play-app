@@ -303,4 +303,12 @@ export default class BackendService {
       })
       .then(data => data.json());
     }
+
+    getGameInformation(gameId) {
+      return fetch(baseUrl + "/games/" + gameId, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+      .then(data => data.json());
+    }
 }

@@ -66,6 +66,7 @@
         userWon: "",
         finished: false,
         yourTurn: false,
+        game: "",
         // an object wrapping the image path, so it can be passed to TomService
         tom: {
           img: "~/assets/images/tom.png",
@@ -76,7 +77,7 @@
       };
     },
     name: 'quizoverview-view',
-    props: ['game'],
+    props: ['gameId'],
     methods: {
       changeRoute(to) {
         this.$navigateTo(this.$routes[to],{
@@ -122,6 +123,42 @@
         }
       },
 
+      evaluateGame(){
+        for (var i = 0; i < this.game.activeRound; i++) {
+          for (let j = 0; j < this.game.rounds[i].gameQuestions.length; j++) {
+            this.totalAnswersUser.push(this.game.rounds[i].gameQuestions[j][this.user]);
+            this.totalAnswersEnemy.push(this.game.rounds[i].gameQuestions[j][this.enemy]);
+            if(this.game.rounds[i].gameQuestions[j][this.enemy] == 1){
+              this.scoreEnemy++;
+              this["scoreEnemyR"+(i+1)]++;
+            }
+            if(this.game.rounds[i].gameQuestions[j][this.user] == 1){
+              this.scoreUser++;
+              this["scoreUserR"+(i+1)]++;
+            }
+          }
+        }
+
+        if(this.game.activeUser == "game finished"){
+          this.finished = true;
+          this.userWon = this.game.winner;
+          
+        }
+
+        if(this.game.activeUser == this.user){
+          this.yourTurn = true;
+        }
+      },
+
+      getFullGame(gameId) {
+        backendService.getGameInformation(gameId)
+        .then(data => {
+            this.game = data;
+            this.checkWhoIsTheEnemy();
+            this.evaluateGame();
+        })
+      },
+
       // deletes this game
       deleteThisGame(){
         confirm({
@@ -151,35 +188,10 @@
     },
     mounted() {
       this.user = localStorage.getItem('name');
-      this.checkWhoIsTheEnemy();
+      this.getFullGame(this.gameId);
+
       // initialize Tom Turnschuh
       help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
-
-      for (var i = 0; i < this.game.activeRound; i++) {
-        for (let j = 0; j < this.game.rounds[i].gameQuestions.length; j++) {
-          console.log(i);
-          this.totalAnswersUser.push(this.game.rounds[i].gameQuestions[j][this.user]);
-          this.totalAnswersEnemy.push(this.game.rounds[i].gameQuestions[j][this.enemy]);
-          if(this.game.rounds[i].gameQuestions[j][this.enemy] == 1){
-            this.scoreEnemy++;
-            this["scoreEnemyR"+(i+1)]++;
-          }
-          if(this.game.rounds[i].gameQuestions[j][this.user] == 1){
-            this.scoreUser++;
-            this["scoreUserR"+(i+1)]++;
-          }
-        }
-      }
-
-      if(this.game.activeUser == "game finished"){
-        this.finished = true;
-        this.userWon = this.game.winner;
-      }
-
-      if(this.game.activeUser == this.user){
-        this.yourTurn = true;
-      }
-
     }
   }
   </script>
