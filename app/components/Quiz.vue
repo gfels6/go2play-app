@@ -20,7 +20,7 @@
         <ListView class="itemContainer" for="game in openGames" @itemTap="onItemTap" separatorColor="transparent">
           <v-template>
             <StackLayout orientation="vertical">
-              <label :text="game.user1 + ' - ' + game.user2 +    (game.activeUser == name ? '  |  du bist am Zug' : '')" class="listItem"/>
+              <label :text="game.user1 + ' - ' + game.user2 + (game.activeUser == name ? '  ▶️' : '  ⏳')" class="listItem"/>
               <!--label :text="game.user1 + ' - ' + game.user2 + '   Am Zug: ' + game.activeUser" class="listItem"/-->
             </StackLayout>
           </v-template>
@@ -36,7 +36,7 @@
         <ListView class="itemContainer" for="game in finishedGames" @itemTap="onItemTap" separatorColor="transparent">
           <v-template>
             <StackLayout orientation="vertical">
-              <label :text="game.user1 + ' - ' + game.user2" class="listItem"/>
+              <label :text="game.user1 + ' - ' + game.user2 + ((game.winner == name) ? ('  🤩') : ((game.winner == 'both') ? ('  😐') : ('  🙁')))" class="listItem"/>
             </StackLayout>
           </v-template>
         </ListView>
@@ -90,7 +90,9 @@ export default {
     version     2019-01-08
     */
     tomTurnschuh(){
-      help.sayWithOptions("Klicke auf \"neues Spiel\", um zu spielen.\n\nDarunter siehts du die aktuell offenen Spiele aufgelistet. Wenn du am Zug bist, wird das auch angezeigt.\n\nDas Quiz verläuft in Runden mit jeweils drei Fragen. Wenn du deine Runde beendet hast, kann der Gegner seine Fragen beantworten und du musst warten, bis du wieder am Zug bist.");
+      let text1 = "Klicke auf \"neues Spiel\", um zu spielen.\n\nDarunter siehts du die aktuell offenen Spiele aufgelistet. Wenn du am Zug bist, wird das auch angezeigt.\n\nDas Quiz verläuft in Runden mit jeweils drei Fragen. Wenn du deine Runde beendet hast, kann der Gegner seine Fragen beantworten und du musst warten, bis du wieder am Zug bist.\n\n";
+      let text2 = "▶️ = Du bist am Zug\n⏳ = Den Gegner ist dran\n🤩 = Du hast gewonnen\n😐 = Unentschieden\n🙁 = Du hast verloren";
+      help.say(text1 + text2);
     },
     // navigates to the main screen
     goHome(){
