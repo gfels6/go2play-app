@@ -76,18 +76,21 @@ export default {
     parameters  none
     returns     nothing
     author      hessg1
-    version     2019-01-08
+    version     2019-01-09
     */
     tomTurnschuh(){
-      let utterance = this.gamesLost == 0 ? "Respekt, " + this.user + " ! Du hast noch kein einziges Spiel verloren!" : "Hier siehst du, wie viele Spiele du bereits gewonnen und verloren hast."
+      let utterance = (this.gamesLost == 0 && this.gamesTotal > 0) ? "Respekt, " + this.user + " ! Du hast noch kein einziges Spiel verloren!" : "Hier siehst du, wie viele Spiele du bereits gewonnen und verloren hast."
 
-      help.sayWithOptions(utterance + "\n\nMöchtest du noch mehr wissen?" ,["Ja, gerne", "Nein, danke"])
+      var questions = ["Wie kann ich das Schrittziel ändern?", "Was bedeutet unentschieden?"];
+      if(this.totalSteps == 0) questions.push("Die Bewegungsstatistik wird nicht angezeigt.")
+      if(this.gamesTotal == 0) questions.push("Die Spielstatistik wird nicht angezeigt.");
+      questions.push("Eigentlich etwas anderes...");
+
+      help.sayWithOptions(utterance + "\n\nWas möchtest du wissen?" ,questions)
       .then(answer => {
-        if(answer == "Ja, gerne"){
-          help.sayWithOptions("Was denn?", ["Was bedeutet unentschieden?", "Wer ist der beste Spieler?", "Wie kann ich gegen dich spielen?", "Wer ist Eddy Verbruggen?"])
+        if(answer == "Eigentlich etwas anderes..."){
+          help.sayWithOptions("Was denn?", ["Wer ist der beste Spieler?", "Wie kann ich gegen dich spielen?", "Wer ist Eddy Verbruggen?"])
           .then(secondAnswer => {
-            if(secondAnswer == "Was bedeutet unentschieden?")
-              help.say("Das bedeutet, dass beide Spieler genau gleich viele Fragen richtig beantwortet haben.");
             if(secondAnswer == "Wer ist der beste Spieler?")
               help.say("Puh, da müsste ich nachschauen...");
               if(secondAnswer == "Wie kann ich gegen dich spielen?")
@@ -95,10 +98,15 @@ export default {
             if(secondAnswer == "Wer ist Eddy Verbruggen?")
               help.say("Eddy ist der Entwickler zahlreicher toller Plugins. Ohne ihn könnte ich das hier so nicht sagen!");
           });
-        }
-        if(answer == "Nein, danke"){
-          help.say("OK! Falls du doch noch Fragen hast, weisst du wo du mich findest. :)");
-        }
+        };
+        if(answer == "Wie kann ich das Schrittziel ändern?")
+          help.say("Das tägliche Schrittziel wird an deine Mobilität angepasst automatisch berechnet.\nUm es zu ändern, kannst du in den Einstellungen dein Mobilitätslevel anpassen.\n\nAber vorsicht: Ich merke, wenn du versuchst zu schummeln!");
+          if(answer == "Die Bewegungsstatistik wird nicht angezeigt.")
+            help.say("Verbinde in den Einstellungen einen Schrittzähler, damit ich eine Statistik über deine Bewegungen erstellen kann.");
+          if(answer == "Die Spielstatistik wird nicht angezeigt.")
+            help.say("Du hast noch kein Spiel fertig gespielt. So kann ich noch keine Statistik erstellen.");
+          if(answer == "Was bedeutet unentschieden?")
+          help.say("Das bedeutet, dass beide Spieler genau gleich viele Fragen richtig beantwortet haben.");
       });
     },
 
@@ -129,7 +137,7 @@ export default {
 
         //calculate average steps
         var diff = (new Date() - since) / 1000 / 24 / 60 / 60; // difference in full days
-        this.avgSteps = (diff<1)? '-' :this.totalSteps / diff;
+        this.avgSteps = (diff<1)? this.totalSteps : this.totalSteps / diff; // if we are on the first day, we just display the steps of today
     }
     },
 

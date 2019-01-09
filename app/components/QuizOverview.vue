@@ -134,7 +134,7 @@
           if(choice){
             backendService.deleteGame(this.user, this.game.id)
             .then(res => {
-              this.changeRoute('quiz');
+              this.changeRoute('main');
             })
             .catch(err => {
               // this is because the server responds with an empty body, that's not a proper error
