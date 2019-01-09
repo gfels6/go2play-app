@@ -7,7 +7,7 @@
     </ActionBar>
 
     <StackLayout orientation="vertical" class="page-content">
-      <Label :text="friendName + ' schätzt seine Fitness mit ' + friendMobility + '% ein,  hat ' + friendGames.length + ' Spiele und ' + friendWalkerCoins + ' WalkerCoins.\nWow!'" class="normalText" textWrap="true"/>
+      <Label :text="friendName + ' schätzt seine Fitness mit ' + friendMobility + '% ein,  hat ' + friendGames.length + ' Spiele und ' + friendWalkerCoins + ' Walker Coins.\nWow!'" class="normalText" textWrap="true"/>
       <Button class='btn' :text="friendName + ' herausfordern!'" @tap="addGame()" />
       <Button class='btn' text="löschen" @tap="deleteFriend()" />
     </StackLayout>
@@ -107,8 +107,9 @@
             backendService.addGame(this.name, this.friendName)
             .then(data => {
                 this.gameId = data.id;
-                console.log(this.gameId)
-                this.changeRoute('quiz');
+                console.log(this.gameId);
+                help.say("Ich habe eine Spieleinladung an " + this.friendName + " geschickt.\n\nWarte, bis du an der Reihe bist.");
+                this.$navigateTo(this.$routes["main"],{ clearHistory: true });
             });
         },
 

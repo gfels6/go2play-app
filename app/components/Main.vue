@@ -46,6 +46,7 @@ export default {
       lblWalkerCoins: "Walker Coins:",
       walkerCoins: 0,
       steps: 0,
+      onboarding: false,
       // an object wrapping the image path, so it can be passed to TomService
       tom: {
         img: "~/assets/images/tom.png",
@@ -100,6 +101,7 @@ export default {
 
     // initialize Tom Turnschuh
     help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
+    this.onboarding = localStorage.getItem('onboarding');
 
     // load walkerCoins from server
     backendService.getUser(localStorage.getItem('name'))
@@ -126,7 +128,13 @@ export default {
 
           // display a message from Tom if we earned any coins
           if(coins > 1){
-            help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten " + coins + " Walker Coins verdient!\n\nDu hast insgesamt " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");
+            if(this.onboarding){
+              help.say("Willkommen!\nZum Start habe ich deine Schritte der letzten fünf Tage in Walker Coins umgerechnet.\nSomit hast du " + coins + " Walker Coins verdient!\n\nDamit kannst du im Quiz Joker kaufen.");
+              localStorage.setItem('onboarding', false);
+            }
+            else{
+              help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten " + coins + " Walker Coins verdient!\n\nDu hast insgesamt " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");
+            }
           }
           if(coins == 500){
             help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten 500 Walker Coins verdient!\nLogge dich häufiger ein, um mehr Coins zu verdienen.\n\nInsgesamt hast du " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");

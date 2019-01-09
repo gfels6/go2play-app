@@ -8,7 +8,7 @@
     </ActionBar>
 
     <StackLayout orientation="vertical" class="page-content">
-      <Label :text="'Du hast ' + friends.length + ' Freund' + (friends.length > 1 ? 'e':'')   +':'" textWrap="true" class="normalText" />
+      <Label :text="'Du hast ' + friends.length + ' Freund' + (friends.length != 1 ? 'e':'')   +':'" textWrap="true" class="normalText" />
       <ListView for="friend in friends" @itemTap="onItemTap" separatorColor="transparent">
         <v-template>
           <label :text="friend" class="listItem"/>
@@ -100,10 +100,9 @@
                 help.say("Hast du keine anderen Freunde als dich selbst?");
               }
               else{
-                help.say(friend + " mag ich auch! :)");
                 confirm({
                   title: "Freund gefunden",
-                  message: "Möchtest du " + friend + " als zu deinen Freunden hinzufügen?",
+                  message: "Möchtest du " + friend + " zu deinen Freunden hinzufügen?",
                   okButtonText: "hinzufügen",
                   cancelButtonText: "abbrechen"
                 })

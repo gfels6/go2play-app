@@ -52,6 +52,8 @@ export default {
       ];
       localStorage.setItemObject('stepsLog', temp);
       console.log("- stepsLog set with 5 items");
+      localStorage.setItem('onboarding', false);
+      console.log("- onboarding set to FALSE");
     }
 
   }
