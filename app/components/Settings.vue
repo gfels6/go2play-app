@@ -73,7 +73,7 @@ export default {
     },
     // navigates to the main screen
     goHome(){
-      this.$routes(['main'],{ clearHistory: true });
+      this.$navigateTo(this.$routes['main'],{ clearHistory: true });
     },
     /*
     Resets the whole app and deletes the local storage
