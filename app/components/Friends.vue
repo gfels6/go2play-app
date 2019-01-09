@@ -51,7 +51,7 @@
 
         // navigates to the main screen
         goHome(){
-          this.$routes(['main'],{ clearHistory: true });
+          this.$navigateTo(this.$routes['main'],{ clearHistory: true });
         },
 
         /*
