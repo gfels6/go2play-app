@@ -137,7 +137,7 @@ export default {
 
         //calculate average steps
         var diff = (new Date() - since) / 1000 / 24 / 60 / 60; // difference in full days
-        this.avgSteps = (diff<1)? this.totalSteps : this.totalSteps / diff; // if we are on the first day, we just display the steps of today
+        this.avgSteps = (diff<1)? this.totalSteps : Math.round(this.totalSteps / diff); // if we are on the first day, we just display the steps of today
     }
     },
 

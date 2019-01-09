@@ -32,3 +32,6 @@ Overview over the variables in Local Storage
 - lastCheckedSteps: date when the total steps where last checked
 - connected: Google Health / Healthkit is connected
 - stepsLog: Array with objects containing evaluated: {date: the timestamp, steps: number of steps logged, coins: number of walkercoins added}
+
+## presentation mode
+For enabling presentation mode, set `presiMode`-Property in ClaimName.vue to `TRUE`
