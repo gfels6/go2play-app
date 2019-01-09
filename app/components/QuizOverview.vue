@@ -10,20 +10,10 @@
 
       <Label class="heading" :text="this.user + '  ' + this.scoreUser + ':' + this.scoreEnemy + '  ' + this.enemy" />
 
-      <StackLayout class="lblContainer" orientation="horizontal">
-        <Label class="lbl" :text="lblRound1" />
-        <Label class="value" :text="this.scoreUserR1 + ':' + this.scoreEnemyR1" />
-      </StackLayout>
-
-      <StackLayout class="lblContainer" orientation="horizontal">
-        <Label class="lbl" :text="lblRound2" />
-        <Label class="value" :text="this.scoreUserR2 + ':' + this.scoreEnemyR2" />
-      </StackLayout>
-
-      <StackLayout class="lblContainer" orientation="horizontal">
-        <Label class="lbl" :text="lblRound3" />
-        <Label class="value" :text="this.scoreUserR3 + ':' + this.scoreEnemyR3" />
-      </StackLayout>
+      <Label class="titleLbl" text="Rundenstatistik" />
+      <Label class="lbl" :text="lblRound1 + this.scoreUserR1 + ':' + this.scoreEnemyR1" />
+      <Label class="lbl" :text="lblRound2 + this.scoreUserR2 + ':' + this.scoreEnemyR2" />
+      <Label class="lbl" :text="lblRound3 + this.scoreUserR3 + ':' + this.scoreEnemyR3" />
 
       <StackLayout :class="[{ inactive: !finished }, 'lblContainer']" orientation="horizontal">
         <Label class="lbl" :text="lblWinning" />
@@ -32,6 +22,7 @@
 
       <Button :class="[{ inactive: !yourTurn }, 'btn']" text="Spielen" @tap="changeRoute('quizGame')" />
       <Button :class="[{ inactive: game.activeRound > 1 }, 'btn']" text="löschen" @tap="deleteThisGame()" />
+      <Button class="btn" text="Home" @tap="changeRoute('main')" />
 
       </StackLayout>
     </Page>
@@ -56,12 +47,12 @@
         enemy: "",
         totalAnswersUser: [],
         totalAnswersEnemy: [],
-        scoreUserR1: 0,
-        scoreUserR2: 0,
-        scoreUserR3: 0,
-        scoreEnemyR1: 0,
-        scoreEnemyR2: 0,
-        scoreEnemyR3: 0,
+        scoreUserR1: "x",
+        scoreUserR2: "x",
+        scoreUserR3: "x",
+        scoreEnemyR1: "x",
+        scoreEnemyR2: "x",
+        scoreEnemyR3: "x",
         scoreEnemy: 0,
         scoreUser: 0,
         userWon: "",
@@ -132,6 +123,8 @@
 
       evaluateGame(){
         for (var i = 0; i < this.game.activeRound; i++) {
+          this["scoreEnemyR"+(i+1)] = 0;
+          this["scoreUserR"+(i+1)] = 0;
           for (let j = 0; j < this.game.rounds[i].gameQuestions.length; j++) {
             this.totalAnswersUser.push(this.game.rounds[i].gameQuestions[j][this.user]);
             this.totalAnswersEnemy.push(this.game.rounds[i].gameQuestions[j][this.enemy]);
@@ -203,7 +196,7 @@
   }
   </script>
 
-  <style scoped>
+<style scoped>
   ActionBar {
     background-color: #53ba82;
     color: #ffffff;
@@ -212,6 +205,12 @@
   .lbl {
     margin-left: 25;
     font-size: 18;
+    color:black;
+  }
+  .titleLbl {
+    margin-left: 25;
+    margin-top: 20;
+    font-size: 20;
     color:black;
     font-weight: bold;
   }
@@ -235,4 +234,4 @@
     visibility: collapsed;
   }
 
-  </style>
+</style>
