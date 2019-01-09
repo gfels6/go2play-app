@@ -166,11 +166,11 @@ ActionBar {
 }
 
 .steps {
-  width: 48%;
+  width: 46%;
 }
 
 .coins {
-  width: 48%;
+  width: 50%;
   horizontal-align: right;
 }
 </style>
