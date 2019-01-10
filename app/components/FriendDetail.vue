@@ -59,7 +59,7 @@
         },
 
         /*
-          Deletes a Friendshio.
+          Deletes a Friendship.
 
           parameters  none, refers to the friend on whose detail page we are right now
           returns     nothing

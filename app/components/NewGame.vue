@@ -64,20 +64,37 @@ export default {
       help.say("Tippe auf \"zufälliger Gegner\", um gegen einen zufälligen Spieler zu quizzen, oder klicke auf den Namen eines Freundes, um ihn für ein Spiel herauszufordern.");
     },
 
+    // Eventhandling for clicked friend
     onItemTap(event){
       console.log("You touched " + this.friends[event.index] + " ;)");
       this.addGame(this.friends[event.index])
     },
+
+    /*
+    This creates a game with the user and his clicked friend
+
+    parameters  friendName: Name of the clicked friend
+    returns     game object
+    author      gfels6
+    version     2019-01-08
+    */
     addGame(friendName) {
       backendService.addGame(this.name, friendName)
       .then(data => {
-        console.log("successfully added Game!");
         this.gameId = data.id;
-        console.log(this.gameId)
         help.say("Ich habe eine Spieleinladung an " + friendName + " geschickt.\n\nWarte, bis du an der Reihe bist.");
         this.changeRoute('quiz');
       });
     },
+
+    /*
+    Loading of all friends from an user
+
+    parameters  none
+    returns     array with all friends
+    author      gfels6
+    version     2019-01-08
+    */    
     loadFriends(){
       console.log("load friends");
       backendService.getUser(this.name)
@@ -85,6 +102,16 @@ export default {
         this.friends = user.friend;
       })
     },
+
+    /*
+    To get a random enemy, we request all users and select a random from the list
+    Afterwards the game will be created
+
+    parameters  none
+    returns     array of all users
+    author      gfels6
+    version     2019-01-08
+    */    
     getRandomEnemy() {
       console.log("Random Enemy!");
       backendService.getRandomUser(this.name)

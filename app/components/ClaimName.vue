@@ -11,7 +11,8 @@
 
 
 <script>
-let presiMode = true; // fill localstorage with example userData
+// fill localstorage with example userData
+let presiMode = false;
 
 import HelperService from '@/services/HelperService'
 const helperService = new HelperService()

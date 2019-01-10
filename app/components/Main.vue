@@ -94,6 +94,7 @@ export default {
   mounted() {
     var coinsFeedback = false;
 
+    // Blocking the back Button in the main View (would go to the Smartphone screen)
     if (isAndroid) {
       application.android.on(AndroidApplication.activityBackPressedEvent, (AndroidActivityBackPressedEventData) => {
         AndroidActivityBackPressedEventData.cancel = false; // reactivate default back button behavior
@@ -149,8 +150,8 @@ export default {
         // check if set goal is adequate
         helperService.checkMobilityAdequacy(data.mobility)
         .then(result =>{
-          console.log("result: " + result);
-          console.log("mobility: " + data.mobility);
+          //console.log("result: " + result);
+          //console.log("mobility: " + data.mobility);
 
           if(result > data.mobility){
             help.say("Hey! Du hast dein Mobilitätsziel in den letzten drei Tagen jeweils um mindestens das Doppelte übertroffen\n\nIch habe deinen Mobilitätsfaktor angepasst (neu: " + result + ").");
@@ -159,8 +160,6 @@ export default {
         })
       }
     })
-
-
 
     // this calculates the steps of this day
     let localSteps = localStorage.getItem('steps');

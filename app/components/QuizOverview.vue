@@ -38,26 +38,30 @@
   export default {
     data() {
       return {
-        lblStatus: "",
         lblWinning: "Gewinner: ",
         lblRound1: "Runde 1: ",
         lblRound2: "Runde 2: ",
         lblRound3: "Runde 3: ",
+        // Name of the user (from local storage)
         user: "",
+        // Name of the enemy
         enemy: "",
-        totalAnswersUser: [],
-        totalAnswersEnemy: [],
+        // Points per round
         scoreUserR1: "x",
         scoreUserR2: "x",
         scoreUserR3: "x",
         scoreEnemyR1: "x",
         scoreEnemyR2: "x",
         scoreEnemyR3: "x",
+        // Total tpoints
         scoreEnemy: 0,
         scoreUser: 0,
         userWon: "",
+        // Shows if the game is finished or not
         finished: false,
+        // Shows if its the user turn or not
         yourTurn: false,
+        // Container for the game
         game: "",
         // an object wrapping the image path, so it can be passed to TomService
         tom: {
@@ -106,12 +110,25 @@
         }
       },
 
+      /*
+      Another method to go to the quiz view,
+      the clearHistory should be a parameter for the changeRoute method
+
+      author      gfels6
+      version     2019-01-08
+      */
       goToQuiz(){
         this.$navigateTo(this.$routes['quiz'],{
           clearHistory: true,
         });
       },
 
+      /*
+      Checks who is the enemy (not clear from the dataset, just user1 and user2 in a game)
+
+      author      gfels6
+      version     2019-01-08
+      */
       checkWhoIsTheEnemy(){
         if(this.game.user1 === this.user){
           this.enemy = this.game.user2;
@@ -121,13 +138,21 @@
         }
       },
 
+      /*
+      Looping through the game objects to get the scores.
+
+      author      gfels6
+      version     2019-01-08
+      */
       evaluateGame(){
         for (var i = 0; i < this.game.activeRound; i++) {
+          // Changing from x to 0 (it would be a NaN Error afterwards ;-))
           this["scoreEnemyR"+(i+1)] = 0;
           this["scoreUserR"+(i+1)] = 0;
           for (let j = 0; j < this.game.rounds[i].gameQuestions.length; j++) {
+            /* Needed if you want to see every answer in detail
             this.totalAnswersUser.push(this.game.rounds[i].gameQuestions[j][this.user]);
-            this.totalAnswersEnemy.push(this.game.rounds[i].gameQuestions[j][this.enemy]);
+            this.totalAnswersEnemy.push(this.game.rounds[i].gameQuestions[j][this.enemy]); */
             if(this.game.rounds[i].gameQuestions[j][this.enemy] == 1){
               this.scoreEnemy++;
               this["scoreEnemyR"+(i+1)]++;
@@ -139,17 +164,27 @@
           }
         }
 
+        // Checks in the game object if the game is finished
         if(this.game.activeUser == "game finished"){
           this.finished = true;
           this.userWon = this.game.winner;
           
         }
 
+        // Checks in the game object who is the activeUser
         if(this.game.activeUser == this.user){
           this.yourTurn = true;
         }
       },
 
+      /*
+      Request for the full game information
+
+      parameters  gameId: ID for the specific game
+      returns     game object with all information
+      author      gfels6
+      version     2019-01-08
+      */
       getFullGame(gameId) {
         backendService.getGameInformation(gameId)
         .then(data => {
