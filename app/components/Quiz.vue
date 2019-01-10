@@ -91,7 +91,7 @@ export default {
     */
     tomTurnschuh(){
       let text1 = "Klicke auf \"neues Spiel\", um zu spielen.\n\nDarunter siehts du die aktuell offenen Spiele aufgelistet. Wenn du am Zug bist, wird das auch angezeigt.\n\nDas Quiz verläuft in Runden mit jeweils drei Fragen. Wenn du deine Runde beendet hast, kann der Gegner seine Fragen beantworten und du musst warten, bis du wieder am Zug bist.\n\n";
-      let text2 = "▶️ = Du bist am Zug\n⏳ = Den Gegner ist dran\n🤩 = Du hast gewonnen\n😐 = Unentschieden\n🙁 = Du hast verloren";
+      let text2 = "▶️ = Du bist am Zug\n⏳ = Dein Gegner ist dran\n🤩 = Du hast gewonnen\n😐 = Unentschieden\n🙁 = Du hast verloren";
       help.say(text1 + text2);
     },
     // navigates to the main screen
