@@ -89,7 +89,7 @@ export default {
     version     2019-01-07
     */
     tomTurnschuh(){
-      help.say("Beim Mobilitätslevel kannst du angeben, wie gut du zu Fuss bist. Damit kann ich später dein tägliches Schrittziel berechnen. \n\nBei \"Schrittzähler verbinden\" kannst du einen automatischen Schrittzähler an die App anbinden.");
+      help.say("Beim Mobilitätslevel kannst du angeben, wie gut du zu Fuss bist. Damit kann ich später dein tägliches Schrittziel berechnen.");
     },
 
     changeRoute(to) {
@@ -134,7 +134,7 @@ export default {
     help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
     localStorage.setItem('connected', false);
     localStorage.setItem('onboarding', true);
-    help.say("Bevor wir loslegen können, brauche ich noch ein paar Informationen von dir.");
+    //help.say("Bevor wir loslegen können, brauche ich noch ein paar Informationen von dir.");
     help.notify(10000);
   }
 }

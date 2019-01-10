@@ -92,6 +92,7 @@ export default {
     }
   },
   mounted() {
+    var coinsFeedback = false;
 
     if (isAndroid) {
       application.android.on(AndroidApplication.activityBackPressedEvent, (AndroidActivityBackPressedEventData) => {
@@ -134,12 +135,28 @@ export default {
               else{
                 help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten " + coins + " Walker Coins verdient!\n\nDu hast insgesamt " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");
               }
+              coinsFeedback = true;
             }
             if(coins == 500){
               help.say("Wow!\nSeit du die App das letzte Mal geöffnet hast, hast du mit deinen Schritten 500 Walker Coins verdient!\nLogge dich häufiger ein, um mehr Coins zu verdienen.\n\nInsgesamt hast du " + this.walkerCoins + " Walker Coins.\nDamit kannst du im Quiz Joker kaufen.");
             }
           });
         });
+      }
+
+
+      if(!coinsFeedback){ // if tom didn't say anything about the coins, we check the mobility
+        // check if set goal is adequate
+        helperService.checkMobilityAdequacy(data.mobility)
+        .then(result =>{
+          console.log("result: " + result);
+          console.log("mobility: " + data.mobility);
+
+          if(result > data.mobility){
+            help.say("Hey! Du hast dein Mobilitätsziel in den letzten drei Tagen jeweils um mindestens das Doppelte übertroffen\n\nIch habe deinen Mobilitätsfaktor angepasst (neu: " + result + ").");
+            backendService.updateParameter(data.name, "mobility", result);
+          }
+        })
       }
     })
 
