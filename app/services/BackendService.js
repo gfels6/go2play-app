@@ -1,5 +1,3 @@
-import * as http from 'tns-core-modules/http'
-
 let baseUrl = "http://wsdeb2.i4mi.bfh.ch:8080/api";
 
 export default class BackendService {
@@ -304,6 +302,14 @@ export default class BackendService {
       .then(data => data.json());
     }
 
+    /*
+      Request for a specific game
+
+      parameters  - gameID: id of the game
+      returns     a game with all information
+      author      gfels6
+      version     2018-12-30
+    */
     getGameInformation(gameId) {
       return fetch(baseUrl + "/games/" + gameId, {
         method: "GET",

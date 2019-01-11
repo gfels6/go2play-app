@@ -57,32 +57,48 @@ let help = null;
 export default {
   data() {
     return {
+      // Name of the user
       user: "",
+      // Round object with all questions and answers
       dataSet: "",
       question: "Frage",
       txtAnswer1: "Antwort 1",
       txtAnswer2: "Antwort 2",
       txtAnswer3: "Antwort 3",
       txtAnswer4: "Antwort 4",
+      // Given answers of the user
       answers: [],
+      // ID for the time interval (progressbar)
       intervalId: "",
+      // Progressbar
       columns: "",
+      // Enabling of the quiz answer buttons
       btnEnabled: true,
+      // Getting set randomly
       positions: [1,2,3,4],
+      // Setting the right answer green
       rightAnswer: 0,
+      // If the user choose the wrong answer, set it red
       wrongAnswer: 0,
+      // Iterates through all questions (3)
       questionNumber: 0,
+      // Enabling of the "Next question" Button
       nextQuestion: false,
       btnNext: "Nächste Frage",
       btnBack: "Zurück zum Menü",
+      // Enabling of the "Back to Main" Button
       finished: false,
+      // Enabling of the Jokers
       play: true,
       joker: 0,
+      // Wrong questions for the 50:50 Joker
       randomNumber: [],
       lblWalkerCoins: "Walker Coins: ",
       walkerCoins: 0,
+      // Costs of the jokers
       costFiftyJoker: 50,
       costTimeJoker: 25,
+      // Enabling of the Jokers
       btnJokerEnabled: true,
       // an object wrapping the image path, so it can be passed to TomService
       tom: {
@@ -122,6 +138,13 @@ export default {
       }
 
     },
+
+    /*
+    Request for the actual round with all questions and answers
+
+    author      gfels6
+    version     2019-01-07
+    */
     getContent() {
       backendService.getActualRound(this.gameId, this.user)
       .then(data => {
@@ -129,9 +152,12 @@ export default {
         this.startQuiz();
       })
     },
+    // Value for the progressbar width
     setProgressbarWidth(percent) {
       this.columns = percent + "*," + (100 - percent) + "*";
     },
+
+    // Set a Interval that will be executed all 120ms 
     setUpProgressbar(){
       let percent = 100;
       this.intervalId = setInterval(() => {
@@ -144,6 +170,8 @@ export default {
         }
       }, 120);
     },
+
+    // Reset of all enabling and colorizing of the buttons
     startQuiz(){
       this.getWalkerCoins();
       this.btnEnabled = true;
@@ -155,6 +183,8 @@ export default {
       this.randomNumber = [];
       this.setQuestion(this.questionNumber);
     },
+
+    // All Questions and answers will be pushed in the buttons/labels (Before shuffle the position array)
     setQuestion(number){
       this.question = this.dataSet.gameQuestions[number].question;
       this.shuffleArray(this.positions);
@@ -165,12 +195,17 @@ export default {
 
       this.setUpProgressbar();
     },
+
+    // The correct answer is everytime number 1 (index 0), to shuffle this random, we used a randomization of the positions
+    // Afterwards the this.positions[0] is the correct one
     shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
     },
+
+    // Evaluating the clicked answer (position[0] is the correct one)
     onTappedAnswer(id){
 
       clearInterval(this.intervalId);
@@ -189,10 +224,22 @@ export default {
         this.wrongAnswer = id;
       }
 
+      // Repeat the hole methods to get into round 2 and round 3 (last one)
       if(this.questionNumber == 0 || this.questionNumber == 1) {
         this.questionNumber++;
         this.nextQuestion = true;
       } else if (this.questionNumber == 2) {
+        /*
+        This function handles the push events on Tom Turnschuh Icon in the Actionbar
+
+        parameters  gameId: actual id of the game
+                    user: name of the user
+                    dataSet.roundNumber: Actual round number
+                    answers: Array of the given answers (3)
+        returns     nothing
+        author      gfels6
+        version     2019-01-07
+        */
         backendService.setAnswers(this.gameId, this.user, this.dataSet.roundNumber, this.answers)
         .then(data => {
           console.log("answer logged into backend!");
@@ -202,6 +249,7 @@ export default {
 
 
     },
+    // Handles if the time joker is clicked (checks if you have enough walker coins)
     jokerTime() {
       if(this.walkerCoins >= this.costTimeJoker) {
         let correctCoins = this.walkerCoins - this.costTimeJoker;
@@ -217,6 +265,8 @@ export default {
       }
 
     },
+
+    // Handles if the 50:50 joker is clicked
     jokerFifty() {
       if(this.walkerCoins >= this.costFiftyJoker) {
         let correctCoins = this.walkerCoins - this.costFiftyJoker;
@@ -234,6 +284,8 @@ export default {
       }
 
     },
+
+    // Request for the walker coins
     getWalkerCoins(){
       backendService.getUser(this.user)
       .then(data => {

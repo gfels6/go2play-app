@@ -63,7 +63,7 @@ export default {
     /*
     This function handles toggling the gender buttons
 
-    parameters  - gender: the tapped button
+    parameters  gender: the tapped button
     returns     nothing
     author      gfels6
     version     2018
@@ -94,6 +94,7 @@ export default {
 
     changeRoute(to) {
       let bday = this.selectedDate.getDate() + "-" + (this.selectedDate.getMonth() + 1) + "-" + this.selectedDate.getFullYear();
+      // Checks if the user selected a gender (should be changed to tomTurnschuh)
       if(this.selectedGender === "") {
         action("Bitte gib dein Geschlecht an.", "abbrechen", ["weiblich", "männlich"])
         .then(result => {
@@ -114,6 +115,18 @@ export default {
         return;
       }
 
+
+      /*
+      Saves the userdata in the backend
+
+      parameters  uniqueName: Name of the user
+                  selectedGender: selected gender (male or female)
+                  bday: birthday of the user (as a date object)
+                  sliderValue: mobilityLevel from 0-100 (rounded because of iOS)
+      returns     nothing
+      author      gfels6
+      version     2019-01-07
+      */
       backendService.addUser(this.uniqueName, this.selectedGender, bday, Math.round(this.sliderValue))
       .then(data => {
         console.log("success:" + data);

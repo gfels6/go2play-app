@@ -32,11 +32,13 @@ let help = null;
 export default {
   data() {
     return {
+      // Name of the user
       user: "",
       lblgamesTotal: "Anzahl beendete Spiele: ",
       lblgamesWon: "Gewonnen: ",
       lblgamesLost: "Verloren: ",
       lblgamesTie: "Unentschieden: ",
+      // Scores of the games (win, lost, tie etc.)
       gamesTotal: 0,
       gamesWon: 0,
       gamesLost: 0,
@@ -141,6 +143,14 @@ export default {
     }
     },
 
+    /*
+    Calculates the array with all the matches from the user and evaluates them
+
+    parameters  userData: Array with all the finished matches
+    returns     nothing
+    author      gfels6
+    version     2019-01-09
+    */
     evaluateMatches(userData){
       this.gamesTotal = userData.matches.length;
       for (let i = 0; i < userData.matches.length; i++) {

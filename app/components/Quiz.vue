@@ -58,8 +58,10 @@ export default {
     return {
       lblOpenGames: "Offene Spiele",
       lblFinishedGames: "Beendete Spiele",
+      // Counter for the games
       countedOpenGames: 0,
       countedFinishedGames: 0,
+      // Array with all the games
       finishedGames: [],
       openGames: [],
       clickedGame: "",
@@ -100,6 +102,15 @@ export default {
         clearHistory: true,
       });
     },
+
+    /*
+    Request for all games (separated open/finished)
+
+    parameters  none
+    returns     Array with all open games and a Array with all finished games
+    author      gfels6
+    version     2019-01-09
+    */
     loadGames() {
       backendService.searchOpenGames(this.name)
       .then(data => {
@@ -113,6 +124,8 @@ export default {
         this.countedFinishedGames = this.finishedGames.length;
       })
     },
+
+    // Eventhandler for the clicked Game
     onItemTap(event){
       console.log("You touched " + event.item.id + " ;)");
       this.clickedGame = event.item.id;
