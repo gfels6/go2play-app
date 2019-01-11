@@ -1,6 +1,9 @@
 # go2play
 
 > A native application built with NativeScript-Vue
+> This is a 'clinical app' for our studies in medical informatics (BFH - TI)
+> It is a quiz, where you can connect step counters to get an ingame currency to get jokers ;-)
+> Made by Sascha Gfeller & Gabriel Hess
 
 ## Usage
 
