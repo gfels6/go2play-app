@@ -34,5 +34,5 @@ Overview over the variables in Local Storage
 - onboarding: Boolean only set if user just completed onboarding process
 - stepsLog: Array with objects containing evaluated: {date: the timestamp, steps: number of steps logged, coins: number of walkercoins added}
 
-## presentation mode
+## Presentation Mode
 For enabling presentation mode, set `presiMode`-Property in ClaimName.vue to `TRUE`
