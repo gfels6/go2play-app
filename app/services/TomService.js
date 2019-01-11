@@ -110,12 +110,17 @@ export default class TomService {
   /*
   Sets a Notification Badge on the Tom icon and vibrates the phone
 
-    parameters  - delay: the delay in MS until the notification should be shown
+    parameters  - text: the text to be shown after notify was triggered
+                        ("" for only vibrating and show badge)
+                - delay: the delay in MS until the notification should be shown
     returns     - nothing, manipulates GUI
     author      hessg1
     version     2019-01-06
   */
-  notify(delay){
+  notify(text, delay){
+    if(text != ""){
+      tom.notif_text = text;
+    }
     setTimeout(()=>{
       tom.img = "~/assets/images/tom_alert.png";
       vib.vibrate(200);

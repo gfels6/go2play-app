@@ -135,7 +135,7 @@ export default {
     localStorage.setItem('connected', false);
     localStorage.setItem('onboarding', true);
     //help.say("Bevor wir loslegen können, brauche ich noch ein paar Informationen von dir.");
-    help.notify(10000);
+    help.notify("", 10000);
   }
 }
 </script>

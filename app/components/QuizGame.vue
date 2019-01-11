@@ -140,8 +140,7 @@ export default {
         if (percent < 0) {
           clearInterval(this.intervalId);
           this.onTappedAnswer(0);
-          help.notify(1000);
-          this.tom.notif_text="Versuche die Frage zu beantworten bevor die Zeit abläuft. Achte dafür auf den Balken unter den Antworten.\n\nFalls du etwas überlegen musst, kannst du dir einen Zeit-Joker kaufen.";
+          help.notify("Versuche die Frage zu beantworten bevor die Zeit abläuft. Achte dafür auf den Balken unter den Antworten.\n\nFalls du etwas überlegen musst, kannst du dir einen Zeit-Joker kaufen.", 1000);
         }
       }, 120);
     },

@@ -73,6 +73,7 @@ export default {
         this.tfName = this.tfName.replace(/\s/g, ''); // remove clearspaces
         backendService.searchName(this.tfName)
         .catch(err => {
+          help.say("Ich kann den Spiel-Server nicht erreichen.\nStelle sicher, dass du mit dem BFH-WLAN verbunden bist.");
           console.log(err);
         })
         .then(data => {

@@ -104,9 +104,12 @@ export default {
     // initialize Tom Turnschuh
     help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
     this.onboarding = localStorage.getItem('onboarding');
-
     // load walkerCoins from server
     backendService.getUser(localStorage.getItem('name'))
+    .catch(err => {
+      help.say("Ich habe es wirklich versucht, aber ich kann den Spiel-Server nicht erreichen.\nStelle sicher, dass du mit dem BFH-WLAN verbunden bist.");
+      console.log(err);
+    })
     .then(data => {
       this.walkerCoins = data.walkerCoins;
 
