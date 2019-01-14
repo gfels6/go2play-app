@@ -140,6 +140,10 @@ export default {
         //calculate average steps
         var diff = (new Date() - since) / 1000 / 24 / 60 / 60; // difference in full days
         this.avgSteps = (diff<1)? this.totalSteps : Math.round(this.totalSteps / diff); // if we are on the first day, we just display the steps of today
+
+        if(this.totalSteps == 0){
+          help.say("Ich habe noch nicht genug Daten gesammelt für die Schrittstatistik.\nMorgen weiss ich mehr.");
+        }
     }
     },
 
@@ -167,12 +171,12 @@ export default {
   mounted() {
     this.user = localStorage.getItem('name');
 
-    this.calculateStepStatictics();
-
-    this.getAllFinishedGames();
     // initialize Tom Turnschuh
     help = new TomService(require("nativescript-vibrate").Vibrate, this.tom);
 
+    this.calculateStepStatictics();
+
+    this.getAllFinishedGames();
   }
 }
 </script>

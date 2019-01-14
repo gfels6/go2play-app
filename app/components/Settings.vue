@@ -94,9 +94,13 @@ export default {
       })
       .then(choice =>{
         if(choice){
+          // delete storage
           localStorage.clear();
+          // since we didn't delete the app, the stepcounter is still connected:
+          localStorage.setItem('connected', true);
+          // navigate to start
           this.$navigateTo(this.$routes['start'],{ clearHistory: true });
-        }
+        } 
       });
     },
 

@@ -63,7 +63,7 @@ export default class HelperService {
           }
           var avg = total / 3; // calculate average
           // if every day was overachieved, calculate new goal
-          var newMobility = Math.round((overachieved = 3) ? ((avg - 2000)/80) : ((goal - 2000)/80));
+          var newMobility = Math.round((overachieved == 3) ? ((avg - 2000)/80) : ((goal - 2000)/80));
           //return the value (max. 100)
           return (newMobility > 100) ? 100 : newMobility;
         })

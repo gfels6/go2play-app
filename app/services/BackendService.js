@@ -18,7 +18,6 @@ export default class BackendService {
         .then(data => data.json());
       }
 
-
       /*
         Deletes a game
         parameters  - name: name of one of the users in the game
@@ -264,7 +263,7 @@ export default class BackendService {
       Search for the actual round (also check if its your turn)
       parameters  - name: name of the user who wants to play
                   - gameId: id of the game
-      returns     a promise with the questions and answers (3x for the hole round)
+      returns     a promise with the questions and answers (3x for the whole round)
       author      gfels6
       version     2018-12-30
     */
